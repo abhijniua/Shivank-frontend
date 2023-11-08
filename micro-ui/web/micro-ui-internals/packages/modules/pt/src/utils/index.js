@@ -115,15 +115,20 @@ export const setOwnerDetails = (data) => {
         });
       }
       owner.push({
-        altContactNumber: owners[0]?.altContactNumber,
-        correspondenceAddress: owners[0]?.permanentAddress,
-        designation: owners[0]?.designation,
-        emailId: owners[0]?.emailId,
-        isCorrespondenceAddress: owners[0]?.isCorrespondenceAddress,
-        mobileNumber: owners[0]?.mobileNumber,
-        name: owners[0]?.name,
-        ownerType: owners[0]?.ownerType?.code || "NONE",
-        documents: document,
+        // altContactNumber: owners[0]?.altContactNumber,
+        // correspondenceAddress: owners[0]?.permanentAddress,
+        // designation: owners[0]?.designation,
+        // emailId: owners[0]?.emailId,
+        // isCorrespondenceAddress: owners[0]?.isCorrespondenceAddress,
+        // mobileNumber: owners[0]?.mobileNumber,
+        // name: owners[0]?.name,
+        // ownerType: owners[0]?.ownerType?.code || "NONE",
+        // documents: document,
+        applicantName :data?.owners[0]?.applicantName,
+        mobileNumber  :data?.owners[0]?.mobileNumber,
+        alternateNumber  :data?.owners[0]?.alternateNumber,
+        emailId  :data?.owners[0]?.emailId,
+        fatherName  :data?.owners[0]?.fatherName,
       });
       data.institution = institution;
       data.owners = owner;
@@ -143,16 +148,21 @@ export const setOwnerDetails = (data) => {
           });
         }
         owner.push({
-          emailId: ownr?.emailId,
-          fatherOrHusbandName: ownr?.fatherOrHusbandName,
-          gender: ownr?.gender?.value,
-          isCorrespondenceAddress: ownr?.isCorrespondenceAddress,
-          mobileNumber: ownr?.mobileNumber,
-          name: ownr?.name,
-          ownerType: ownr?.ownerType?.code || "NONE",
-          permanentAddress: ownr?.permanentAddress,
-          relationship: ownr?.relationship?.code,
-          documents: document,
+          // emailId: ownr?.emailId,
+          // fatherOrHusbandName: ownr?.fatherOrHusbandName,
+          // gender: ownr?.gender?.value,
+          // isCorrespondenceAddress: ownr?.isCorrespondenceAddress,
+          // mobileNumber: ownr?.mobileNumber,
+          // name: ownr?.name,
+          // ownerType: ownr?.ownerType?.code || "NONE",
+          // permanentAddress: ownr?.permanentAddress,
+          // relationship: ownr?.relationship?.code,
+          // documents: document,
+          applicantName :data?.owners[0]?.applicantName,
+          mobileNumber  :data?.owners[0]?.mobileNumber,
+          alternateNumber  :data?.owners[0]?.alternateNumber,
+          emailId  :data?.owners[0]?.emailId,
+          fatherName  :data?.owners[0]?.fatherName,
         });
       });
       data.owners = owner;

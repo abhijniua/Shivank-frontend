@@ -45,7 +45,7 @@ const ApplicationDetails = () => {
       tenantId,
       filters: { propertyIds: propertyId, audit: true },
     },
-    { enabled: enableAudit, select: (data) => data.Properties?.filter((e) => e.status === "ACTIVE") }
+    { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
 
   const showTransfererDetails = React.useCallback(() => {
@@ -133,7 +133,7 @@ const ApplicationDetails = () => {
   if (!(appDetailsToShow?.applicationDetails?.[0]?.values?.[0].title === "PT_PROPERTY_APPLICATION_NO")) {
     appDetailsToShow?.applicationDetails?.unshift({
       values: [
-        { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.acknowldgementNumber },
+        { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.applicationNumber },
         { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.propertyId },
         { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
       ],
@@ -191,7 +191,7 @@ const ApplicationDetails = () => {
    return(
     <MutationApplicationDetails 
       propertyId = {propertyId}
-      acknowledgementIds={appDetailsToShow?.applicationData?.acknowldgementNumber}
+      acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
       workflowDetails={workflowDetails}
       mutate={mutate}
     />

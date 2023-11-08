@@ -38,7 +38,7 @@ const SearchApp = ({path}) => {
         enabled: !!( payload && Object.keys(payload).length > 0 )
     }
 
-    const { isLoading, isSuccess, isError, error, data: {Properties: searchReult, Count: count} = {} } = Digit.Hooks.ptr.usePTRSearch(
+    const { isLoading, isSuccess, isError, error, data: {PetRegistrationApplications: searchReult, Count: count} = {} } = Digit.Hooks.ptr.usePTRSearch(
         { tenantId,
           filters: payload
         },
