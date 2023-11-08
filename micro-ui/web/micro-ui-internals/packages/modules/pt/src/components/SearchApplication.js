@@ -65,14 +65,14 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
         },
         {
             Header: t("PT_APPLICATION_NO_LABEL"),
-            accessor: "acknowldgementNumber",
+            accessor: "applicationNumber",
             disableSortBy: true,
             Cell: ({ row }) => {
               return (
                 <div>
                   <span className="link">
                     <Link to={`/digit-ui/employee/pt/applicationsearch/application-details/${row.original["propertyId"]}`}>
-                      {row.original["acknowldgementNumber"]}
+                      {row.original["applicationNumber"]}
                     </Link>
                   </span>
                 </div>
@@ -137,8 +137,8 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                     <TextInput name="applicationNumber" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
-                    <label>{t("PT_SEARCHPROPERTY_TABEL_PID")}</label>
-                    <TextInput name="propertyIds" inputRef={register({})} />
+                    <label>{t("PTR_SEARCH_PET_TYPE")}</label>
+                    <TextInput name="petType" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
                 <label>{t("PT_OWNER_MOBILE_NO")}</label>
@@ -166,22 +166,8 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                  <CardLabelError>{formState?.errors?.["mobileNumber"]?.message}</CardLabelError>
                 </SearchField>
                 <SearchField>
-                    <label>{t("PT_SEARCHPROPERTY_TABEL_APPLICATIONTYPE")}</label>
-                    <Controller
-                            control={control}
-                            name="creationReason"
-                            render={(props) => (
-                                <Dropdown
-                                selected={props.value}
-                                select={props.onChange}
-                                onBlur={props.onBlur}
-                                option={applicationTypes}
-                                optionKey="i18nKey"
-                                t={t}
-                                disable={false}
-                                />
-                            )}
-                            />
+                    <label>{t("PTR_SEARCH_BREED_TYPE")}</label>
+                    <TextInput name="breedType" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
                     <label>{t("ES_SEARCH_PROPERTY_STATUS")}</label>
@@ -225,10 +211,10 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                             applicationNumber: "", 
                             fromDate: "", 
                             toDate: "",
-                            propertyIds: "",
+                            petType: "",
                             mobileNumber:"",
                             status: "",
-                            creationReason: "",
+                            breedType: "",
                             offset: 0,
                             limit: 10,
                             sortBy: "commencementDate",

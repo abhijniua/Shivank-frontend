@@ -21,7 +21,7 @@ const [groupBillrecords, setGroupBillrecords] = useState([]);
 console.log("payload", payload);
 let filters={ ...payload,isDefaulterNoticeSearch:true }
 const args = tenantId ? { tenantId, filters } : { filters };
-const { isLoading, error, data, isSuccess } = useQuery(["propertySearchList", tenantId,filters ], () => Digit.PTRService.search(args));
+const { isLoading, error, data, isSuccess } = useQuery(["ptrSearchList", tenantId,filters ], () => Digit.PTRService.search(args));
   
 
   const mutation = Digit.Hooks.ptr.usePTRCreateAPI(tenantId, false);
