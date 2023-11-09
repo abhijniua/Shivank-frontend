@@ -93,7 +93,9 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
           {
             Header: t("PTR_APPLICANT_NAME"),
             Cell: ( row ) => {
-              return GetCell(`${row.original?.["applicantName"]}`)
+              console.log("ddddddddddd",row)
+              return GetCell(`${row?.row?.original?.["applicantName"]}`)
+              
             },
             disableSortBy: true,
           },
@@ -108,14 +110,14 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
           {
             Header: t("PTR_BREED_TYPE"),
             Cell: ({ row }) => {
-              return GetCell(`${row.original?.petDetails?.["breedType"]}`)
+              return GetCell(`${row?.cell?.row?.original?.["breedType"]}`)
             },
             disableSortBy: true,
           },
           {
             Header: t("PTR_MOBILE_NUMBER"),
             Cell: ({ row }) => {
-              return GetCell(`${row.original?.["mobileNumber"]}`)
+              return GetCell(`${row?.cell?.row?.original?.["mobileNumber"]}`)
             },
             disableSortBy: true,
           },
