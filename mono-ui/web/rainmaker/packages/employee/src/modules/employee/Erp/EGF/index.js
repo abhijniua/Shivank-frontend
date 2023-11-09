@@ -28,8 +28,16 @@ class EGFFinance extends Component {
     // Reading environment name (ex: dev, qa, uat, fin-uat etc) from the globalconfigs if exists else reading from the .env file
     finEnv = this.globalConfigExists() ? window.globalConfigs.getConfig("FIN_ENV") : process.env.REACT_APP_FIN_ENV;
     // Preparing finance subdomain url using the above environment name and the domain url
-    subdomainurl = !!(finEnv) ? "-" + finEnv + "." + domainurl : "." + domainurl;
-    erp_url = loc.protocol + "//" + getTenantId().split(".")[1] + subdomainurl + menuUrl;
+
+    // subdomainurl = !!(finEnv) ? "-" + finEnv + "." + domainurl : "." + domainurl;   //old one
+
+    subdomainurl = hostname.substring(hostname.indexOf(".") + 1);   // change by shivank 
+    console.log(subdomainurl);
+
+
+    // erp_url = loc.protocol + "//" + getTenantId().split(".")[1] + subdomainurl + menuUrl;   //old one
+
+    erp_url = loc.protocol + "//" + getTenantId().split(".")[1] + "." + subdomainurl + ":9090" + menuUrl;   // change by shivank 
 
     return (
       <div>
