@@ -25,7 +25,7 @@ export const PTMyApplications = () => {
 
   const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch({ filters: filter1 }, { filters: filter1 });
   
-  const { Properties: applicationsList } = data || {};
+  const {PetRegistrationApplications: applicationsList } = data || {};
   let combinedApplicationNumber = applicationsList?.length > 0 ? applicationsList?.map((ob) => ob?.acknowldgementNumber) : [];
   let serviceSearchArgs = {
     tenantId : tenantId,

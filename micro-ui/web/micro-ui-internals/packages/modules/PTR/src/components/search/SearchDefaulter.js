@@ -21,7 +21,7 @@ const [groupBillrecords, setGroupBillrecords] = useState([]);
 console.log("payload", payload);
 let filters={ ...payload,isDefaulterNoticeSearch:true }
 const args = tenantId ? { tenantId, filters } : { filters };
-const { isLoading, error, data, isSuccess } = useQuery(["propertySearchList", tenantId,filters ], () => Digit.PTService.search(args));
+const { isLoading, error, data, isSuccess } = useQuery(["ptrSearchList", tenantId,filters ], () => Digit.PTRService.search(args));
   
 
   const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId, false);
@@ -200,8 +200,8 @@ const downloadNotice = async (document) => {
   };
   const onSubmit= async ()=>{
   let key
-  let properties
-    let response = await Digit.PTService.generateDefaulterNotice(tenantId,properties =Object.values(data?.Properties || {}));
+  let PetRegistrationApplications
+    let response = await Digit.PTService.generateDefaulterNotice(tenantId,PetRegistrationApplications =Object.values(data?.PetRegistrationApplications || {}));
     setShowToast({
         label: `${t("GRP_JOB_INITIATED_STATUS")} ${response?.jobId}`
     })  
@@ -232,7 +232,7 @@ const onViewDownload =async () =>{
       return obj;
     });
   };
-  const tableData = Object.values(data?.Properties || {}) || [];
+  const tableData = Object.values(data?.PetRegistrationApplications || {}) || [];
   if(ptSearchConfig?.ptSearchCount&&payload.locality&&tableData&&tableData.length>ptSearchConfig.ptSearchCount){
    // !showToast &&setShowToast({ error: true, label: "PT_MODIFY_SEARCH_CRITERIA" });
     return null;
@@ -241,7 +241,7 @@ const onViewDownload =async () =>{
  
   return (
     <React.Fragment>
-      {data?.Properties?.length === 0 ? (
+      {data?.PetRegistrationApplications?.length === 0 ? (
         <PTEmptyResultInbox data={true}></PTEmptyResultInbox>
       ) : isMobile ? (
         <DetailsCard data={getData(tableData)} t={t} />
@@ -252,7 +252,7 @@ const onViewDownload =async () =>{
         <Table
           t={t}
           data={tableData}
-          totalRecords={data?.Properties?.length}
+          totalRecords={data?.PetRegistrationApplications?.length}
           columns={columns}
           getCellProps={(cellInfo) => {
             return {

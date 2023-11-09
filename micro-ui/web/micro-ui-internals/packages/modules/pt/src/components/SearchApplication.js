@@ -21,20 +21,20 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
       register("sortOrder", "DESC")
     },[register])
     //need to get from workflow
-    const applicationTypes = [
-        {
-            code: "CREATE",
-            i18nKey: "CREATE"
-        },
-        {
-            code: "UPDATE",
-            i18nKey: "UPDATE"
-        },
-        {
-            code: "MUTATION",
-            i18nKey: "MUTATION"
-        },
-    ]
+    // const applicationTypes = [
+    //     {
+    //         code: "CREATE",
+    //         i18nKey: "CREATE"
+    //     },
+    //     {
+    //         code: "UPDATE",
+    //         i18nKey: "UPDATE"
+    //     },
+    //     {
+    //         code: "MUTATION",
+    //         i18nKey: "MUTATION"
+    //     },
+    // ]
     const applicationStatuses = [
         {
             code: "ACTIVE",
@@ -50,28 +50,28 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
         },
     ]
 
-    const getaddress = (address) => {
-        let newaddr = `${address?.doorNo ? `${address?.doorNo}, ` : ""} ${address?.street ? `${address?.street}, ` : ""}${
-            address?.landmark ? `${address?.landmark}, ` : ""
-          }${t(address?.locality.code)}, ${t(address?.city)},${t(address?.pincode) ? `${address.pincode}` : " "}`
-        return newaddr;
-    }
+    // const getaddress = (address) => {
+    //     let newaddr = `${address?.doorNo ? `${address?.doorNo}, ` : ""} ${address?.street ? `${address?.street}, ` : ""}${
+    //         address?.landmark ? `${address?.landmark}, ` : ""
+    //       }${t(address?.locality.code)}, ${t(address?.city)},${t(address?.pincode) ? `${address.pincode}` : " "}`
+    //     return newaddr;
+    // }
     const GetCell = (value) => <span className="cell-text">{value}</span>;
     const columns = useMemo( () => ([
+        // {
+        //     Header: t("PT_SEARCHPROPERTY_TABEL_PID"),
+        //     disableSortBy: true,
+        //     accessor: (row) => GetCell(row.propertyId || ""),
+        // },
         {
-            Header: t("PT_SEARCHPROPERTY_TABEL_PID"),
-            disableSortBy: true,
-            accessor: (row) => GetCell(row.propertyId || ""),
-        },
-        {
-            Header: t("PT_APPLICATION_NO_LABEL"),
+            Header: t("PTR_APPLICATION_NUMBER"),
             accessor: "applicationNumber",
             disableSortBy: true,
             Cell: ({ row }) => {
               return (
                 <div>
                   <span className="link">
-                    <Link to={`/digit-ui/employee/pt/applicationsearch/application-details/${row.original["propertyId"]}`}>
+                    <Link to={`/digit-ui/employee/pt/applicationsearch/application-details/${row.original["applicationNumber"]}`}>
                       {row.original["applicationNumber"]}
                     </Link>
                   </span>
@@ -79,25 +79,45 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
               );
             },
           },
+        //   {
+        //     Header: t("PT_SEARCHPROPERTY_TABEL_APPLICATIONTYPE"),
+        //     disableSortBy: true,
+        //     accessor: (row) => GetCell(row.creationReason || ""),
+        //   },
+        //   {
+        //     Header: t("PT_COMMON_TABLE_COL_OWNER_NAME"),
+        //     accessor: (row) => GetCell(row.owners.map( o => o.name ). join(",") || ""),
+        //     disableSortBy: true,
+        //   },
+
           {
-            Header: t("PT_SEARCHPROPERTY_TABEL_APPLICATIONTYPE"),
+            Header: t("PTR_APPLICANT_NAME"),
+            Cell: ( row ) => {
+              return GetCell(`${row.original?.["applicantName"]}`)
+            },
             disableSortBy: true,
-            accessor: (row) => GetCell(row.creationReason || ""),
           },
           {
-            Header: t("PT_COMMON_TABLE_COL_OWNER_NAME"),
-            accessor: (row) => GetCell(row.owners.map( o => o.name ). join(",") || ""),
+            Header: t("PTR_PET_TYPE"),
+            Cell: ({ row }) => {
+              return GetCell(`${row.original?.petDetails?.["petType"]}`)
+            },
+            disableSortBy: true,
+           
+          },
+          {
+            Header: t("PTR_BREED_TYPE"),
+            Cell: ({ row }) => {
+              return GetCell(`${row.original?.petDetails?.["breedType"]}`)
+            },
             disableSortBy: true,
           },
           {
-            Header: t("ES_SEARCH_PROPERTY_STATUS"),
-            accessor: (row) =>GetCell(t( row?.status &&`WF_PT_${row.status}`|| "NA") ),
+            Header: t("PTR_MOBILE_NUMBER"),
+            Cell: ({ row }) => {
+              return GetCell(`${row.original?.["mobileNumber"]}`)
+            },
             disableSortBy: true,
-          },
-          {
-            Header: t("PT_ADDRESS_LABEL"),
-            disableSortBy: true,
-            accessor: (row) => GetCell(getaddress(row.address) || ""),
           },
       ]), [] )
 

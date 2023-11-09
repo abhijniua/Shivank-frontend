@@ -14,7 +14,7 @@ export const TableConfig = (t) => ({
   PT: {
     searchColumns: (props) => [
       {
-        Header: t("ES_INBOX_UNIQUE_PROPERTY_IDjdfkkkkkkkkkkkkkkkkkkkkkkkk"),
+        Header: t("ES_INBOX_UNIQUE_PROPERTY_ID"),
         // accessor: "searchData.propertyId",
         disableSortBy: true,
         Cell: ({ row }) => {
@@ -88,47 +88,63 @@ export const TableConfig = (t) => ({
     ],
     inboxColumns: (props) => [
       {
-        Header: t("ES_INBOX_UNIQUE_PROPERTY_ID"),
+        Header: t("PTR_APPLICATION_NUMBER"),
         Cell: ({ row }) => {
           return (
             <div>
               <span className="link">
-                <Link to={`${props.parentRoute}/application-details/` + row.original?.searchData?.["propertyId"]}>
-                  {row.original?.searchData?.["propertyId"]}
+                <Link to={`${props.parentRoute}/application-details/` + row.original?.["applicationNumber"]}>
+                  {row.original?.["applicationNumber"]}
                 </Link>
               </span>
             </div>
           );
         },
-        mobileCell: (original) => GetMobCell(original?.searchData?.["propertyId"]),
+        mobileCell: (original) => GetMobCell(original?.["applicationNumber"]),
       },
       {
-        Header: t("ES_INBOX_OWNER"),
+        Header: t("PTR_APPLICANT_NAME"),
         Cell: ({ row }) => {
-          return GetCell(`${row.original?.searchData?.["owners"]?.[0].name}`);
+          return GetCell(`${row.original?.["applicantName"]}`);
         },
-        mobileCell: (original) => GetMobCell(original?.searchData?.["owners"]?.[0].name),
+        mobileCell: (original) => GetMobCell(original?.["applicantName"]),
       },
       {
-        Header: t("ES_INBOX_APPLICATION_TYPE"),
+        Header: t("PTR_PET_TYPE"),
         Cell: ({ row }) => {
-          const map = {
-            "PTR.CREATE": "ES_PTR_NEW_PROPERTY",
-            //"PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
-            "PTR.UPDATE": "ES_PTR_UPDATE_PROPERTY",
-          };
-          return GetCell(t(`${map[row.original?.workflowData?.businessService]}`));
+          return GetCell(`${row.original?.petDetails?.["petType"]}`);
         },
-        mobileCell: (original) => {
-          const map = {
-            "PTR.CREATE": "ES_PTR_NEW_PROPERTY",
-           // "PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
-            "PTR.UPDATE": "ES_PTR_UPDATE_PROPERTY",
-          };
+        mobileCell: (original) => GetMobCell(original?.petDetails?.["petType"]),
+      },
 
-          return GetMobCell(t(map[original?.workflowData?.businessService]));
+      {
+        Header: t("PTR_BREED_TYPE"),
+        Cell: ({ row }) => {
+          return GetCell(`${row.original?.petDetails?.["breedType"]}`);
         },
+        mobileCell: (original) => GetMobCell(original?.petDetails?.["breedType"]),
       },
+
+      // {
+      //   Header: t("ES_INBOX_APPLICATION_TYPE"),
+      //   Cell: ({ row }) => {
+      //     const map = {
+      //       "PTR.CREATE": "ES_PTR_NEW_PROPERTY",
+      //       //"PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
+      //       "PTR.UPDATE": "ES_PTR_UPDATE_PROPERTY",
+      //     };
+      //     return GetCell(t(`${map[row.original?.workflowData?.businessService]}`));
+      //   },
+      //   mobileCell: (original) => {
+      //     const map = {
+      //       "PTR.CREATE": "ES_PTR_NEW_PROPERTY",
+      //      // "PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
+      //       "PTR.UPDATE": "ES_PTR_UPDATE_PROPERTY",
+      //     };
+
+      //     return GetMobCell(t(map[original?.workflowData?.businessService]));
+      //   },
+      // },
       {
         Header: t("ES_INBOX_STATUS"),
         Cell: ({ row }) => {
@@ -137,16 +153,16 @@ export const TableConfig = (t) => ({
         },
         mobileCell: (original) => GetMobCell(t(`ES_PT_COMMON_STATUS_${original?.workflowData?.state?.["state"]}`)),
       },
-      {
-        Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
-        accessor: "createdTime",
-        Cell: ({ row }) => {
-          const wf = row.original.workflowData;
-          const math = Math.round((wf?.businesssServiceSla || 0) / (24 * 60 * 60 * 1000)) || "-";
-          return GetSlaCell(math);
-        },
-        mobileCell: (original) => GetSlaCell(Math.round((original?.workflowData?.["businesssServiceSla"] || 0) / (24 * 60 * 60 * 1000))),
-      },
+      // {
+      //   Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
+      //   accessor: "createdTime",
+      //   Cell: ({ row }) => {
+      //     const wf = row.original.workflowData;
+      //     const math = Math.round((wf?.businesssServiceSla || 0) / (24 * 60 * 60 * 1000)) || "-";
+      //     return GetSlaCell(math);
+      //   },
+      //   mobileCell: (original) => GetSlaCell(Math.round((original?.workflowData?.["businesssServiceSla"] || 0) / (24 * 60 * 60 * 1000))),
+      // },
     ],
     serviceRequestIdKey: (original) => original?.[t("ES_INBOX_UNIQUE_PROPERTY_ID")]?.props?.children,
   },
