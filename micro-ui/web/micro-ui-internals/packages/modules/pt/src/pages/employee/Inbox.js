@@ -8,7 +8,7 @@ import MobileInbox from "../../components/MobileInbox";
 const Inbox = ({
   useNewInboxAPI,
   parentRoute,
-  moduleCode = "PT",
+  moduleCode = "PTR",
   initialStates = {},
   filterComponent,
   isInbox,
@@ -102,7 +102,7 @@ const Inbox = ({
           searchParams={searchParams}
           sortParams={sortParams}
           linkPrefix={`${parentRoute}/application-details/`}
-          tableConfig={rest?.tableConfig?res?.tableConfig:TableConfig(t)["PT"]}
+          tableConfig={rest?.tableConfig?res?.tableConfig:TableConfig(t)["PTR"]}
           filterComponent={filterComponent}
           EmptyResultInboxComp={EmptyResultInboxComp}
           useNewInboxAPI={useNewInboxAPI}
@@ -118,7 +118,7 @@ const Inbox = ({
           <DesktopInbox
             moduleCode={moduleCode}
             data={data}
-            tableConfig={TableConfig(t)["PT"]}
+            tableConfig={TableConfig(t)["PTR"]}
             isLoading={hookLoading}
             defaultSearchParams={initialStates.searchParams}
             isSearch={!isInbox}

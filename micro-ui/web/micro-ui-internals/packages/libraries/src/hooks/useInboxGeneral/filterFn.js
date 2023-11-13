@@ -105,6 +105,11 @@ export const filterFunctions = {
 
     return { searchFilters, workflowFilters };
   },
+
+  /* @author for PTR- Shivank Shukla
+  
+  this filter file  as well as new filter file is just for the filter feature in inbox search 
+  */
   PTR: (filtersArg) => {
     let { uuid } = Digit.UserService.getUser()?.info || {};
 

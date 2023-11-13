@@ -1,7 +1,7 @@
 import Urls from "../atoms/urls";
 import { Request } from "../atoms/Utils/Request";
 
-//need to check the authorization is true or false   
+ 
 export const PTRService = {
   create: (details, tenantId) =>
     Request({
@@ -24,27 +24,28 @@ export const PTRService = {
       userService: auth === false ? auth : true,
       params: { tenantId, ...filters },
     }),
-    generateDefaulterNotice: (tenantId,details) =>
-    Request({
-      url: Urls.ptr.defaulterNotice,
-      data: {PetRegistrationApplications:details},
-      useCache: false,
-      auth:true,
-      userService: true,
-      method: "POST",
-      params: { tenantId, key :"pt-defaulternotice" },
-      auth: true,
-    }),
-    getDefaulterNoticeStatus: (filters) =>
-    Request({
-      url: Urls.ptr.getDefaulterNoticeStatus,
-      useCache: false,
-      auth:true,
-      userService: true,
-      method: "POST",
-      params: {...filters },
-      auth: true,
-    }),
+
+    // generateDefaulterNotice: (tenantId,details) =>
+    // Request({
+    //   url: Urls.ptr.defaulterNotice,
+    //   data: {PetRegistrationApplications:details},
+    //   useCache: false,
+    //   auth:true,
+    //   userService: true,
+    //   method: "POST",
+    //   params: { tenantId, key :"pt-defaulternotice" },
+    //   auth: true,
+    // }),
+    // getDefaulterNoticeStatus: (filters) =>
+    // Request({
+    //   url: Urls.ptr.getDefaulterNoticeStatus,
+    //   useCache: false,
+    //   auth:true,
+    //   userService: true,
+    //   method: "POST",
+    //   params: {...filters },
+    //   auth: true,
+    // }),
 
 
   // search: ({ tenantId, filters, auth }) =>

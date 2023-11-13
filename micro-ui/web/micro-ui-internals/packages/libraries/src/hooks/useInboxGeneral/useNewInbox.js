@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "react-query";
 import { FSMService } from "../../services/elements/FSM";
 import { PTService } from "../../services/elements/PT";
+import { PTRService } from "../../services/elements/PTR";
 
 import { filterFunctions } from "./newFilterFn";
 import { getSearchFields } from "./searchFields";
@@ -16,6 +17,16 @@ const inboxConfig = (tenantId, filters) => ({
     fetchFilters: filterFunctions.PT,
     _searchFn: () => PTService.search({ tenantId, filters }),
   },
+
+  PTR: {
+    services: ["PTR.CREATE"],
+    searchResponseKey: "PetRegistrationApplications",
+    businessIdsParamForSearch: "applicationNumber",
+    businessIdAliasForSearch: "applicationNumber",
+    fetchFilters: filterFunctions.PTR,
+    _searchFn: () => PTRService.search({ tenantId, filters }),
+  },
+
   FSM: {
     services: ["FSM"],
     searchResponseKey: "fsm",
