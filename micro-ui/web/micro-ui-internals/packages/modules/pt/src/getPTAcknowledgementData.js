@@ -11,6 +11,8 @@ import {
   getCityLocale,
 } from "./utils";
 
+//need to change it according to Pet registration 
+
 const capitalize = (text) => text.substr(0, 1).toUpperCase() + text.substr(1);
 const ulbCamel = (ulb) => ulb.toLowerCase().split(" ").map(capitalize).join(" ");
 
