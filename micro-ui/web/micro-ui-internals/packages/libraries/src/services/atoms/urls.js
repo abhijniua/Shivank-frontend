@@ -89,12 +89,12 @@ const Urls = {
   },
   ptr: {  //urls for ptr
     
-    // create:"/pet-services/pet-registration/_create", 
-    create:"http://localhost:8080/pet-services/pet-registration/_create",  
-    
-    search:"http://localhost:8080/pet-services/pet-registration/_search"
-    
-    
+     create:"/pet-services/pet-registration/_create", 
+    //create:"http://localhost:8080/pet-services/pet-registration/_create",  
+    // create:"https://upyog-test.niua.org/pet-services/pet-registration/_create",  
+    //search:"http://localhost:8080/pet-services/pet-registration/_search"
+    // search:"https://upyog-test.niua.org/pet-services/pet-registration/_search",
+    search:"/pet-services/pet-registration/_search"
   },
 
   dss: {
