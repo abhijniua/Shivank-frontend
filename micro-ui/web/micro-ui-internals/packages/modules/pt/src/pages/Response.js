@@ -102,7 +102,9 @@ const Response = (props) => {
     const tenantInfo = tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
     
     let tenantId = PetRegistrationApplications.tenantId || tenantId;
-    const propertyDetails = await Digit.PTService.search({ tenantId, filters: { propertyIds: PetRegistrationApplications?.propertyId, status: "INACTIVE" } });
+    // const propertyDetails = await Digit.PTService.search({ tenantId, filters: { propertyIds: PetRegistrationApplications?.propertyId, status: "INACTIVE" } }); 
+    const propertyDetails = await Digit.PTRService.search({ tenantId, filters: { propertyIds: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
+  
     PetRegistrationApplications.transferorDetails = propertyDetails?.Properties?.[0] || [];
     PetRegistrationApplications.isTransferor = true;
     PetRegistrationApplications.transferorOwnershipCategory = propertyDetails?.Properties?.[0]?.ownershipCategory

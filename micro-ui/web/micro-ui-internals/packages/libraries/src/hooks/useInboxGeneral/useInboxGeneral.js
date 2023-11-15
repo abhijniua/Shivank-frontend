@@ -17,6 +17,14 @@ const inboxConfig = (tenantId, filters) => ({
     fetchFilters: filterFunctions.PT,
     _searchFn: () => PTService.search({ tenantId, filters }),
   },
+  PTR: {
+    services: ["PTR.CREATE"],
+    searchResponseKey: "PetRegistrationApplications",
+    businessIdsParamForSearch: "applicationNumber",
+    businessIdAliasForSearch: "applicationNumber",
+    fetchFilters: filterFunctions.PTR,
+    _searchFn: () => PTRService.search({ tenantId, filters }),
+  },
   FSM: {
     services: ["FSM"],
     searchResponseKey: "fsm",
@@ -33,14 +41,7 @@ const inboxConfig = (tenantId, filters) => ({
     fetchFilters: filterFunctions.TL,
     _searchFn: () => TLService.search(tenantId, filters),
   },
-  PTR: {
-    services: ["PT.CREATE"],
-    searchResponseKey: "Properties",
-    businessIdsParamForSearch: "acknowledgementIds",
-    businessIdAliasForSearch: "acknowldgementNumber",
-    fetchFilters: filterFunctions.PTR,
-    _searchFn: () => PTRService.search({ tenantId, filters }),
-  }
+  
 });
 
 const defaultCombineResponse = ({ totalCount, ...d }, wf) => {

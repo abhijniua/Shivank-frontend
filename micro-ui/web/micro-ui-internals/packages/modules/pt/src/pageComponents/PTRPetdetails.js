@@ -60,7 +60,7 @@ const PTRPetdetails = ({ config, onSelect, userType, formData, setError, formSta
 
   //Need to integrate accordingly 
 
-  // TO DO: Need to apply the filter to get the data according to the selection of pet type ,
+  // TO DO: Need to apply the filter to get the data according to the selection of pet type before deployement 
   Breed_Type &&
   Breed_Type.map((breedss) => {
     
