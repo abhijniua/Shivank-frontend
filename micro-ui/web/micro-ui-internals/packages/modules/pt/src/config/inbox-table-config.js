@@ -11,7 +11,7 @@ const GetSlaCell = (value) => {
 const GetMobCell = (value) => <span className="sla-cell">{value}</span>;
 
 export const TableConfig = (t) => ({
-  PT: {
+  PTR: {
     searchColumns: (props) => [
       {
         Header: t("ES_INBOX_UNIQUE_PROPERTY_ID"),

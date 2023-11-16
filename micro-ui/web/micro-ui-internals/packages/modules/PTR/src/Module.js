@@ -195,7 +195,7 @@ const addComponentsToRegistry = () => {
   });
 };
 
-export const PTModule = ({ stateCode, userType, tenants }) => {
+export const PTRModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
 
   const moduleCode = "PT";
@@ -271,10 +271,10 @@ export const PTLinks = ({ matchPath, userType }) => {
   return <CitizenHomeCard header={t("ACTION_TEST_PROPERTY_TAX")} links={links} Icon={() => <PTIcon className="fill-path-primary-main" />} />;
 };
 
-export const PTComponents = {
+export const PTRComponents = {
   PTRCard,
-  PTModule,
-  PTLinks,
+  PTRModule,
+  PTRLinks,
   PT_INBOX_FILTER: (props) => <InboxFilter {...props} />,
   PTEmptyResultInbox: EmptyResultInbox,
   PTInboxTableConfig: TableConfig,

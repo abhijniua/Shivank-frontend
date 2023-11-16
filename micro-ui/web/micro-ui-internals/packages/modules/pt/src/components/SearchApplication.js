@@ -110,14 +110,14 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
           {
             Header: t("PTR_BREED_TYPE"),
             Cell: ({ row }) => {
-              return GetCell(`${row?.cell?.row?.original?.["breedType"]}`)
+              return GetCell(`${row.original?.petDetails?.["breedType"]}`)
             },
             disableSortBy: true,
           },
           {
             Header: t("PTR_MOBILE_NUMBER"),
             Cell: ({ row }) => {
-              return GetCell(`${row?.cell?.row?.original?.["mobileNumber"]}`)
+              return GetCell(`${row?.original?.["mobileNumber"]}`)
             },
             disableSortBy: true,
           },

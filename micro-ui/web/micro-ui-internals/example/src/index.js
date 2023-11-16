@@ -44,7 +44,7 @@ const enabledModules = [
   //"FSM",
  // "Payment",
   "PT",
-  //"PTR"
+  //"PTR",
   // "QuickPayLinks",
   
   // "Receipts",

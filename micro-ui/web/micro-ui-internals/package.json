@@ -13,7 +13,8 @@
     
    
     "packages/modules/pgr",
-    "packages/modules/pt"
+    "packages/modules/pt",
+    "packages/modules/ptr"
     
     
   ],
@@ -34,6 +35,7 @@
     "dev:components": "cd packages/react-components && yarn start",
     
     "dev:pt": "cd packages/modules/pt && yarn start",
+    "dev:ptr": "cd packages/modules/ptr && yarn start",
 
     
    
@@ -49,6 +51,8 @@
     "build:components": "cd packages/react-components && yarn build",
    
     "build:pt": "cd packages/modules/pt && yarn build",
+    "build:ptr": "cd packages/modules/ptr && yarn build",
+
 
    
     
