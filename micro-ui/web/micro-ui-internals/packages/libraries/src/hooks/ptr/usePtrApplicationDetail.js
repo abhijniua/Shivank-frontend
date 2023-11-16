@@ -1,7 +1,8 @@
 import { PTRSearch } from "../../services/molecules/PTR/Search";
 import { useQuery } from "react-query";
 
-const usePtrApplicationDetail = (t, tenantId, propertyIds, config = {}, userType, args) => {
+const usePtrApplicationDetail = (t, tenantId, applicationNumber, config = {}, userType, args) => {
+  console.log("####",applicationNumber)
   const defaultSelect = (data) => {
     let applicationDetails = data.applicationDetails.map((obj) => {
       const { additionalDetails, title } = obj;
@@ -19,8 +20,8 @@ const usePtrApplicationDetail = (t, tenantId, propertyIds, config = {}, userType
   };
 
   return useQuery(
-    ["APPLICATION_SEARCH", "PT_SEARCH", propertyIds, userType, args],
-    () => PTRSearch.applicationDetails(t, tenantId, propertyIds, userType, args),
+    ["APPLICATION_SEARCH", "PT_SEARCH", applicationNumber, userType, args],
+    () => PTRSearch.applicationDetails(t, tenantId, applicationNumber, userType, args),
     { select: defaultSelect, ...config }
     // config
   );

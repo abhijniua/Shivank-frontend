@@ -70,7 +70,7 @@ const PTApplicationDetails = () => {
     }
   }, [tenantId, acknowledgementIds, property]);
 
-  const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.pt.usePropertySearch(
+  const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
       filters: { propertyIds: propertyId, audit: true },
@@ -97,9 +97,9 @@ const PTApplicationDetails = () => {
       id: null,
       tenantId: tenantId,
       businessService: "PT.MUTATION",
-      businessId: application?.acknowldgementNumber,
+      businessId: application?.applicationNumber,
       action: "",
-      moduleName: "PT",
+      moduleName: "PTR",
       state: null,
       comment: null,
       documents: null,

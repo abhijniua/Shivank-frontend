@@ -149,13 +149,13 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                 <MobileSearchApplication {...{ Controller, register, control, t, reset, previousPage, handleSubmit, tenantId, data, onSubmit, formState, setShowToast }}/>
                  :
                 <div>
-                <Header>{t("PT_SEARCH_PROP_APP")}</Header>
+                <Header>{t("PTR_SEARCH_PET_APPLICATIONS")}</Header>
                 < Card className={"card-search-heading"}>
                     <span style={{color:"#505A5F"}}>{t("Provide at least one parameter to search for an application")}</span>
                 </Card>
                 <SearchForm onSubmit={onSubmit} handleSubmit={handleSubmit}>
                 <SearchField>
-                    <label>{t("PT_APPLICATION_NO_LABEL")}</label>
+                    <label>{t("PTR_APPLICATION_NO_LABEL")}</label>
                     <TextInput name="applicationNumber" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
@@ -163,7 +163,7 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                     <TextInput name="petType" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
-                <label>{t("PT_OWNER_MOBILE_NO")}</label>
+                <label>{t("PTR_OWNER_MOBILE_NO")}</label>
                 <MobileNumber
                     name="mobileNumber"
                     inputRef={register({
@@ -192,7 +192,7 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                     <TextInput name="breedType" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
-                    <label>{t("ES_SEARCH_PROPERTY_STATUS")}</label>
+                    <label>{t("PTR_PET_APPLICATION_STATUS")}</label>
                     <Controller
                             control={control}
                             name="status"
@@ -210,7 +210,7 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                             />
                 </SearchField>
                 <SearchField>
-                    <label>{t("PT_FROM_DATE")}</label>
+                    <label>{t("PTR_FROM_DATE")}</label>
                     <Controller
                         render={(props) => <DatePicker date={props.value} disabled={false} onChange={props.onChange} />}
                         name="fromDate"
@@ -218,7 +218,7 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                         />
                 </SearchField>
                 <SearchField>
-                    <label>{t("PT_TO_DATE")}</label>
+                    <label>{t("PTR_TO_DATE")}</label>
                     <Controller
                         render={(props) => <DatePicker date={props.value} disabled={false} onChange={props.onChange} />}
                         name="toDate"

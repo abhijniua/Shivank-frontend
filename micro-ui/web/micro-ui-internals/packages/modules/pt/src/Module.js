@@ -198,7 +198,7 @@ const addComponentsToRegistry = () => {
 export const PTModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
 
-  const moduleCode = "PT";
+  const moduleCode = "PTR";
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
 

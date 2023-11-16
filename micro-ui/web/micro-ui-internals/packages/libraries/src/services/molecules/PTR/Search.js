@@ -23,41 +23,42 @@ export const PTRSearch = {
    *                   applicationData  {which is a property object itself}
    */
   genericPropertyDetails: async (t, tenantId, propertyIds) => {
+    console.log("sdfjsdks", propertyIds)
     const filters = { propertyIds };
-    const property = await PTRSearch.application(tenantId, filters);
+    const PetRegistrationApplications = await PTRSearch.application(tenantId, filters);
     const addressDetails = {
       title: "PT_PROPERTY_ADDRESS_SUB_HEADER",
       asSectionHeader: true,
       values: [
-        { title: "PT_PROPERTY_ADDRESS_PINCODE", value: property?.address?.pincode },
-        { title: "PT_PROPERTY_ADDRESS_CITY", value: property?.address?.city },
-        {
-          title: "PT_PROPERTY_ADDRESS_MOHALLA",
-          value: `${property?.tenantId?.toUpperCase()?.split(".")?.join("_")}_REVENUE_${property?.address?.locality?.code}`,
-        },
-        {
-          title: "PT_PROPERTY_ADDRESS_HOUSE_NO",
-          value: property?.address?.doorNo,
-          privacy: { uuid: property?.owners?.[0]?.uuid, fieldName: "doorNo", model: "Property",
-          showValue: false,
-          loadData: {
-            serviceName: "/property-services/property/_search",
-            requestBody: {},
-            requestParam: { tenantId, propertyIds },
-            jsonPath: "PetRegistrationApplications[0].address.doorNo",
-            isArray: false,
-          }, },
-        },
+        { title: "PT_PROPERTY_ADDRESS_PINCODE", value: PetRegistrationApplications?.address?.pincode },
+        { title: "PT_PROPERTY_ADDRESS_CITY", value: PetRegistrationApplications?.address?.city },
+        // {
+        //   title: "PT_PROPERTY_ADDRESS_MOHALLA",
+        //   value: `${property?.tenantId?.toUpperCase()?.split(".")?.join("_")}_REVENUE_${property?.address?.locality?.code}`,
+        // },
+        // {
+        //   title: "PT_PROPERTY_ADDRESS_HOUSE_NO",
+        //   value: PetRegistrationApplications?.address?.doorNo,
+        //   privacy: { uuid: property?.owners?.[0]?.uuid, fieldName: "doorNo", model: "Property",
+        //   showValue: false,
+        //   loadData: {
+        //     serviceName:"/pet-services/pet-registration/_search",
+        //     requestBody: {},
+        //     requestParam: { tenantId, propertyIds },
+        //     jsonPath: "PetRegistrationApplications[0].address.doorNo",
+        //     isArray: false,
+        //   }, },
+        // },
         {
           title: "PT_PROPERTY_ADDRESS_STREET_NAME",
-          value: property?.address?.street,
+          value: PetRegistrationApplications?.address?.street,
           privacy: {
-            uuid: property?.owners?.[0]?.uuid,
+            uuid: PetRegistrationApplications?.owners?.[0]?.uuid,
             fieldName: "street",
             model: "Property",
             showValue: false,
             loadData: {
-              serviceName: "/property-services/property/_search",
+              serviceName:"/pet-services/pet-registration/_search",
               requestBody: {},
               requestParam: { tenantId, propertyIds },
               jsonPath: "PetRegistrationApplications[0].address.street",
@@ -67,27 +68,27 @@ export const PTRSearch = {
         },
       ],
     };
-    const assessmentDetails = {
-      title: "PT_ASSESMENT_INFO_SUB_HEADER",
-      values: [
-        { title: "PT_ASSESMENT_INFO_TYPE_OF_BUILDING", value: getPropertyTypeLocale(property?.propertyType) },
-        { title: "PT_ASSESMENT_INFO_USAGE_TYPE", value: getPropertySubtypeLocale(property?.usageCategory) },
-        { title: "PT_ASSESMENT_INFO_PLOT_SIZE", value: property?.landArea },
-        { title: "PT_ASSESMENT_INFO_NO_OF_FLOOR", value: property?.noOfFloors },
-      ],
-    };
-    const propertyDetail = {
-      title: "PT_DETAILS",
-      values: [
-        { title: "TL_PROPERTY_ID", value: property?.propertyId || "NA" },
-        { title: "PT_OWNER_NAME", value: property?.owners?.map((owner) => owner.name).join(",") || "NA" },
-        { title: "PT_SEARCHPROPERTY_TABEL_STATUS", value: Digit.Utils.locale.getTransformedLocale(`WF_PT_${property?.status}`) || "NA" },
-      ],
-    };
+    // const assessmentDetails = {
+    //   title: "PT_ASSESMENT_INFO_SUB_HEADER",
+    //   values: [
+    //     { title: "PT_ASSESMENT_INFO_TYPE_OF_BUILDING", value: getPropertyTypeLocale(property?.propertyType) },
+    //     { title: "PT_ASSESMENT_INFO_USAGE_TYPE", value: getPropertySubtypeLocale(property?.usageCategory) },
+    //     { title: "PT_ASSESMENT_INFO_PLOT_SIZE", value: property?.landArea },
+    //     { title: "PT_ASSESMENT_INFO_NO_OF_FLOOR", value: property?.noOfFloors },
+    //   ],
+    // };
+    // const propertyDetail = {
+    //   title: "PT_DETAILS",
+    //   values: [
+    //     { title: "TL_PROPERTY_ID", value: property?.propertyId || "NA" },
+    //     { title: "PT_OWNER_NAME", value: property?.owners?.map((owner) => owner.name).join(",") || "NA" },
+    //     { title: "PT_SEARCHPROPERTY_TABEL_STATUS", value: Digit.Utils.locale.getTransformedLocale(`WF_PT_${property?.status}`) || "NA" },
+    //   ],
+    // };
     const ownerdetails = {
       title: "PT_OWNERSHIP_INFO_SUB_HEADER",
       additionalDetails: {
-        owners: property?.owners
+        owners: PetRegistrationApplications?.owners
           ?.filter((owner) => owner.status === "ACTIVE")
           .map((owner, index) => {
             return {
@@ -96,7 +97,7 @@ export const PTRSearch = {
               values: [
                 { title: "PT_OWNERSHIP_INFO_NAME", value: owner?.name, privacy: { uuid: owner?.uuid, fieldName: "name", model: "User",showValue: false,
                 loadData: {
-                  serviceName: "/property-services/property/_search",
+                  serviceName:"/pet-services/pet-registration/_search",
                   requestBody: {},
                   requestParam: { tenantId, propertyIds },
                   jsonPath: "PetRegistrationApplications[0].owners[0].name",
@@ -104,7 +105,7 @@ export const PTRSearch = {
                 }, } },
                 { title: "PT_OWNERSHIP_INFO_GENDER", value: owner?.gender, privacy: { uuid: owner?.uuid, fieldName: "gender", model: "User",showValue: false,
                 loadData: {
-                  serviceName: "/property-services/property/_search",
+                  serviceName:"/pet-services/pet-registration/_search",
                   requestBody: {},
                   requestParam: { tenantId, propertyIds },
                   jsonPath: "PetRegistrationApplications[0].owners[0].gender",
@@ -115,7 +116,7 @@ export const PTRSearch = {
                   value: owner?.mobileNumber,
                   privacy: { uuid: owner?.uuid, fieldName: "mobileNumber", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId, propertyIds },
                     jsonPath: "PetRegistrationApplications[0].owners[0].mobileNumber",
@@ -127,7 +128,7 @@ export const PTRSearch = {
                   value: `COMMON_MASTERS_OWNERTYPE_${owner?.ownerType}` || "NA",
                   privacy: { uuid: owner?.uuid, fieldName: "ownerType", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId, propertyIds },
                     jsonPath: "PetRegistrationApplications[0].owners[0].ownerType",
@@ -140,20 +141,20 @@ export const PTRSearch = {
                   value: owner?.fatherOrHusbandName,
                   privacy: { uuid: owner?.uuid, fieldName: "guardian", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId, propertyIds },
                     jsonPath: "PetRegistrationApplications[0].owners[0].fatherOrHusbandName",
                     isArray: false,
                   }, },
                 },
-                { title: "PT_FORM3_OWNERSHIP_TYPE", value: property?.ownershipCategory },
+                { title: "PT_FORM3_OWNERSHIP_TYPE", value: PetRegistrationApplications?.ownershipCategory },
                 {
                   title: "PT_OWNERSHIP_INFO_EMAIL_ID",
                   value: owner?.emailId,
                   privacy: { uuid: owner?.uuid, fieldName: "emailId", model: "User", hide: !(owner?.emailId && owner?.emailId !== "NA"),showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId, propertyIds },
                     jsonPath: "PetRegistrationApplications[0].owners[0].emailId",
@@ -170,7 +171,7 @@ export const PTRSearch = {
                     hide: !(owner?.permanentAddress || owner?.correspondenceAddress),
                     showValue: false,
                 loadData: {
-                  serviceName: "/property-services/property/_search",
+                  serviceName:"/pet-services/pet-registration/_search",
                   requestBody: {},
                   requestParam: { tenantId, propertyIds },
                   jsonPath: owner?.permanentAddress ? "PetRegistrationApplications[0].owners[0].permanentAddress" :"PetRegistrationApplications[0].owners[0].correspondenceAddress",
@@ -186,16 +187,16 @@ export const PTRSearch = {
 
     const applicationDetails = [propertyDetail, addressDetails, assessmentDetails, ownerdetails];
     return {
-      tenantId: property?.tenantId,
+      tenantId: PetRegistrationApplications?.tenantId,
       applicationDetails,
-      applicationData: property,
+      applicationData: PetRegistrationApplications,
     };
   },
   application: async (tenantId, filters = {}) => {
     const response = await PTRService.search({ tenantId, filters });
     return response.PetRegistrationApplications[0];
   },
-  transformPropertyToApplicationDetails: ({ property: response, t }) => {
+  transformPropertyToApplicationDetails: ({ PetRegistrationApplications: response, t }) => {
     return [
       {
         title: "PT_PROPERTY_ADDRESS_SUB_HEADER",
@@ -216,7 +217,7 @@ export const PTRSearch = {
               model: "Property",
               showValue: false,
               loadData: {
-                serviceName: "/property-services/property/_search",
+                serviceName:"/pet-services/pet-registration/_search",
                 requestBody: {},
                 requestParam: { tenantId : response?.tenantId, propertyIds:response?.propertyId },
                 jsonPath: "PetRegistrationApplications[0].address.street",
@@ -233,7 +234,7 @@ export const PTRSearch = {
               model: "Property",
               showValue: false,
               loadData: {
-                serviceName: "/property-services/property/_search",
+                serviceName:"/pet-services/pet-registration/_search",
                 requestBody: {},
                 requestParam: { tenantId : response?.tenantId, propertyIds:response?.propertyId },
                 jsonPath: "PetRegistrationApplications[0].address.doorNo",
@@ -308,7 +309,7 @@ export const PTRSearch = {
                 },
                 { title: "PT_OWNERSHIP_INFO_GENDER", value: owner?.gender, privacy: { uuid: owner?.uuid, fieldName: "gender", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId:response?.tenantId, propertyIds:response?.propertyId },
                     jsonPath: "PetRegistrationApplications[0].owners[0].gender",
@@ -319,7 +320,7 @@ export const PTRSearch = {
                   value: owner?.mobileNumber,
                   privacy: { uuid: owner?.uuid, fieldName: "mobileNumber", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId:response?.tenantId, propertyIds:response?.propertyId },
                     jsonPath: "PetRegistrationApplications[0].owners[0].mobileNumber",
@@ -331,7 +332,7 @@ export const PTRSearch = {
                   value: `COMMON_MASTERS_OWNERTYPE_${owner?.ownerType}` || "NA",
                   privacy: { uuid: owner?.uuid, fieldName: "ownerType", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId:response?.tenantId, propertyIds:response?.propertyId },
                     //function needed here for localisation
@@ -344,7 +345,7 @@ export const PTRSearch = {
                   value: owner?.fatherOrHusbandName,
                   privacy: { uuid: owner?.uuid, fieldName: "guardian", model: "User",showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId:response?.tenantId, propertyIds:response?.propertyId },
                     jsonPath: "PetRegistrationApplications[0].owners[0].fatherOrHusbandName",
@@ -357,7 +358,7 @@ export const PTRSearch = {
                   value: owner?.emailId,
                   privacy: { uuid: owner?.uuid, fieldName: "emailId", model: "User", hide: !(owner?.emailId && owner?.emailId !== "NA"),showValue: false,
                   loadData: {
-                    serviceName: "/property-services/property/_search",
+                    serviceName:"/pet-services/pet-registration/_search",
                     requestBody: {},
                     requestParam: { tenantId:response?.tenantId, propertyIds:response?.propertyId },
                     jsonPath: "PetRegistrationApplications[0].owners[0].emailId",
@@ -374,7 +375,7 @@ export const PTRSearch = {
                     hide: !(owner?.permanentAddress || owner?.correspondenceAddress),
                     showValue: false,
                     loadData: {
-                      serviceName: "/property-services/property/_search",
+                      serviceName:"/pet-services/pet-registration/_search",
                       requestBody: {},
                       requestParam: { tenantId:response?.tenantId, propertyIds:response?.propertyId },
                       jsonPath: owner?.permanentAddress ? "PetRegistrationApplications[0].owners[0].permanentAddress" : "PetRegistrationApplications[0].owners[0].correspondenceAddress",
@@ -411,7 +412,7 @@ export const PTRSearch = {
 
     return {
       tenantId: response.tenantId,
-      applicationDetails: PTRSearch.transformPropertyToApplicationDetails({ property: response, t }),
+      applicationDetails: PTRSearch.transformPropertyToApplicationDetails({ PetRegistrationApplications: response, t }),
       additionalDetails: response?.additionalDetails,
       applicationData: response,
       transformToAppDetailsForEmployee: PTRSearch.transformPropertyToApplicationDetails,

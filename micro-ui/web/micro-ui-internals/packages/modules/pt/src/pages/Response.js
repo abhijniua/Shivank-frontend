@@ -56,28 +56,24 @@ const Response = (props) => {
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
 
-  const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.pt.usePropertySearch(
+  const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { propertyIds: state.PetRegistrationApplications.propertyId, audit: true },
+      filters: { propertyIds: state.PetRegistrationApplications.applicationNumber, audit: true },
     },
-    { enabled: enableAudit, select: (data) => data.Properties?.filter((e) => e.status === "ACTIVE") }
+    { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
 
+  // useEffect(() => {
+  //   if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
+  // }, [mutation.data]);
+  // useEffect(() => {
+  //   if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
+  // }, [mutation1.data]);
   useEffect(() => {
-    if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
-  }, [mutation.data]);
-  useEffect(() => {
-    if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
-  }, [mutation1.data]);
-  useEffect(() => {
-    const onSuccess = async (successRes) => {
-      setMutationHappened(true);
-      queryClient.clear();
-      if (successRes?.Properties[0]?.creationReason === "MUTATION") {
-        setEnableAudit(true);
-      }
-    };
+    const onSuccess = async () => {queryClient.clear(); };
+
+
     const onError = (error, variables) => {
       setShowToast({ key: "error" });
       setError(error?.response?.data?.Errors[0]?.message || null);
@@ -95,6 +91,8 @@ const Response = (props) => {
       );
     }
   }, []);
+
+  // TODO: will need to add a specific module for pdf to download the pdf 
 
   const handleDownloadPdf = async () => {
     const { Properties = [] } = mutation.data || successData;
@@ -132,7 +130,7 @@ const Response = (props) => {
           {DisplayText(state.action, (mutation.isSuccess || !!successData) && !mutation.isError, props.parentRoute.includes("employee"), t)}
         </CardText>
         {(mutation.isSuccess || !!successData) && !mutation.isError && (
-          <SubmitBar style={{ overflow: "hidden" }} label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />
+          <SubmitBar style={{ overflow: "hidden" }} label={t("PTR_PET_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />
         )}
       </Card>
       {showToast && <Toast error={showToast.key === "error" ? true : false} label={error} onClose={closeToast} />}
