@@ -15,15 +15,18 @@ const ApplicationDetails = () => {
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { tenants } = storeData || {};
-  const { id: propertyId } = useParams();
+  const { id: applicationNumber } = useParams();
   const [showToast, setShowToast] = useState(null);
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
   const [showOptions, setShowOptions] = useState(false);
   const [enableAudit, setEnableAudit] = useState(false);
   const [businessService, setBusinessService] = useState("PT.CREATE");
-  sessionStorage.setItem("applicationNoinAppDetails",propertyId);
+  sessionStorage.setItem("applicationNoinAppDetails",applicationNumber);
+  
 
-  const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.ptr.usePtrApplicationDetail(t, tenantId, propertyId);
+
+  const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.ptr.usePtrApplicationDetail(t, tenantId, applicationNumber);
+  
 
   const {
     isLoading: updatingApplication,
@@ -43,28 +46,29 @@ const ApplicationDetails = () => {
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { propertyIds: propertyId, audit: true },
+      filters: { applicationNumber: applicationNumber, audit: true },
     },
     { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
-
-  const showTransfererDetails = React.useCallback(() => {
-    if (
-      auditData &&
-      Object.keys(appDetailsToShow).length &&
-      applicationDetails?.applicationData?.status !== "ACTIVE" &&
-      applicationDetails?.applicationData?.creationReason === "MUTATION" &&
-      !appDetailsToShow?.applicationDetails.find((e) => e.title === "PT_MUTATION_TRANSFEROR_DETAILS")
-    ) {
-      let applicationDetails = appDetailsToShow.applicationDetails?.filter((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER");
-      let compConfig = newConfigMutate.reduce((acc, el) => [...acc, ...el.body], []).find((e) => e.component === "TransfererDetails");
-      applicationDetails.unshift({
-        title: "PT_MUTATION_TRANSFEROR_DETAILS",
-        belowComponent: () => <TransfererDetails userType="employee" formData={{ originalData: auditData[0] }} config={compConfig} />,
-      });
-      setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
-    }
-  },[setAppDetailsToShow,appDetailsToShow,auditData,applicationDetails,auditData,newConfigMutate]);
+ 
+  console.log("$$$$", applicationDetails?.data)
+  // const showTransfererDetails = React.useCallback(() => {
+  //   if (
+  //     auditData &&
+  //     Object.keys(appDetailsToShow).length &&
+  //     applicationDetails?.applicationData?.status !== "ACTIVE" &&
+  //     applicationDetails?.applicationData?.creationReason === "MUTATION" &&
+  //     !appDetailsToShow?.applicationDetails.find((e) => e.title === "PT_MUTATION_TRANSFEROR_DETAILS")
+  //   ) {
+  //     let applicationDetails = appDetailsToShow.applicationDetails?.filter((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER");
+  //     let compConfig = newConfigMutate.reduce((acc, el) => [...acc, ...el.body], []).find((e) => e.component === "TransfererDetails");
+  //     applicationDetails.unshift({
+  //       title: "PT_MUTATION_TRANSFEROR_DETAILS",
+  //       belowComponent: () => <TransfererDetails userType="employee" formData={{ originalData: auditData[0] }} config={compConfig} />,
+  //     });
+  //     setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
+  //   }
+  // },[setAppDetailsToShow,appDetailsToShow,auditData,applicationDetails,auditData,newConfigMutate]);
 
   const closeToast = () => {
     setShowToast(null);
@@ -79,12 +83,12 @@ const ApplicationDetails = () => {
     }
   }, [applicationDetails]);
 
-  useEffect(() => {
-    showTransfererDetails();
-    if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP&&businessService=="PT.CREATE") {
-       setBusinessService("PT.UPDATE");
-      }
-  }, [auditData, applicationDetails, appDetailsToShow]);
+  // useEffect(() => {
+  //   showTransfererDetails();
+  //   if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP&&businessService=="PT.CREATE") {
+  //      setBusinessService("PT.UPDATE");
+  //     }
+  // }, [auditData, applicationDetails, appDetailsToShow]);
 
   useEffect(() => {
     if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE")) {
@@ -104,7 +108,7 @@ const ApplicationDetails = () => {
             {
               action: "VIEW_DETAILS",
               redirectionUrl: {
-                pathname: `/digit-ui/employee/pt/property-details/${propertyId}`,
+                pathname: `/digit-ui/employee/pt/property-details/${applicationNumber}`,
               },
               tenantId: Digit.ULBService.getStateId(),
             },
@@ -123,7 +127,7 @@ const ApplicationDetails = () => {
     workflowDetails?.data?.actionState?.nextActions.push({
       action: "UPDATE",
       redirectionUrl: {
-        pathname: `/digit-ui/employee/pt/modify-application/${propertyId}`,
+        pathname: `/digit-ui/employee/pt/modify-application/${applicationNumber}`,
         state: { workflow: { action: "REOPEN", moduleName: "PT", businessService } },
       },
       tenantId: Digit.ULBService.getStateId(),
@@ -134,8 +138,8 @@ const ApplicationDetails = () => {
     appDetailsToShow?.applicationDetails?.unshift({
       values: [
         { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.applicationNumber },
-        { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.propertyId },
-        { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
+        // { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.applicationNumber },
+        // { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
       ],
     });
   }
@@ -190,7 +194,7 @@ const ApplicationDetails = () => {
  if (applicationDetails?.applicationData?.creationReason === "MUTATION"){
    return(
     <MutationApplicationDetails 
-      propertyId = {propertyId}
+      applicationNumber = {applicationNumber}
       acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
       workflowDetails={workflowDetails}
       mutate={mutate}
@@ -201,7 +205,7 @@ const ApplicationDetails = () => {
   return (
     <div>
         <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-      <Header styles={{ marginLeft: "0px", paddingTop: "10px", fontSize: "32px" }}>{t("PT_APPLICATION_TITLE")}</Header>
+      <Header styles={{ marginLeft: "0px", paddingTop: "10px", fontSize: "32px" }}>{t("PTR_PET_APPLICATION_DETAILS")}</Header>
       {dowloadOptions && dowloadOptions.length > 0 && (
             <MultiLink
               className="multilinkWrapper employee-mulitlink-main-div"

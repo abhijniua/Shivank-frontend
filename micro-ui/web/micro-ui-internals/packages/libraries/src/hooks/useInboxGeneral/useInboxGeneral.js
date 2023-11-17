@@ -18,9 +18,9 @@ const inboxConfig = (tenantId, filters) => ({
     _searchFn: () => PTService.search({ tenantId, filters }),
   },
   PTR: {
-    services: ["PT.CREATE"],
+    services: ["ptr"],
     searchResponseKey: "PetRegistrationApplications",
-    businessIdsParamForSearch: "acknowledgementIds",
+    businessIdsParamForSearch: "applicationNumber",
     businessIdAliasForSearch: "applicationNumber",
     fetchFilters: filterFunctions.PTR,
     _searchFn: () => PTRService.search({ tenantId, filters }),

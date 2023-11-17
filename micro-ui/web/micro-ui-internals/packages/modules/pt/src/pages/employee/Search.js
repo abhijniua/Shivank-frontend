@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 const PTSearchFields = {
   searchId: {
-    propertyIds: {
+    applicationNumber: {
       type: "text",
       label: "PT_PROPERTY_UNIQUE_ID",
       placeHolder: "PT_PROPERTY_UNIQUE_ID_PLACEHOLDER",
@@ -141,7 +141,7 @@ const PTSearchFields = {
 };
 
 const defaultValues = {
-  propertyIds: "",
+  applicationNumber: "",
   mobileNumber: "",
   oldPropertyId: "",
   locality: "",
