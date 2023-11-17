@@ -15,7 +15,8 @@ const usePtrApplicationDetail = (t, tenantId, applicationNumber, config = {}, us
       return obj;
     });
     // data.applicationData.units=data?.applicationData?.units?.filter(unit=>unit?.active)||[];
-     return { ...data, applicationDetails };
+    console.log("applicationDetails",applicationDetails)
+    return { ...data, applicationDetails };
   };
 
   return useQuery(
