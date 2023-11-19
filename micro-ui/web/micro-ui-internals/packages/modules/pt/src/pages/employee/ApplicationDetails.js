@@ -46,12 +46,12 @@ const ApplicationDetails = () => {
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { applicationNumber: applicationNumber, audit: true },
+      filters: { applicationDetails: applicationNumber, audit: true },
     },
     { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
  
-  console.log("$$$$", applicationDetails?.data)
+  // console.log("$$$$", applicationDetails?.data)
   // const showTransfererDetails = React.useCallback(() => {
   //   if (
   //     auditData &&

@@ -2,8 +2,9 @@ import { PTRSearch } from "../../services/molecules/PTR/Search";
 import { useQuery } from "react-query";
 
 const usePtrApplicationDetail = (t, tenantId, applicationNumber, config = {}, userType, args) => {
-  console.log("####",applicationNumber)
+  
   const defaultSelect = (data) => {
+    console.log("####",data)
     let applicationDetails = data.applicationDetails.map((obj) => {
       const { additionalDetails, title } = obj;
       if (title === "PT_OWNERSHIP_INFO_SUB_HEADER") {
@@ -14,8 +15,8 @@ const usePtrApplicationDetail = (t, tenantId, applicationNumber, config = {}, us
       }
       return obj;
     });
-    // data.applicationData.units=data?.applicationData?.units?.filter(unit=>unit?.active)||[];
-    console.log("applicationDetails",applicationDetails)
+     data.applicationData.units=data?.applicationData?.units?.filter(unit=>unit?.active)||[];
+    
     return { ...data, applicationDetails };
   };
 
