@@ -20,8 +20,14 @@ const ApplicationDetails = () => {
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
   const [showOptions, setShowOptions] = useState(false);
   const [enableAudit, setEnableAudit] = useState(false);
-  const [businessService, setBusinessService] = useState("PT.CREATE");
+  // const [businessService, setBusinessService] = useState("PT.CREATE");
+  const [businessService, setBusinessService] = useState("ptr");
+
   sessionStorage.setItem("applicationNoinAppDetails",applicationNumber);
+
+  useEffect(() => {
+    console.log("Component rendered");
+  }, []);
   
 
 
@@ -76,6 +82,7 @@ const ApplicationDetails = () => {
 
   useEffect(() => {
     if (applicationDetails) {
+      console.log("use effect application details", applicationDetails);
       setAppDetailsToShow(_.cloneDeep(applicationDetails));
       if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
         setEnableAudit(true);
@@ -91,6 +98,7 @@ const ApplicationDetails = () => {
   // }, [auditData, applicationDetails, appDetailsToShow]);
 
   useEffect(() => {
+    console.log("use effect Workflow Details:", workflowDetails);
     if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE")) {
       setBusinessService(workflowDetails?.data?.applicationBusinessService);
     }
@@ -128,7 +136,7 @@ const ApplicationDetails = () => {
       action: "UPDATE",
       redirectionUrl: {
         pathname: `/digit-ui/employee/pt/modify-application/${applicationNumber}`,
-        state: { workflow: { action: "REOPEN", moduleName: "PT", businessService } },
+        state: { workflow: { action: "REOPEN", moduleName: "pet-services", businessService } },
       },
       tenantId: Digit.ULBService.getStateId(),
     });
@@ -138,8 +146,8 @@ const ApplicationDetails = () => {
     appDetailsToShow?.applicationDetails?.unshift({
       values: [
         { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.applicationNumber },
-        // { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.applicationNumber },
-        // { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
+        { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.applicationNumber },
+        { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
       ],
     });
   }
@@ -154,7 +162,7 @@ const ApplicationDetails = () => {
         return {
           action: "PAY",
           forcedName: "WF_EMPLOYEE_PT.MUTATION_PAY",
-          redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT.MUTATION/${appDetailsToShow?.applicationData?.acknowldgementNumber}` },
+          redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT.MUTATION/${appDetailsToShow?.applicationData?.applicationNumber}` },
         };
       }
       return act;
@@ -186,7 +194,7 @@ const ApplicationDetails = () => {
 
   const propertyDetailsPDF = {
     order: 1,
-    label: t("PT_APPLICATION"),
+    label: t("PTR_APPLICATION"),
     onClick: () => handleDownloadPdf(),
   };
   let dowloadOptions = [propertyDetailsPDF];

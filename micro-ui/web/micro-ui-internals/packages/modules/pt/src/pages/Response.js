@@ -59,7 +59,7 @@ const Response = (props) => {
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { propertyIds: state.PetRegistrationApplications.applicationNumber, audit: true },
+      filters: { applicationNumber: state.PetRegistrationApplications.applicationNumber, audit: true },
     },
     { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
@@ -100,8 +100,8 @@ const Response = (props) => {
     const tenantInfo = tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
     
     let tenantId = PetRegistrationApplications.tenantId || tenantId;
-    // const propertyDetails = await Digit.PTService.search({ tenantId, filters: { propertyIds: PetRegistrationApplications?.propertyId, status: "INACTIVE" } }); 
-    const propertyDetails = await Digit.PTRService.search({ tenantId, filters: { propertyIds: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
+    // const propertyDetails = await Digit.PTService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.propertyId, status: "INACTIVE" } }); 
+    const propertyDetails = await Digit.PTRService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
   
     PetRegistrationApplications.transferorDetails = propertyDetails?.Properties?.[0] || [];
     PetRegistrationApplications.isTransferor = true;

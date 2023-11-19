@@ -90,7 +90,8 @@ const Urls = {
   ptr: {  //urls for ptr
     
     create:"/pet-services/pet-registration/_create",
-    search:"/pet-services/pet-registration/_search"
+    search:"/pet-services/pet-registration/_search",
+    update:"/pet-services/pet-registration/_update"
   },
 
   dss: {
