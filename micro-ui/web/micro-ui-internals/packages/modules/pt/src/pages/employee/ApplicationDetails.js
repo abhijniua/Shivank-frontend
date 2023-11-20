@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
-import { newConfigMutate } from "../../config/Mutate/config";
-import TransfererDetails from "../../pageComponents/Mutate/TransfererDetails";
+// import { newConfigMutate } from "../../config/Mutate/config";
+// import TransfererDetails from "../../pageComponents/Mutate/TransfererDetails";
 import MutationApplicationDetails from "./MutationApplicatinDetails";
 import getPTAcknowledgementData from "../../getPTAcknowledgementData";
 
@@ -15,7 +15,8 @@ const ApplicationDetails = () => {
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { tenants } = storeData || {};
-  const { id: applicationNumber } = useParams();
+   const { id: applicationNumber } = useParams();
+   console.log("Application Number:", applicationNumber);
   const [showToast, setShowToast] = useState(null);
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
   const [showOptions, setShowOptions] = useState(false);
@@ -28,6 +29,8 @@ const ApplicationDetails = () => {
   useEffect(() => {
     console.log("Component rendered");
   }, []);
+
+  
   
 
 
@@ -52,7 +55,7 @@ const ApplicationDetails = () => {
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { applicationDetails: applicationNumber, audit: true },
+      filters: { applicationNumber: applicationNumber, audit: true },
     },
     { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
@@ -84,9 +87,9 @@ const ApplicationDetails = () => {
     if (applicationDetails) {
       console.log("use effect application details", applicationDetails);
       setAppDetailsToShow(_.cloneDeep(applicationDetails));
-      if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
-        setEnableAudit(true);
-      }
+      // if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
+      //   setEnableAudit(true);
+      // }
     }
   }, [applicationDetails]);
 
@@ -98,11 +101,19 @@ const ApplicationDetails = () => {
   // }, [auditData, applicationDetails, appDetailsToShow]);
 
   useEffect(() => {
-    console.log("use effect Workflow Details:", workflowDetails);
-    if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE")) {
-      setBusinessService(workflowDetails?.data?.applicationBusinessService);
+    console.log("use effect Workflow Details:", workflowDetails?.data?.applicationBusinessService);
+    // if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE"))
+    if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "ptr"))
+    
+
+     {
+      // setBusinessService(workflowDetails?.data?.applicationBusinessService);
+      setBusinessService("ptr");
+
     }
   }, [workflowDetails.data]);
+  console.log("use effect :", workflowDetails?.data?.applicationBusinessService);
+
 
   const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
 
@@ -142,32 +153,32 @@ const ApplicationDetails = () => {
     });
   }
 
-  if (!(appDetailsToShow?.applicationDetails?.[0]?.values?.[0].title === "PT_PROPERTY_APPLICATION_NO")) {
-    appDetailsToShow?.applicationDetails?.unshift({
-      values: [
-        { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.applicationNumber },
-        { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.applicationNumber },
-        { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
-      ],
-    });
-  }
+  // if (!(appDetailsToShow?.applicationDetails?.[0]?.values?.[0].title === "PT_PROPERTY_APPLICATION_NO")) {
+  //   appDetailsToShow?.applicationDetails?.unshift({
+  //     values: [
+  //       { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.applicationNumber },
+  //       { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.applicationNumber },
+  //       { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
+  //     ],
+  //   });
+  // }
 
-  if (
-    PT_CEMP &&
-    workflowDetails?.data?.applicationBusinessService === "PT.MUTATION" &&
-    workflowDetails?.data?.actionState?.nextActions?.find((act) => act.action === "PAY")
-  ) {
-    workflowDetails.data.actionState.nextActions = workflowDetails?.data?.actionState?.nextActions.map((act) => {
-      if (act.action === "PAY") {
-        return {
-          action: "PAY",
-          forcedName: "WF_EMPLOYEE_PT.MUTATION_PAY",
-          redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT.MUTATION/${appDetailsToShow?.applicationData?.applicationNumber}` },
-        };
-      }
-      return act;
-    });
-  }
+  // if (
+  //   PT_CEMP &&
+  //   workflowDetails?.data?.applicationBusinessService === "PT.MUTATION" &&
+  //   workflowDetails?.data?.actionState?.nextActions?.find((act) => act.action === "PAY")
+  // ) {
+  //   workflowDetails.data.actionState.nextActions = workflowDetails?.data?.actionState?.nextActions.map((act) => {
+  //     if (act.action === "PAY") {
+  //       return {
+  //         action: "PAY",
+  //         forcedName: "WF_EMPLOYEE_PT.MUTATION_PAY",
+  //         redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT.MUTATION/${appDetailsToShow?.applicationData?.applicationNumber}` },
+  //       };
+  //     }
+  //     return act;
+  //   });
+  // }
 
   const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { wfDocuments }) => {
     return wfDocuments ? [...acc, ...wfDocuments] : acc;
@@ -199,16 +210,16 @@ const ApplicationDetails = () => {
   };
   let dowloadOptions = [propertyDetailsPDF];
 
- if (applicationDetails?.applicationData?.creationReason === "MUTATION"){
-   return(
-    <MutationApplicationDetails 
-      applicationNumber = {applicationNumber}
-      acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
-      workflowDetails={workflowDetails}
-      mutate={mutate}
-    />
-   )
- } 
+//  if (applicationDetails?.applicationData?.creationReason === "MUTATION"){
+//    return(
+//     <MutationApplicationDetails 
+//       applicationNumber = {applicationNumber}
+//       acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
+//       workflowDetails={workflowDetails}
+//       mutate={mutate}
+//     />
+//    )
+//  } 
 
   return (
     <div>
@@ -239,7 +250,7 @@ const ApplicationDetails = () => {
         setShowToast={setShowToast}
         closeToast={closeToast}
         timelineStatusPrefix={"ES_PT_COMMON_STATUS_"}
-        forcedActionPrefix={"WF_EMPLOYEE_PT.CREATE"}
+        forcedActionPrefix={"WF_EMPLOYEE_ptr"}
         statusAttribute={"state"}
         MenuStyle={{ color: "#FFFFFF", fontSize: "18px" }}
       />

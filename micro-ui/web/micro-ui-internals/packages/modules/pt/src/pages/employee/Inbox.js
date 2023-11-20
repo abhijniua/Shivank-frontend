@@ -8,7 +8,7 @@ import MobileInbox from "../../components/MobileInbox";
 const Inbox = ({
   useNewInboxAPI,
   parentRoute,
-  moduleCode = "PT",
+  moduleCode = "PTR",
   initialStates = {},
   filterComponent,
   isInbox,
@@ -56,6 +56,14 @@ const Inbox = ({
         middlewaresWf,
         middlewareSearch,
       });
+
+      useEffect(() => {
+        console.log("rendering inbox");
+      }, []);
+
+      console.log("data is coming", data)
+
+
 
   useEffect(() => {
     setPageOffset(0);
@@ -118,6 +126,7 @@ const Inbox = ({
           <DesktopInbox
             moduleCode={moduleCode}
             data={data}
+            
             tableConfig={TableConfig(t)["PTR"]}
             isLoading={hookLoading}
             defaultSearchParams={initialStates.searchParams}

@@ -5,16 +5,16 @@ export const filterFunctions = {
     const searchFilters = {};
     const workflowFilters = {};
 
-    const { propertyIds, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
+    const { applicationNumber, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
 
-    if (filtersArg?.acknowledgementIds) {
-      searchFilters.acknowledgementIds = filtersArg?.acknowledgementIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = filtersArg?.applicationNumber;
     }
-    if (filtersArg?.propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = applicationNumber;
     }
-    if (filtersArg?.oldpropertyids) {
-      searchFilters.oldpropertyids = filtersArg?.oldpropertyids;
+    if (filtersArg?.oldapplicationNumber) {
+      searchFilters.oldapplicationNumber = filtersArg?.oldapplicationNumber;
     }
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.applicationStatus = applicationStatus.map((status) => status.code).join(",");
@@ -33,8 +33,8 @@ export const filterFunctions = {
     if (mobileNumber) {
       searchFilters.mobileNumber = mobileNumber;
     }
-    if (propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+    if (applicationNumber) {
+      searchFilters.applicationNumber = applicationNumber;
     }
     if (sortBy) {
       searchFilters.sortBy = sortBy;
@@ -60,16 +60,16 @@ export const filterFunctions = {
     const searchFilters = {};
     const workflowFilters = {};
 
-    const { propertyIds, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
+    const { applicationNumber, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
 
-    if (filtersArg?.acknowledgementIds) {
-      searchFilters.acknowledgementIds = filtersArg?.acknowledgementIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = filtersArg?.applicationNumber;
     }
-    if (filtersArg?.propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = applicationNumber;
     }
-    if (filtersArg?.oldpropertyids) {
-      searchFilters.oldpropertyids = filtersArg?.oldpropertyids;
+    if (filtersArg?.oldapplicationNumber) {
+      searchFilters.oldapplicationNumber = filtersArg?.oldapplicationNumber;
     }
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.applicationStatus = applicationStatus.map((status) => status.code).join(",");
@@ -84,8 +84,8 @@ export const filterFunctions = {
     if (mobileNumber) {
       searchFilters.mobileNumber = mobileNumber;
     }
-    if (propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+    if (applicationNumber) {
+      searchFilters.applicationNumber = applicationNumber;
     }
     if (sortBy) {
       searchFilters.sortBy = sortBy;
@@ -116,16 +116,16 @@ export const filterFunctions = {
     const searchFilters = {};
     const workflowFilters = {};
 
-    const { propertyIds, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
+    const { applicationNumber, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
 
-    if (filtersArg?.acknowledgementIds) {
-      searchFilters.acknowledgementIds = filtersArg?.acknowledgementIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = filtersArg?.applicationNumber;
     }
-    if (filtersArg?.propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = applicationNumber;
     }
-    if (filtersArg?.oldpropertyids) {
-      searchFilters.oldpropertyids = filtersArg?.oldpropertyids;
+    if (filtersArg?.oldapplicationNumber) {
+      searchFilters.oldapplicationNumber = filtersArg?.oldapplicationNumber;
     }
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.applicationStatus = applicationStatus.map((status) => status.code).join(",");
@@ -144,8 +144,8 @@ export const filterFunctions = {
     if (mobileNumber) {
       searchFilters.mobileNumber = mobileNumber;
     }
-    if (propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+    if (applicationNumber) {
+      searchFilters.applicationNumber = applicationNumber;
     }
     if (sortBy) {
       searchFilters.sortBy = sortBy;

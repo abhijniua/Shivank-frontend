@@ -5,7 +5,7 @@ export const configPTAssessProperty = ({ t, action, financialYears, selectedFina
   return {
     label: {
       heading: `WF_${action.action}_APPLICATION`,
-      submit: `WF_PT.CREATE_${action.action}`,
+      submit: `WF_ptr_${action.action}`,
       cancel: "ES_PT_COMMON_CANCEL",
     },
     form: [

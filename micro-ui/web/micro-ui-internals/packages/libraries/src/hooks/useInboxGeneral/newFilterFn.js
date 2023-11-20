@@ -5,16 +5,16 @@ export const filterFunctions = {
     const searchFilters = {};
     const workflowFilters = {};
 
-    const { propertyIds, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
+    const { applicationNumbers, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
 
-    if (filtersArg?.acknowledgementIds) {
-      searchFilters.applicationNumber = filtersArg?.acknowledgementIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = filtersArg?.applicationNumber;
     }
-    if (filtersArg?.propertyIds) {
-      searchFilters.propertyId = propertyIds;
+    if (filtersArg?.applicationNumbers) {
+      searchFilters.applicationNumber = applicationNumbers;
     }
-    if (filtersArg?.oldpropertyids) {
-      searchFilters.oldpropertyids = filtersArg?.oldpropertyids;
+    if (filtersArg?.oldapplicationNumbers) {
+      searchFilters.oldapplicationNumbers = filtersArg?.oldapplicationNumbers;
     }
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.status = applicationStatus.map((status) => status.uuid);
@@ -57,16 +57,17 @@ export const filterFunctions = {
     const searchFilters = {};
     const workflowFilters = {};
 
-    const { propertyIds, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
+    const { applicationNumbers, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
+    console.log("yyyyy",applicationNumbers )
 
-    if (filtersArg?.acknowledgementIds) {
-      searchFilters.applicationNumber = filtersArg?.acknowledgementIds;
+    if (filtersArg?.applicationNumber) {
+      searchFilters.applicationNumber = filtersArg?.applicationNumber;
     }
-    if (filtersArg?.propertyIds) {
-      searchFilters.propertyId = propertyIds;
+    if (filtersArg?.applicationNumbers) {
+      searchFilters.applicationNumber = applicationNumbers;
     }
-    // if (filtersArg?.oldpropertyids) {
-    //   searchFilters.oldpropertyids = filtersArg?.oldpropertyids;
+    // if (filtersArg?.oldapplicationNumbers) {
+    //   searchFilters.oldapplicationNumbers = filtersArg?.oldapplicationNumbers;
     // }
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.status = applicationStatus.map((status) => status.uuid);
@@ -83,12 +84,16 @@ export const filterFunctions = {
     if (mobileNumber) {
       searchFilters.mobileNumber = mobileNumber;
     }
+
+    console.log("zzzz",  workflowFilters.businessService )
+
     if (services) {
       workflowFilters.businessService = services;
     }
     searchFilters["isInboxSearch"] = true;
-    searchFilters["creationReason"] = ["CREATE", "MUTATION", "UPDATE"];
-    workflowFilters["moduleName"] = "PTR";
+    searchFilters["creationReason"] = ["CREATE"];
+    workflowFilters["moduleName"] = "pet-services";
+
 
    
     return { searchFilters, workflowFilters, limit, offset, sortBy, sortOrder };

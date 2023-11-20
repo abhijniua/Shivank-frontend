@@ -9,8 +9,10 @@ const PTCard = () => {
   const [total, setTotal] = useState("-");
   const { data, isLoading, isFetching, isSuccess } = Digit.Hooks.useNewInboxGeneral({
     tenantId: Digit.ULBService.getCurrentTenantId(),
-    ModuleCode: "PT",
-    filters: { limit: 10, offset: 0, services: ["PT.CREATE", "PT.MUTATION", "PT.UPDATE"] },
+    ModuleCode: "PTR",
+    // filters: { limit: 10, offset: 0, services: ["PT.CREATE", "PT.UPDATE"] },
+    filters: { limit: 10, offset: 0, services: ["ptr"] },
+
     config: {
       select: (data) => {
         return {totalCount:data?.totalCount,nearingSlaCount:data?.nearingSlaCount} || "-";

@@ -244,7 +244,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const inboxInitialState = {
     searchParams: {
       uuid: { code: "ASSIGNED_TO_ALL", name: "ES_INBOX_ASSIGNED_TO_ALL" },
-      services: ["PT.CREATE", "PT.MUTATION", "PT.UPDATE"],
+      services: ["ptr"],
       applicationStatus: [],
       locality: [],
       // tenantId:{},
@@ -255,7 +255,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const combineTaxDueInSearchData = async (searchData, _break, _next) => {
     let returnData;
     const tenantId = Digit.ULBService.getCurrentTenantId();
-    let businessService = ["PT"].join();
+    let businessService = ["ptr"].join();
     let consumerCode = searchData.map((e) => e.propertyId).join();
     try {
       const res = await Digit.PaymentService.fetchBill(tenantId, { consumerCode, businessService });
@@ -403,7 +403,7 @@ const EmployeeApp = ({ path, url, userType }) => {
               <Inbox
                 useNewInboxAPI={true}
                 parentRoute={path}
-                businessService="PT"
+                businessService="ptr"
                 filterComponent="PT_INBOX_FILTER"
                 initialStates={inboxInitialState}
                 isInbox={true}
@@ -430,7 +430,7 @@ const EmployeeApp = ({ path, url, userType }) => {
             component={() => (
               <Inbox
                 parentRoute={path}
-                businessService="PT"
+                businessService="ptr"
                 middlewareSearch={searchMW}
                 initialStates={inboxInitialState}
                 isInbox={false}

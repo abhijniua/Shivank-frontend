@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
 import OwnerHistory from "./PropertyMutation/ownerHistory";
-import usePropertyAPI from "../../../../../libraries/src/hooks/pt/usePropertyAPI"
+// import usePropertyAPI from "../../../../../libraries/src/hooks/pt/usePropertyAPI"
+import usePTRCreateAPI from "../../../../../libraries/src/hooks/ptr/usePTRCreateAPI"
 
 const Close = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF">
@@ -32,38 +33,38 @@ const PropertyDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [showUpdateNo, setShowUpdateNo] = useState(false);
   const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
-  const [businessService, setBusinessService] = useState("PT.CREATE");
+  const [businessService, setBusinessService] = useState("ptr");
   const history = useHistory();
   sessionStorage.setItem("propertyIdinPropertyDetail", applicationNumber);
   // const isMobile = window.Digit.Utils.browser.isMobile();
   const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 780);
 
-  let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, applicationNumber);
+  let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.ptr.usePtrApplicationDetail(t, tenantId, applicationNumber);
   const { data: fetchBillData, isLoading: fetchBillLoading, revalidate } = Digit.Hooks.useFetchBillsForBuissnessService({
     businessService: "PT",
     consumerCode: applicationNumber,
   });
 
-  const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.pt.usePropertySearch(
+  const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { propertyIds: applicationNumber, audit: true },
+      filters: { applicationDetails: applicationNumber, audit: true },
     },
     {
       enabled: enableAudit,
       select: (data) =>
-        data.Properties.filter((e) => e.status === "ACTIVE")?.sort((a, b) => b.auditDetails.lastModifiedTime - a.auditDetails.lastModifiedTime),
+        data.PetRegistrationApplications.filter((e) => e.status === "ACTIVE")?.sort((a, b) => b.auditDetails.lastModifiedTime - a.auditDetails.lastModifiedTime),
     }
   );
-  const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId, false);
+  const mutation = Digit.Hooks.ptr.usePTRCreateAPI(tenantId, false);
 
-  const { data: UpdateNumberConfig } = Digit.Hooks.useCommonMDMS(Digit.ULBService.getStateId(), "PropertyTax", ["UpdateNumber"], {
-    select: (data) => {
-      return data?.PropertyTax?.UpdateNumber?.[0];
-    },
-    retry: false,
-    enable: false,
-  });
+  // const { data: UpdateNumberConfig } = Digit.Hooks.useCommonMDMS(Digit.ULBService.getStateId(), "PropertyTax", ["UpdateNumber"], {
+  //   select: (data) => {
+  //     return data?.PropertyTax?.UpdateNumber?.[0];
+  //   },
+  //   retry: false,
+  //   enable: false,
+  // });
 
   React.useEffect(() => {
     const onResize = () => {
@@ -100,7 +101,7 @@ const PropertyDetails = () => {
       const lastActiveProperty = auditData?.[0];
       lastActiveProperty.owners = lastActiveProperty?.owners?.filter((owner) => owner.status == "ACTIVE");
       if (lastActiveProperty) {
-        let applicationDetails = appDetailsToShow?.transformToAppDetailsForEmployee({ property: lastActiveProperty, t });
+        let applicationDetails = appDetailsToShow?.transformToAppDetailsForEmployee({ PetRegistrationApplications: lastActiveProperty, t });
         setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
       }
     }
@@ -108,7 +109,7 @@ const PropertyDetails = () => {
 
   let workflowDetails = Digit.Hooks.useWorkflowDetails({
     tenantId: applicationDetails?.tenantId || tenantId,
-    id: applicationDetails?.applicationData?.acknowldgementNumber,
+    id: applicationDetails?.applicationData?.applicationNumber,
     moduleCode: "PT.UPDATE",
     role: "PT_CEMP",
   });
@@ -167,39 +168,39 @@ const PropertyDetails = () => {
       return e;
     });
   }
-  useEffect(() => {
-    if (appDetailsToShow?.applicationDetails?.[0]?.values?.[1].title !== "PT_TOTAL_DUES") {
-      appDetailsToShow?.applicationDetails?.unshift({
-        title: " ",
-        asSectionHeader: true,
-        belowComponent: () => (
-          <LinkLabel
-            onClick={() => history.push({ pathname: `/digit-ui/employee/pt/payment-details/${applicationNumber}`})}
-            style={isMobile ? { marginTop: "15px", marginLeft: "0px" } : { marginTop: "15px" }}
-          >
-            {t("PT_VIEW_PAYMENT")}
-          </LinkLabel>
-        ),
-        values: [
-          {
-            title: "PT_PROPERTY_PTUID",
-            value: applicationNumber,
-          },
-          {
-            title: "PT_TOTAL_DUES",
-            value: fetchBillData?.Bill[0]?.totalAmount ? `₹ ${fetchBillData?.Bill[0]?.totalAmount}` : "N/A",
-          },
-        ],
-      });
-    }
-    return () => {
-      if (appDetailsToShow?.applicationDetails?.[0]?.values?.[1].title == "PT_TOTAL_DUES" && !(sessionStorage.getItem("revalidateddone") === "done")) {
-        appDetailsToShow?.applicationDetails.shift();
-        sessionStorage.setItem("revalidateddone", "done");
-        revalidate();
-      }
-    };
-  }, [fetchBillData, appDetailsToShow]);
+  // useEffect(() => {
+  //   if (appDetailsToShow?.applicationDetails?.[0]?.values?.[1].title !== "PT_TOTAL_DUES") {
+  //     appDetailsToShow?.applicationDetails?.unshift({
+  //       title: " ",
+  //       asSectionHeader: true,
+  //       belowComponent: () => (
+  //         <LinkLabel
+  //           onClick={() => history.push({ pathname: `/digit-ui/employee/pt/payment-details/${applicationNumber}`})}
+  //           style={isMobile ? { marginTop: "15px", marginLeft: "0px" } : { marginTop: "15px" }}
+  //         >
+  //           {t("PT_VIEW_PAYMENT")}
+  //         </LinkLabel>
+  //       ),
+  //       values: [
+  //         {
+  //           title: "PT_PROPERTY_PTUID",
+  //           value: applicationNumber,
+  //         },
+  //         {
+  //           title: "PT_TOTAL_DUES",
+  //           value: fetchBillData?.Bill[0]?.totalAmount ? `₹ ${fetchBillData?.Bill[0]?.totalAmount}` : "N/A",
+  //         },
+  //       ],
+  //     });
+  //   }
+  //   return () => {
+  //     if (appDetailsToShow?.applicationDetails?.[0]?.values?.[1].title == "PT_TOTAL_DUES" && !(sessionStorage.getItem("revalidateddone") === "done")) {
+  //       appDetailsToShow?.applicationDetails.shift();
+  //       sessionStorage.setItem("revalidateddone", "done");
+  //       revalidate();
+  //     }
+  //   };
+  // }, [fetchBillData, appDetailsToShow]);
 
   if (applicationDetails?.applicationData?.status === "ACTIVE") {
     workflowDetails = {
@@ -219,20 +220,20 @@ const PropertyDetails = () => {
                 },
                 tenantId: Digit.ULBService.getStateId(),
               },
-              {
-                action: !fetchBillData?.Bill[0]?.totalAmount ? "MUTATE_PROPERTY" : "PT_TOTALDUES_PAY",
-                forcedName: "PT_OWNERSHIP_TRANSFER",
-                AmountDueForPay: fetchBillData?.Bill[0]?.totalAmount,
-                isWarningPopUp: !fetchBillData?.Bill[0]?.totalAmount ? false : true,
-                redirectionUrl: {
-                  pathname: !fetchBillData?.Bill[0]?.totalAmount
-                    ? `/digit-ui/employee/pt/property-mutate-docs-required/${applicationNumber}`
-                    : `/digit-ui/employee/payment/collect/PT/${applicationNumber}`,
-                  // state: { workflow: { action: "OPEN", moduleName: "PT", businessService } },
-                  state: null,
-                },
-                tenantId: Digit.ULBService.getStateId(),
-              },
+              // {
+              //   action: !fetchBillData?.Bill[0]?.totalAmount ? "MUTATE_PROPERTY" : "PT_TOTALDUES_PAY",
+              //   forcedName: "PT_OWNERSHIP_TRANSFER",
+              //   AmountDueForPay: fetchBillData?.Bill[0]?.totalAmount,
+              //   isWarningPopUp: !fetchBillData?.Bill[0]?.totalAmount ? false : true,
+              //   redirectionUrl: {
+              //     pathname: !fetchBillData?.Bill[0]?.totalAmount
+              //       ? `/digit-ui/employee/pt/property-mutate-docs-required/${applicationNumber}`
+              //       : `/digit-ui/employee/payment/collect/PT/${applicationNumber}`,
+              //     // state: { workflow: { action: "OPEN", moduleName: "PT", businessService } },
+              //     state: null,
+              //   },
+              //   tenantId: Digit.ULBService.getStateId(),
+              // },
               {
                 action: "INACTIVE_PROPERTY",
                 forcedName: "PT_INACTIVE_PROPERTY",
@@ -263,7 +264,7 @@ const PropertyDetails = () => {
   }
 
   if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP) {
-    if (businessService == "PT.CREATE") setBusinessService("PT.UPDATE");
+    if (businessService == "ptr") setBusinessService("ptr");
     if (!workflowDetails?.data?.actionState?.nextActions?.find((e) => e.action === "UPDATE")) {
       workflowDetails?.data?.actionState?.nextActions?.push({
         action: "UPDATE",
@@ -282,7 +283,7 @@ const PropertyDetails = () => {
   const UpdatePropertyNumberComponent = Digit?.ComponentRegistryService?.getComponent("EmployeeUpdateOwnerNumber");
   return (
     <div>
-      <Header>{t("PT_PROPERTY_INFORMATION")}</Header>
+      <Header>{t("PTR_PET_REGISTRATION_INFORMATION")}</Header>
       <ApplicationDetailsTemplate
         applicationDetails={appDetailsToShow}
         isLoading={isLoading}
@@ -317,7 +318,7 @@ const PropertyDetails = () => {
             <UpdatePropertyNumberComponent
               showPopup={setShowModal}
               name={showUpdateNo?.name}
-              UpdateNumberConfig={UpdateNumberConfig}
+              // UpdateNumberConfig={UpdateNumberConfig}
               mobileNumber={showUpdateNo?.mobileNumber}
               t={t}
               onValidation={(data, showToast) => {

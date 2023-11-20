@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const GetCell = (value) => <span className="cell-text">{value}</span>;
+console.log("cell value", GetCell.value)
 
 const GetSlaCell = (value) => {
   if (isNaN(value)) return <span className="sla-cell-success">0</span>;
@@ -14,15 +15,15 @@ export const TableConfig = (t) => ({
   PTR: {
     searchColumns: (props) => [
       {
-        Header: t("ES_INBOX_UNIQUE_PROPERTY_ID"),
+        Header: t("PTR"),
         // accessor: "searchData.propertyId",
         disableSortBy: true,
         Cell: ({ row }) => {
           return (
             <div>
               <span className="link">
-                <Link to={`${props.parentRoute}/property-details/` + row.original?.searchData?.["propertyId"]}>
-                  {row.original?.searchData?.["propertyId"]}
+                <Link to={`${props.parentRoute}/property-details/` + row.original?.searchData?.["applicationNumber"]}>
+                  {row.original?.searchData?.["applicationNumber"]}
                 </Link>
               </span>
             </div>
@@ -86,15 +87,20 @@ export const TableConfig = (t) => ({
         // mobileCell: (original) => GetMobCell(original?.searchData?.["propertyId"]),
       },
     ],
+    
     inboxColumns: (props) => [
+     
       {
         Header: t("PTR_APPLICATION_NUMBER"),
         Cell: ({ row }) => {
+          console.log("row.original",row)
           return (
             <div>
               <span className="link">
-                <Link to={`${props.parentRoute}/application-details/` + row.original?.["applicationNumber"]}>
-                  {row.original?.["applicationNumber"]}
+                {/* <Link to={`${props.parentRoute}/application-details/` + row.original["applicationNumber"]} */}
+                <Link to={`${props.parentRoute}/application-details/` + `${row?.original?.searchData?.["applicationNumber"]}`}>
+
+                  {row.original?.searchData?.["applicationNumber"]}
                 </Link>
               </span>
             </div>
@@ -102,17 +108,27 @@ export const TableConfig = (t) => ({
         },
         mobileCell: (original) => GetMobCell(original?.["applicationNumber"]),
       },
+      // {
+      //   Header: t("PTR_APPLICANT_NAME"),
+      //   Cell: ({ row }) => {
+      //     return GetCell(`${row.original?.["applicantName"]}`);
+      //   },
+      //   mobileCell: (original) => GetMobCell(original?.["applicantName"]),
+      // },
       {
         Header: t("PTR_APPLICANT_NAME"),
-        Cell: ({ row }) => {
-          return GetCell(`${row.original?.["applicantName"]}`);
+        Cell: ( row ) => {
+        
+          return GetCell(`${row?.cell?.row?.original?.searchData?.["applicantName"]}`)
+          
         },
-        mobileCell: (original) => GetMobCell(original?.["applicantName"]),
+        
       },
       {
         Header: t("PTR_PET_TYPE"),
         Cell: ({ row }) => {
-          return GetCell(`${row.original?.petDetails?.["petType"]}`);
+          return GetCell(`${row.original?.searchData?.petDetails?.["petType"]}`);
+          // return GetCell(`${row?.cell?.row?.original?.searchData?.petDetails?.["petType"]}`);
         },
         mobileCell: (original) => GetMobCell(original?.petDetails?.["petType"]),
       },
@@ -120,7 +136,7 @@ export const TableConfig = (t) => ({
       {
         Header: t("PTR_BREED_TYPE"),
         Cell: ({ row }) => {
-          return GetCell(`${row.original?.petDetails?.["breedType"]}`);
+          return GetCell(`${row.original?.searchData?.petDetails?.["breedType"]}`);
         },
         mobileCell: (original) => GetMobCell(original?.petDetails?.["breedType"]),
       },
@@ -146,12 +162,17 @@ export const TableConfig = (t) => ({
       //   },
       // },
       {
-        Header: t("ES_INBOX_STATUS"),
+        Header: t("PTR_STATUS"),
         Cell: ({ row }) => {
           const wf = row.original?.workflowData;
-          return GetCell(t(`ES_PT_COMMON_STATUS_${wf?.state?.["state"]}`));
+          // return GetCell(t(`ES_PT_COMMON_STATUS_${wf?.state?.["state"]}`));
+          return GetCell(t(`${row?.original?.workflowData?.state?.["state"]}`));
+
+
         },
-        mobileCell: (original) => GetMobCell(t(`ES_PT_COMMON_STATUS_${original?.workflowData?.state?.["state"]}`)),
+        // mobileCell: (original) => GetMobCell(t(`ES_PT_COMMON_STATUS_${row?.cell?.row?.original?.workflowData?.state?.["state"]}`)),
+        mobileCell: (original) => GetMobCell(t(`${row?.cell?.row?.original?.workflowData?.state?.["state"]}`)),
+
       },
       // {
       //   Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
@@ -165,5 +186,7 @@ export const TableConfig = (t) => ({
       // },
     ],
     serviceRequestIdKey: (original) => original?.[t("ES_INBOX_UNIQUE_PROPERTY_ID")]?.props?.children,
+
+    
   },
 });

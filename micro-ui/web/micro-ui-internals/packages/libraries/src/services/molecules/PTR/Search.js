@@ -24,23 +24,23 @@ export const PTRSearch = {
   //       { title: "PT_PROPERTY_ADDRESS_PINCODE", value: PetRegistrationApplications?.address?.pincode },
   //       { title: "PT_PROPERTY_ADDRESS_CITY", value: PetRegistrationApplications?.address?.city },
         
-  //       {
-  //         title: "PT_PROPERTY_ADDRESS_STREET_NAME",
-  //         value: PetRegistrationApplications?.address?.street,
-  //         // privacy: {
-  //         //   uuid: PetRegistrationApplications?.owners?.[0]?.uuid,
-  //         //   fieldName: "street",
-  //         //   model: "Property",
-  //         //   showValue: false,
-  //         //   loadData: {
-  //         //     serviceName:"/pet-services/pet-registration/_search",
-  //         //     requestBody: {},
-  //         //     requestParam: { tenantId, applicationNumber },
-  //         //     jsonPath: "PetRegistrationApplications[0].address.street",
-  //         //     isArray: false,
-  //         //   },
-  //         // },
-  //       },
+  //       // {
+  //       //   title: "PT_PROPERTY_ADDRESS_STREET_NAME",
+  //       //   value: PetRegistrationApplications?.address?.street,
+  //       //   privacy: {
+  //       //     uuid: PetRegistrationApplications?.owners?.[0]?.uuid,
+  //       //     fieldName: "street",
+  //       //     model: "Property",
+  //       //     showValue: false,
+  //       //     loadData: {
+  //       //       serviceName:"/pet-services/pet-registration/_search",
+  //       //       requestBody: {},
+  //       //       requestParam: { tenantId, applicationNumber },
+  //       //       jsonPath: "PetRegistrationApplications[0].address.street",
+  //       //       isArray: false,
+  //       //     },
+  //       //   },
+  //       // },
   //     ],
   //   };
    
@@ -51,7 +51,9 @@ export const PTRSearch = {
   //     applicationDetails,
   //     applicationData: PetRegistrationApplications,
   //   };
-  // },
+  //},
+
+  
   application: async (tenantId, filters = {}) => {
     const response = await PTRService.search({ tenantId, filters });
     return response.PetRegistrationApplications[0];
@@ -102,32 +104,6 @@ export const PTRSearch = {
         ],
       },
 
-      // {
-      //   title: "PTR_DOCUMENT_HEADER",
-      //   asSectionHeader: true,
-      //   documents: [
-      //     {
-          
-      //       values: response?.documents
-      //         ?.map((document) => {
-      //           return {
-      //             title: `PT_${document?.documentType.replace(".", "_")}`,
-      //             documentType: document?.documentType,
-      //             documentUid: document?.documentUid,
-      //             fileStoreId: document?.fileStoreId,
-      //             status: document.status,
-      //           };
-      //         }),
-      //     },
-      //   ],
-         
-  
-        
-      // },
-
-
-
-     
       {
         title: "PTR_DOCUMENT_DETAILS",
         additionalDetails: {

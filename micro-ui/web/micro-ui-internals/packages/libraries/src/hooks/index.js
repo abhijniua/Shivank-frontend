@@ -253,6 +253,7 @@ import usePetMDMS from "./ptr/usePetMDMS";
 import useBreedTypeMDMS from "./ptr/useBreedTypeMDMS";
 import usePTRCreateAPI from "./ptr/usePTRCreateAPI";
 //import useTenantsPTR from "./ptr/useTenants";
+import useTenantsPTR from "./ptr/useTenantsPTR";
 import usePTRPetMDMS from "./ptr/usePTRPetMDMS";
 import usePTRGenderMDMS from "./ptr/usePTRGenderMDMS";
 import usePTRSearch from "./ptr/usePTRSearch";
@@ -408,7 +409,8 @@ const ptr = {
   usePTRApplicationAction,
  usePTRGenderMDMS,
  usePTRSearch,
- usePtrApplicationDetail
+ usePtrApplicationDetail,
+ useTenantsPTR
 };
 
 

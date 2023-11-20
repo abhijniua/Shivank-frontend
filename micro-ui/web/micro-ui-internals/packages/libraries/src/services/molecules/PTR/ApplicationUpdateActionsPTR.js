@@ -2,6 +2,7 @@
 
 
 const ApplicationUpdateActionsPTR = async (applicationData, tenantId) => {
+  console.log("LLL", response)
   try {
     const response = await PTRService.update(applicationData, tenantId);
     return response;

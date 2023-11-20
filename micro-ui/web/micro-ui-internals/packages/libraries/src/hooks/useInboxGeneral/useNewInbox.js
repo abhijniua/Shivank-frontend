@@ -10,18 +10,18 @@ import { InboxGeneral } from "../../services/elements/InboxService";
 
 const inboxConfig = (tenantId, filters) => ({
   PT: {
-    services: ["PT.CREATE"],
-    searchResponseKey: "Properties",
-    businessIdsParamForSearch: "acknowledgementIds",
-    businessIdAliasForSearch: "acknowldgementNumber",
-    fetchFilters: filterFunctions.PT,
-    _searchFn: () => PTService.search({ tenantId, filters }),
+    services: ["ptr"],
+    searchResponseKey: "PetRegistrationApplications",
+    businessIdsParamForSearch: "applicationNumber",
+    businessIdAliasForSearch: "applicationNumber",
+    fetchFilters: filterFunctions.PTR,
+    _searchFn: () => PTRService.search({ tenantId, filters }),
   },
 
   PTR: {
-    services: ["PT.CREATE"],
+    services: ["ptr"],
     searchResponseKey: "PetRegistrationApplications",
-    businessIdsParamForSearch: "acknowledgementIds",
+    businessIdsParamForSearch: "applicationNumber",
     businessIdAliasForSearch: "applicationNumber",
     fetchFilters: filterFunctions.PTR,
     _searchFn: () => PTRService.search({ tenantId, filters }),
