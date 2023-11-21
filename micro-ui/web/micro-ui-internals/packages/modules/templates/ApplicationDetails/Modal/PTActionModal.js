@@ -32,18 +32,18 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     },
     { enabled: !action?.isTerminateState }
   );
-  const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
-    tenantId,
-    businessService,
-    "FINANCIAL_YEARLS",
-    {},
-    {
-      details: {
-        tenantId: Digit.ULBService.getStateId(),
-        moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'PT')]" }] }],
-      },
-    }
-  );
+  // const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
+  //   tenantId,
+  //   businessService,
+  //   "FINANCIAL_YEARLS",
+  //   {},
+  //   {
+  //     details: {
+  //       tenantId: Digit.ULBService.getStateId(),
+  //       moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'PT')]" }] }],
+  //     },
+  //   }
+  // );
 
   const [config, setConfig] = useState({});
   const [defaultValues, setDefaultValues] = useState({});
@@ -93,13 +93,15 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   }, [file]);
 
   function submit(data) {
+
+    console.log("what is this data", data)
     if (action?.action == "INACTIVE_PROPERTY"){
       console.log("dataaaaa123",data)
       let workflow = { action: "OPEN", comment: data?.comments, businessService:"ptr", moduleName: "pet-services" };
       applicationData.creationReason = "CREATE"
       submitAction({
         customFunctionToExecute: action?.customFunctionToExecute,
-        Property: {
+        PetRegistrationApplications: {
           ...applicationData,
           workflow,
         },
@@ -118,7 +120,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         ];
 
       submitAction({
-        Property: {
+        PetRegistrationApplications: {
           ...applicationData,
           workflow,
         },
@@ -129,7 +131,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         customFunctionToExecute: action?.customFunctionToExecute,
         Assessment: {
           financialYear: selectedFinancialYear?.name,
-          propertyId: applicationData?.propertyId,
+          applicationNumber: applicationData?.applicationNumber,
           tenantId,
           source: applicationData?.source,
           channel: applicationData?.channel,

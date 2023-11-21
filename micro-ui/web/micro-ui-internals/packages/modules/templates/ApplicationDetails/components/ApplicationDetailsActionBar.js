@@ -20,6 +20,11 @@ function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSel
     return userRoles?.some((role) => e.roles?.includes(role)) || !e.roles;
   });
 
+
+  console.log("usersss", user)
+  console.log("menuu", menuRef)
+  console.log("usersssroleee", userRoles)
+
     const closeMenu = () => {
           setDisplayMenu(false);
       }
@@ -32,6 +37,10 @@ function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSel
     isMenuBotton = true; 
     isSingleButton = false;
   }
+
+  console.log("button isMenuBotton services ", isMenuBotton)
+  console.log("button single button services ", isSingleButton)
+  console.log("button workflow services ",workflowDetails?.isLoading)
 
   return (
     <React.Fragment>

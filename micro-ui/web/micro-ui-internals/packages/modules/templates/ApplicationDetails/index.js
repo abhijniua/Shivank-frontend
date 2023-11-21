@@ -55,6 +55,10 @@ const ApplicationDetails = (props) => {
     }
   }, [showToast]);
 
+  useEffect(() => {
+    console.log("Component rendered");
+  }, []);
+
   function onActionSelect(action) {
     if (action) {
       if(action?.isToast){
@@ -94,6 +98,8 @@ const ApplicationDetails = (props) => {
     setSelectedAction(null);
     setShowModal(false);
   };
+
+  
 
   const closeWarningPopup = () => {
     setWarningPopUp(false);
@@ -234,7 +240,10 @@ const ApplicationDetails = (props) => {
           ) : null}
           <ApplicationDetailsToast t={t} showToast={showToast} closeToast={closeToast} businessService={businessService} />
 
-          
+          {console.log("what is comming in this workflowDetails ", workflowDetails)}
+          {console.log("what is comming in this businessService ", businessService)}
+
+          {console.log("what is comming in this displayMenu ", displayMenu)}
           <ApplicationDetailsActionBar
             workflowDetails={workflowDetails}
             displayMenu={displayMenu}
