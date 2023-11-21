@@ -11,6 +11,8 @@ const useWorkflowDetails = ({ tenantId, id, moduleCode, role = "CITIZEN" && "EMP
     getStaleData ? { ...staleDataConfig, ...config } : config
   );
 
+  console.log("this for process service ",moduleCode )
+
   if (getStaleData) return { isLoading, error, isError, data };
 
   return { isLoading, error, isError, data, revalidate: () => queryClient.invalidateQueries(["workFlowDetails", tenantId, id, moduleCode, role]) };

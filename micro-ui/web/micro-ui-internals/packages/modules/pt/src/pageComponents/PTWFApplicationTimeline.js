@@ -6,12 +6,15 @@ import PTWFCaption from "./PTWFCaption";
 
 const PTWFApplicationTimeline = (props) => {
   const { t } = useTranslation();
-  const businessService = (props.application?.creationReason && `PTR.${props.application.creationReason}`) || "ptr";
+  const businessService = (props.application?.creationReason && `${props.application.creationReason}`) || "ptr";
+  // const businessService = "ptr";
+
   const { isLoading, data } = Digit.Hooks.useWorkflowDetails({
     tenantId: props.application?.tenantId,
     id: props.id,
     moduleCode: businessService,
   });
+  console.log("timelinbe business service ", businessService)
 
   function OpenImage(imageSource, index, thumbnailsToShow) {
     window.open(thumbnailsToShow?.fullImage?.[0], "_blank");

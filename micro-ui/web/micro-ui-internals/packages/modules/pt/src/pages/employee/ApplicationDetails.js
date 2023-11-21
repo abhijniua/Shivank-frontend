@@ -21,8 +21,9 @@ const ApplicationDetails = () => {
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
   const [showOptions, setShowOptions] = useState(false);
   const [enableAudit, setEnableAudit] = useState(false);
-  // const [businessService, setBusinessService] = useState("PT.CREATE");
   const [businessService, setBusinessService] = useState("ptr");
+  
+
 
   sessionStorage.setItem("applicationNoinAppDetails",applicationNumber);
 
@@ -36,7 +37,7 @@ const ApplicationDetails = () => {
 
   const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.ptr.usePtrApplicationDetail(t, tenantId, applicationNumber);
   
-
+   
   const {
     isLoading: updatingApplication,
     isError: updateApplicationError,
@@ -45,12 +46,23 @@ const ApplicationDetails = () => {
     mutate,
   } = Digit.Hooks.ptr.usePTRApplicationAction(tenantId);
 
+ 
+
   let workflowDetails = Digit.Hooks.useWorkflowDetails({
-    tenantId: applicationDetails?.tenantId || tenantId,
-    id: applicationDetails?.applicationData?.applicationNumber,
+    tenantId:  tenantId,
+    id: applicationNumber,
     moduleCode: businessService,
     role: "PT_CEMP",
+    
+    
   });
+  
+  
+  console.log("what is workflowDetails servie = ",workflowDetails )
+
+  
+
+  
 
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
     {
@@ -101,57 +113,60 @@ const ApplicationDetails = () => {
   // }, [auditData, applicationDetails, appDetailsToShow]);
 
   useEffect(() => {
-    console.log("use effect Workflow Details:", workflowDetails?.data?.applicationBusinessService);
+    // console.log("use effect Workflow Details:", workflowDetails?.data?.applicationBusinessService);
     // if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE"))
-    if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "ptr"))
+    if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "ptr" && businessService === "ptr"))
     
 
      {
-      // setBusinessService(workflowDetails?.data?.applicationBusinessService);
+      //  setBusinessService(workflowDetails?.data?.applicationBusinessService);
+      
+
       setBusinessService("ptr");
 
     }
   }, [workflowDetails.data]);
-  console.log("use effect :", workflowDetails?.data?.applicationBusinessService);
+
+  console.log("use effect :", workflowDetails.data);
 
 
-  const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
+  // const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
 
-  if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP) {
-    workflowDetails = {
-      ...workflowDetails,
-      data: {
-        ...workflowDetails?.data,
-        actionState: {
-          nextActions: [
-            {
-              action: "VIEW_DETAILS",
-              redirectionUrl: {
-                pathname: `/digit-ui/employee/pt/property-details/${applicationNumber}`,
-              },
-              tenantId: Digit.ULBService.getStateId(),
-            },
-          ],
-        },
-      },
-    };
-  }
+  // if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP) {
+  //   workflowDetails = {
+  //     ...workflowDetails,
+  //     data: {
+  //       ...workflowDetails?.data,
+  //       actionState: {
+  //         nextActions: [
+  //           {
+  //             action: "VIEW_DETAILS",
+  //             redirectionUrl: {
+  //               pathname: `/digit-ui/employee/pt/property-details/${applicationNumber}`,
+  //             },
+  //             tenantId: Digit.ULBService.getStateId(),
+  //           },
+  //         ],
+  //       },
+  //     },
+  //   };
+  // }
 
-  if (
-    PT_CEMP &&
-    workflowDetails?.data?.actionState?.isStateUpdatable &&
-    !workflowDetails?.data?.actionState?.nextActions?.find((e) => e.action === "UPDATE")
-  ) {
-    if (!workflowDetails?.data?.actionState?.nextActions) workflowDetails.data.actionState.nextActions = [];
-    workflowDetails?.data?.actionState?.nextActions.push({
-      action: "UPDATE",
-      redirectionUrl: {
-        pathname: `/digit-ui/employee/pt/modify-application/${applicationNumber}`,
-        state: { workflow: { action: "REOPEN", moduleName: "pet-services", businessService } },
-      },
-      tenantId: Digit.ULBService.getStateId(),
-    });
-  }
+  // if (
+  //   PT_CEMP &&
+  //   workflowDetails?.data?.actionState?.isStateUpdatable &&
+  //   !workflowDetails?.data?.actionState?.nextActions?.find((e) => e.action === "UPDATE")
+  // ) {
+  //   if (!workflowDetails?.data?.actionState?.nextActions) workflowDetails.data.actionState.nextActions = [];
+  //   workflowDetails?.data?.actionState?.nextActions.push({
+  //     action: "UPDATE",
+  //     redirectionUrl: {
+  //       pathname: `/digit-ui/employee/pt/modify-application/${applicationNumber}`,
+  //       state: { workflow: { action: "REOPEN", moduleName: "pet-services", businessService } },
+  //     },
+  //     tenantId: Digit.ULBService.getStateId(),
+  //   });
+  // }
 
   // if (!(appDetailsToShow?.applicationDetails?.[0]?.values?.[0].title === "PT_PROPERTY_APPLICATION_NO")) {
   //   appDetailsToShow?.applicationDetails?.unshift({
@@ -165,7 +180,7 @@ const ApplicationDetails = () => {
 
   // if (
   //   PT_CEMP &&
-  //   workflowDetails?.data?.applicationBusinessService === "PT.MUTATION" &&
+  //   workflowDetails?.data?.applicationBusinessService === "ptr" &&
   //   workflowDetails?.data?.actionState?.nextActions?.find((act) => act.action === "PAY")
   // ) {
   //   workflowDetails.data.actionState.nextActions = workflowDetails?.data?.actionState?.nextActions.map((act) => {
@@ -180,21 +195,21 @@ const ApplicationDetails = () => {
   //   });
   // }
 
-  const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { wfDocuments }) => {
-    return wfDocuments ? [...acc, ...wfDocuments] : acc;
-  }, []);
-  let appdetailsDocuments = appDetailsToShow?.applicationDetails?.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER")?.additionalDetails
-    ?.documents;
+  // const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { wfDocuments }) => {
+  //   return wfDocuments ? [...acc, ...wfDocuments] : acc;
+  // }, []);
+  // let appdetailsDocuments = appDetailsToShow?.applicationDetails?.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER")?.additionalDetails
+  //   ?.documents;
 
-  if (appdetailsDocuments && wfDocs?.length && !appdetailsDocuments?.find((e) => e.title === "PT_WORKFLOW_DOCS")) {
-    appDetailsToShow.applicationDetails.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER").additionalDetails.documents = [
-      ...appdetailsDocuments,
-      {
-        title: "PT_WORKFLOW_DOCS",
-        values: wfDocs?.map?.((e) => ({ ...e, title: e.documentType })),
-      },
-    ];
-  }
+  // if (appdetailsDocuments && wfDocs?.length && !appdetailsDocuments?.find((e) => e.title === "PT_WORKFLOW_DOCS")) {
+  //   appDetailsToShow.applicationDetails.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER").additionalDetails.documents = [
+  //     ...appdetailsDocuments,
+  //     {
+  //       title: "PT_WORKFLOW_DOCS",
+  //       values: wfDocs?.map?.((e) => ({ ...e, title: e.documentType })),
+  //     },
+  //   ];
+  // }
   const handleDownloadPdf = async () => {
     const Property = appDetailsToShow?.applicationData ;
     const tenantInfo  = tenants.find((tenant) => tenant.code === Property.tenantId);
@@ -210,11 +225,11 @@ const ApplicationDetails = () => {
   };
   let dowloadOptions = [propertyDetailsPDF];
 
-//  if (applicationDetails?.applicationData?.creationReason === "MUTATION"){
+//  if (applicationDetails?.applicationData?.creationReason === "CREATE"){
 //    return(
-//     <MutationApplicationDetails 
+//     <MutationApplicationDetails
 //       applicationNumber = {applicationNumber}
-//       acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
+//       // acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
 //       workflowDetails={workflowDetails}
 //       mutate={mutate}
 //     />
@@ -225,6 +240,7 @@ const ApplicationDetails = () => {
     <div>
         <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
       <Header styles={{ marginLeft: "0px", paddingTop: "10px", fontSize: "32px" }}>{t("PTR_PET_APPLICATION_DETAILS")}</Header>
+      {console.log(" dowloadOptions", dowloadOptions)}
       {dowloadOptions && dowloadOptions.length > 0 && (
             <MultiLink
               className="multilinkWrapper employee-mulitlink-main-div"
@@ -237,6 +253,9 @@ const ApplicationDetails = () => {
             />
           )}
           </div>
+          {console.log("what is workflowDetails ", workflowDetails)}
+          {console.log("what is businessService ", businessService)}
+      
       <ApplicationDetailsTemplate
         applicationDetails={appDetailsToShow}
         isLoading={isLoading}
@@ -245,12 +264,12 @@ const ApplicationDetails = () => {
         mutate={mutate}
         workflowDetails={workflowDetails}
         businessService={businessService}
-        moduleCode="PT"
+        moduleCode="PTR"
         showToast={showToast}
         setShowToast={setShowToast}
         closeToast={closeToast}
-        timelineStatusPrefix={"ES_PT_COMMON_STATUS_"}
-        forcedActionPrefix={"WF_EMPLOYEE_ptr"}
+        timelineStatusPrefix={"PTR_COMMON_STATUS_"}
+        forcedActionPrefix={"EMPLOYEE_PTR"}
         statusAttribute={"state"}
         MenuStyle={{ color: "#FFFFFF", fontSize: "18px" }}
       />

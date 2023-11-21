@@ -6,4 +6,6 @@ const usePTRApplicationAction = (tenantId) => {
   return useMutation((applicationData) => ApplicationUpdateActionsPTR(applicationData, tenantId));
 };
 
+// console.log("hjdfhj", applicationData)
+
 export default usePTRApplicationAction;

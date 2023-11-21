@@ -146,6 +146,12 @@ function ApplicationDetailsContent({
     }
   };
 
+  
+  useEffect(() => {
+    console.log("Component is rendering very well");
+  }, []);
+
+
   const getTranslatedValues = (dataValue, isNotTranslated) => {
     if (dataValue) {
       return !isNotTranslated ? t(dataValue) : dataValue;
