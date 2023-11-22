@@ -37,15 +37,18 @@
 
     const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.ptr.usePtrApplicationDetail(t, tenantId, applicationNumber);
     
-    console.log("isError",isError)
+    console.log("isError",applicationDetails)
+
     
     const {
       isLoading: updatingApplication,
       isError: updateApplicationError,
-      //data: updateResponse,
+      data: updateResponse,
       error: updateError,
-      mutate,
+       mutate,
     } = Digit.Hooks.ptr.usePTRApplicationAction(tenantId);
+
+    console.log("updateResponse", updateResponse )
 
   
 
@@ -65,13 +68,13 @@
 
     
 
-    const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
-      {
-        tenantId,
-        filters: { applicationDetails: applicationNumber, audit: true },
-      },
-      { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
-    );
+    // const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
+    //   {
+    //     tenantId,
+    //     filters: { applicationDetails: applicationNumber, audit: true },
+    //   },
+    //   { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
+    // );
   
     // console.log("$$$$", applicationDetails?.data)
     // const showTransfererDetails = React.useCallback(() => {
@@ -79,13 +82,12 @@
     //     auditData &&
     //     Object.keys(appDetailsToShow).length &&
     //     applicationDetails?.applicationData?.status !== "ACTIVE" &&
-    //     applicationDetails?.applicationData?.creationReason === "MUTATION" &&
-    //     !appDetailsToShow?.applicationDetails.find((e) => e.title === "PT_MUTATION_TRANSFEROR_DETAILS")
+    //     applicationDetails?.applicationData?.creationReason === "ptr" 
     //   ) {
-    //     let applicationDetails = appDetailsToShow.applicationDetails?.filter((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER");
+    //     // let applicationDetails = appDetailsToShow.applicationDetails?.filter((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER");
     //     let compConfig = newConfigMutate.reduce((acc, el) => [...acc, ...el.body], []).find((e) => e.component === "TransfererDetails");
     //     applicationDetails.unshift({
-    //       title: "PT_MUTATION_TRANSFEROR_DETAILS",
+    //       // title: "PT_MUTATION_TRANSFEROR_DETAILS",
     //       belowComponent: () => <TransfererDetails userType="employee" formData={{ originalData: auditData[0] }} config={compConfig} />,
     //     });
     //     setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
@@ -108,8 +110,8 @@
 
     // useEffect(() => {
     //   showTransfererDetails();
-    //   if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP&&businessService=="PT.CREATE") {
-    //      setBusinessService("PT.UPDATE");
+    //   if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP&&businessService=="ptr") {
+    //      setBusinessService("ptr");
     //     }
     // }, [auditData, applicationDetails, appDetailsToShow]);
 
@@ -120,10 +122,10 @@
       
 
       {
-        //  setBusinessService(workflowDetails?.data?.applicationBusinessService);
+        setBusinessService(workflowDetails?.data?.applicationBusinessService);
         
 
-        setBusinessService("ptr");
+        //setBusinessService("ptr");
 
       }
     }, [workflowDetails.data]);
@@ -228,7 +230,7 @@
 
   //  if (applicationDetails?.applicationData?.creationReason === "CREATE"){
   //    return(
-  //     <MutationApplicationDetails
+  //     <ApplicationDetailsTemplate
   //       applicationNumber = {applicationNumber}
   //       // acknowledgementIds={appDetailsToShow?.applicationData?.applicationNumber}
   //       workflowDetails={workflowDetails}
@@ -262,7 +264,7 @@
           isLoading={isLoading}
           isDataLoading={isLoading}
           applicationData={appDetailsToShow?.applicationData}
-          mutate={mutate}
+           mutate={mutate}
           workflowDetails={workflowDetails}
           businessService={businessService}
           moduleCode="PTR"

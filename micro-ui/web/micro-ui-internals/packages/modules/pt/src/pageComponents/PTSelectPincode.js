@@ -17,7 +17,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
   if (formData?.isUpdateProperty) isEditProperty = true;
   const inputs = [
     {
-      label: "PT_PROPERTY_ADDRESS_PINCODE",
+      label: "PTR_PINCODE",
       type: "text",
       name: "pincode",
       disable: isEditProperty,
@@ -49,7 +49,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
       if (e.target.value && !validPincode) setLocalError(t("ERR_DEFAULT_INPUT_FIELD_MSG"));
       if (validPincode) {
         const foundValue = tenants?.find((obj) => obj.pincode?.find((item) => item.toString() === e.target.value));
-        if (!foundValue) setLocalError(t("PT_COMMON_PINCODE_NOT_SERVICABLE"));
+        if (!foundValue) setLocalError(t("PTR_COMMON_PINCODE_NOT_SERVICABLE"));
       }
       onSelect(config.key, { ...formData.address, pincode: e.target.value });
     }
@@ -60,7 +60,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
     if (foundValue) {
       onSelect(config.key, { pincode });
     } else {
-      setPincodeServicability("PT_COMMON_PINCODE_NOT_SERVICABLE");
+      setPincodeServicability("PTR_COMMON_PINCODE_NOT_SERVICABLE");
     }
   };
 

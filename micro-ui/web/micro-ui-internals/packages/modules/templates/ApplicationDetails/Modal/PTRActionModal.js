@@ -56,14 +56,14 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
   const [disableActionSubmit, setDisableActionSubmit] = useState(false);
 
-  useEffect(() => {
-    if (financialYearsData && financialYearsData["egf-master"]) {
-      setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
-    }
-  }, [financialYearsData]);
+//   useEffect(() => {
+//     if (financialYearsData && financialYearsData["egf-master"]) {
+//       setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
+//     }
+//   }, [financialYearsData]);
 
   useEffect(() => {
-    console.log("Component rendered pt modal");
+    console.log("Component rendered");
   }, []);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           setError(t("CS_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
         } else {
           try {
-            const response = await Digit.UploadServices.Filestorage("PT", file, Digit.ULBService.getStateId());
+            const response = await Digit.UploadServices.Filestorage("PTR", file, Digit.ULBService.getStateId());
             if (response?.data?.files?.length > 0) {
               setUploadedFile(response?.data?.files[0]?.fileStoreId);
             } else {
@@ -96,11 +96,14 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     })();
   }, [file]);
 
+
+  console.log("dataaaaa123",data)
   function submit(data) {
 
-    console.log("what is this data", data)
-    if (action?.action == "INACTIVE_PROPERTY"){
-      console.log("dataaaaa123",data)
+    // console.log("what is this data", data)
+     if (action?.action == "INACTIVE_PROPERTY"){
+    // if (action?.action == "REJECT"){
+
       let workflow = { action: "OPEN", comment: data?.comments, businessService:"ptr", moduleName: "pet-services" };
       applicationData.creationReason = "CREATE"
       submitAction({
@@ -110,7 +113,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           workflow,
         },
       });
-          }
+           }
     else if (!action?.showFinancialYearsModal) {
       let workflow = { action: action?.action, comment: data?.comments, businessService, moduleName: moduleCode };
       workflow["assignes"] = action?.isTerminateState || !selectedApprover ? [] : [selectedApprover];
@@ -186,9 +189,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       isDisabled={!action.showFinancialYearsModal ? PTALoading || (action?.docUploadRequired && !uploadedFile) : !selectedFinancialYear}
       formId="modal-action"
     >
-      {financialYearsLoading ? (
+      { (
         <Loader />
-      ) : (
+      )  (
         <FormComposer
           config={config.form}
           noBoxShadow
@@ -199,7 +202,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           formId="modal-action"
           // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
         />
-      )}
+       )} 
     </Modal>
   ) : (
     <Loader />

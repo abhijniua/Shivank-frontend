@@ -13,7 +13,7 @@ import _ from "lodash";
 import get from "lodash/get";
 import { pdfDownloadLink } from "../../utils";
 import { useQuery, useQueryClient } from "react-query";
-const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDetails, mutate}) => {
+const MutationApplicationDetails = ({ propertyId, applicationNumber, workflowDetails, mutate}) => {
   const { t } = useTranslation();
   const [displayMenu, setDisplayMenu] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -21,12 +21,12 @@ const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDe
   const state = Digit.ULBService.getStateId();
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
-  const [businessService, setBusinessService] = useState("PT.MUTATION");
+  const [businessService, setBusinessService] = useState("ptr");
   const history = useHistory();
   const [isEnableLoader, setIsEnableLoader] = useState(false);
-  const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
-    { filters: { acknowledgementIds },tenantId },
-    { filters: { acknowledgementIds },tenantId }
+  const { isLoading, isError, error, data } = Digit.Hooks.ptr.usePTRSearch(
+    { filters: { applicationNumber },tenantId },
+    { filters: { applicationNumber },tenantId }
   );
   const [billAmount, setBillAmount] = useState(null);
   const [billStatus, setBillStatus] = useState(null);
@@ -53,10 +53,10 @@ const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDe
     {
       tenantId: tenantId,
       businessService: "PT.MUTATION",
-      consumerCodes: acknowledgementIds,
+      consumerCodes: applicationNumber,
       isEmployee: true,
     },
-    {enabled: acknowledgementIds?true:false}
+    {enabled: applicationNumber?true:false}
   );
 
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
@@ -65,18 +65,18 @@ const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDe
   const { isLoading: isLoadingApplicationDetails, isError: isErrorApplicationDetails, data: applicationDetails, error: errorApplicationDetails } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, propertyId);
 
   useEffect(async ()=>{
-    if(acknowledgementIds){
-      const res = await Digit.PaymentService.searchBill(tenantId, {Service: businessService, consumerCode: acknowledgementIds});
+    if(applicationNumber){
+      const res = await Digit.PaymentService.searchBill(tenantId, {Service: businessService, consumerCode: applicationNumber});
       if(! res.Bill.length) {
         const res1 = await Digit.PTService.ptCalculateMutation({Property: applicationDetails?.applicationData}, tenantId);
-        setBillAmount(res1?.[acknowledgementIds]?.totalAmount || t("CS_NA"))
+        setBillAmount(res1?.[applicationNumber]?.totalAmount || t("CS_NA"))
         setBillStatus(t(`PT_MUT_BILL_ACTIVE`))
       } else {
         setBillAmount(res?.Bill[0]?.totalAmount || t("CS_NA"))
         setBillStatus(t(`PT_MUT_BILL_${res?.Bill[0]?.status?.toUpperCase()}`))
       }
     }
-  },[tenantId, acknowledgementIds, businessService])
+  },[tenantId, applicationNumber, businessService])
 
   useEffect(() => {
     showTransfererDetails();
@@ -497,14 +497,14 @@ const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDe
               </StatusTable>
             )}
           </div>
-          <PTWFApplicationTimeline application={application} id={acknowledgementIds} userType={'employee'} />
+          <PTWFApplicationTimeline application={application} id={applicationNumber} userType={'employee'} />
           {showModal ? (
             <ActionModal
               t={t}
               action={selectedAction}
               tenantId={tenantId}
               state={state}
-              id={acknowledgementIds}
+              id={applicationNumber}
               applicationDetails={appDetailsToShow}
               applicationData={appDetailsToShow?.applicationData}
               closeModal={closeModal}

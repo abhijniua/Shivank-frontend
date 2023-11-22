@@ -24,7 +24,7 @@ import PTSelectPincode from "./pageComponents/PTSelectPincode";
 
 import PTRPetdetails from "./pageComponents/PTRPetdetails";
 import PTROwnerDetails from "./pageComponents/PTROwnerDetails";
-import PTRSelectAddress from "./pageComponents/PTRSelectAddress";
+// import PTRSelectAddress from "./pageComponents/PTRSelectAddress";
 import PTRDocumentUpload from "./pageComponents/PTRDocumentUpload";
 import PTRSelectStreet from "./pageComponents/PTRSelectStreet";
 
@@ -184,7 +184,7 @@ const componentsToRegister = {
   
   PTRPetdetails,
   PTROwnerDetails,
-  PTRSelectAddress,
+  // PTRSelectAddress,
   PTRDocumentUpload,
   PTRSelectStreet
 };
