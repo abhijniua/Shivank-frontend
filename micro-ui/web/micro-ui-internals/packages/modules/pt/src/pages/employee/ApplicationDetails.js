@@ -45,7 +45,7 @@
       isError: updateApplicationError,
       data: updateResponse,
       error: updateError,
-       mutate,
+      mutate,
     } = Digit.Hooks.ptr.usePTRApplicationAction(tenantId);
 
     console.log("updateResponse", updateResponse )
@@ -66,15 +66,15 @@
 
     
 
-    
 
-    // const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
-    //   {
-    //     tenantId,
-    //     filters: { applicationDetails: applicationNumber, audit: true },
-    //   },
-    //   { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
-    // );
+
+    const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.ptr.usePTRSearch(
+      {
+        tenantId,
+        filters: { applicationNumber: applicationNumber, audit: true },
+      },
+     // { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
+    );
   
     // console.log("$$$$", applicationDetails?.data)
     // const showTransfererDetails = React.useCallback(() => {
@@ -133,7 +133,7 @@
     console.log("use effect :", workflowDetails.data);
 
 
-    // const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
+    const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
 
     // if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP) {
     //   workflowDetails = {
@@ -197,6 +197,25 @@
     //     return act;
     //   });
     // }
+
+    if (
+      PT_CEMP && 
+      workflowDetails?.data?.applicationBusinessService === "ptr" &&
+      workflowDetails?.data?.actionState?.nextActions?.find(act => act.action === "REJECT")
+    ) {
+    
+      workflowDetails.data.actionState.nextActions = workflowDetails?.data?.actionState?.nextActions.map(act => {
+        if (act.action === "REJECT") {
+          return {
+            action: "REJECT",
+            forcedName: "REJECT", 
+            redirectionUrl: { pathname: `/digit-ui/employee/pt/response/${applicationNumber}` }  
+          };
+        }
+        return act;
+      });
+    
+    }
 
     // const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { wfDocuments }) => {
     //   return wfDocuments ? [...acc, ...wfDocuments] : acc;
