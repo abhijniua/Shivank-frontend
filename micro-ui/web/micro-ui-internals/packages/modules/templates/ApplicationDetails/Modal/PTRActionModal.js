@@ -32,18 +32,18 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     },
     { enabled: !action?.isTerminateState }
   );
-  // const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
-  //   tenantId,
-  //   businessService,
-  //   "FINANCIAL_YEARLS",
-  //   {},
-  //   {
-  //     details: {
-  //       tenantId: Digit.ULBService.getStateId(),
-  //       moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'PT')]" }] }],
-  //     },
-  //   }
-  // );
+  const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
+    tenantId,
+    businessService,
+    "FINANCIAL_YEARLS",
+    {},
+    {
+      details: {
+        tenantId: Digit.ULBService.getStateId(),
+        moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'PTR')]" }] }],
+      },
+    }
+  );
 
   const [config, setConfig] = useState({});
   const [defaultValues, setDefaultValues] = useState({});
@@ -56,15 +56,11 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
   const [disableActionSubmit, setDisableActionSubmit] = useState(false);
 
-//   useEffect(() => {
-//     if (financialYearsData && financialYearsData["egf-master"]) {
-//       setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
-//     }
-//   }, [financialYearsData]);
-
   useEffect(() => {
-    console.log("Component rendered");
-  }, []);
+    if (financialYearsData && financialYearsData["egf-master"]) {
+      setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
+    }
+  }, [financialYearsData]);
 
   useEffect(() => {
     setApprovers(approverData?.Employees?.map((employee) => ({ uuid: employee?.uuid, name: employee?.user?.name })));
@@ -96,24 +92,19 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     })();
   }, [file]);
 
-
-  console.log("dataaaaa123",data)
   function submit(data) {
-
-    // console.log("what is this data", data)
-     if (action?.action == "INACTIVE_PROPERTY"){
-    // if (action?.action == "REJECT"){
-
+    if (action?.action == "INACTIVE_PROPERTY"){
+      console.log("dataaaaa123",data)
       let workflow = { action: "OPEN", comment: data?.comments, businessService:"ptr", moduleName: "pet-services" };
       applicationData.creationReason = "CREATE"
       submitAction({
         customFunctionToExecute: action?.customFunctionToExecute,
-        PetRegistrationApplications: {
+        Property: {
           ...applicationData,
           workflow,
         },
       });
-           }
+          }
     else if (!action?.showFinancialYearsModal) {
       let workflow = { action: action?.action, comment: data?.comments, businessService, moduleName: moduleCode };
       workflow["assignes"] = action?.isTerminateState || !selectedApprover ? [] : [selectedApprover];
@@ -127,7 +118,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         ];
 
       submitAction({
-        PetRegistrationApplications: {
+        Property: {
           ...applicationData,
           workflow,
         },
@@ -138,7 +129,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         customFunctionToExecute: action?.customFunctionToExecute,
         Assessment: {
           financialYear: selectedFinancialYear?.name,
-          applicationNumber: applicationData?.applicationNumber,
+          propertyId: applicationData?.propertyId,
           tenantId,
           source: applicationData?.source,
           channel: applicationData?.channel,
@@ -189,9 +180,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       isDisabled={!action.showFinancialYearsModal ? PTALoading || (action?.docUploadRequired && !uploadedFile) : !selectedFinancialYear}
       formId="modal-action"
     >
-      { (
+      {financialYearsLoading ? (
         <Loader />
-      )  (
+      ) : (
         <FormComposer
           config={config.form}
           noBoxShadow
@@ -202,7 +193,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           formId="modal-action"
           // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
         />
-       )} 
+      )}
     </Modal>
   ) : (
     <Loader />

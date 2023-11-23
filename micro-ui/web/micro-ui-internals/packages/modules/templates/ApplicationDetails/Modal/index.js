@@ -12,7 +12,7 @@ const ActionModal = (props) => {
   if (props?.businessService.includes("PT")) {
     return <PTActionModal {...props} />;
   }
-  if (props?.businessService.includes("PTR")) {
+  if (props?.businessService.includes("ptr")) {
     return <PTRActionModal {...props} />;
   }
 
