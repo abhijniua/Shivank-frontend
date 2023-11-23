@@ -38,14 +38,14 @@ export const configPTRApproverApplication = ({
             ),
           },
           {
-            label: t("ES_PT_ACTION_COMMENTS"),
+            label: t("PTR_ACTION_COMMENTS"),
             type: "textarea",
             populators: {
               name: "comments",
             },
           },
           {
-            label: `${t("ES_PT_ATTACH_FILE")}${action.docUploadRequired ? " *" : ""}`,
+            label: `${t("PTR_ATTACH_FILE")}${action.docUploadRequired ? " *" : ""}`,
             populators: (
               <UploadFile
                 id={"workflow-doc"}
@@ -54,8 +54,8 @@ export const configPTRApproverApplication = ({
                   setUploadedFile(null);
                 }}
                 showHint={true}
-                hintText={t("PT_ATTACH_RESTRICTIONS_SIZE")}
-                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
+                hintText={t("PTR_ATTACH_RESTRICTIONS_SIZE")}
+                message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
               />
             ),
           },

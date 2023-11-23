@@ -61,7 +61,7 @@ const MutationForm = ({ applicationData, tenantId }) => {
         (oldDoc) => !mutationDocs?.PropertyTax?.MutationDocuments.some((mut) => oldDoc.documentType.includes(mut.code))
       ) || [];
     const submitData = {
-      Property: {
+      PetRegistrationApplications: {
         ...data.originalData,
         creationReason: "MUTATION",
         owners: [
@@ -112,8 +112,8 @@ const MutationForm = ({ applicationData, tenantId }) => {
       },
     };
 
-    if (!submitData.Property.ownershipCategory.includes("INDIVIDUAL")) {
-      submitData.Property.institution = {
+    if (!submitData.PetRegistrationApplications.ownershipCategory.includes("INDIVIDUAL")) {
+      submitData.PetRegistrationApplications.institution = {
         nameOfAuthorizedPerson: data.owners[0].name,
         name: data.owners[0].institution.name,
         designation: data.owners[0].designation,
@@ -122,7 +122,7 @@ const MutationForm = ({ applicationData, tenantId }) => {
       };
     }
 
-    history.replace("/digit-ui/employee/pt/response", { Property: submitData.Property, key: "UPDATE", action: "SUBMIT" });
+    history.replace("/digit-ui/employee/pt/response", { PetRegistrationApplications: submitData.PetRegistrationApplications, key: "UPDATE", action: "SUBMIT" });
   };
 
   const configs = newConfigMutate;

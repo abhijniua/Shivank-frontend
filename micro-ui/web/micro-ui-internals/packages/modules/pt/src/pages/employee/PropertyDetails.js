@@ -239,7 +239,7 @@ const PropertyDetails = () => {
                 forcedName: "PT_INACTIVE_PROPERTY",
                 showInactiveYearModel: true,
                 customFunctionToExecute: (data) => {
-                history.push("/digit-ui/employee/pt/response", { Property: data.Property, key: "UPDATE", action: "SUBMIT" });
+                history.push("/digit-ui/employee/pt/response", { PetRegistrationApplications: data.PetRegistrationApplications, key: "UPDATE", action: "SUBMIT" });
                 },
                 // redirectionUrl: {
                  
@@ -338,7 +338,7 @@ const PropertyDetails = () => {
                 ];
                 mutation.mutate(
                   {
-                    Property: newProp,
+                    PetRegistrationApplications: newProp,
                   },
                   {
                     onError: {},

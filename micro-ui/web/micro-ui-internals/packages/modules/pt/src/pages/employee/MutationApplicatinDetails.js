@@ -68,7 +68,7 @@ const MutationApplicationDetails = ({ propertyId, applicationNumber, workflowDet
     if(applicationNumber){
       const res = await Digit.PaymentService.searchBill(tenantId, {Service: businessService, consumerCode: applicationNumber});
       if(! res.Bill.length) {
-        const res1 = await Digit.PTService.ptCalculateMutation({Property: applicationDetails?.applicationData}, tenantId);
+        const res1 = await Digit.PTRService.ptCalculateMutation({PetRegistrationApplications: applicationDetails?.applicationData}, tenantId);
         setBillAmount(res1?.[applicationNumber]?.totalAmount || t("CS_NA"))
         setBillStatus(t(`PT_MUT_BILL_ACTIVE`))
       } else {

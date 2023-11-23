@@ -69,9 +69,10 @@ const Response = (props) => {
   //   if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
   // }, [mutation.data]);
 
-  // useEffect(() => {
-  //   if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
-  // }, [mutation1.data]);
+  useEffect(() => {
+    if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
+  }, [mutation1.data]);
+
   useEffect(() => {
     const onSuccess = async () => {queryClient.clear(); };
 

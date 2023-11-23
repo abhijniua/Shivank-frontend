@@ -40,7 +40,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     {
       details: {
         tenantId: Digit.ULBService.getStateId(),
-        moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'PTR')]" }] }],
+        moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'pet-services')]" }] }],
       },
     }
   );
@@ -91,18 +91,19 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       }
     })();
   }, [file]);
+  console.log("application data525245 ", applicationData)
 
   function submit(data) {
-    if (action?.action == "INACTIVE_PROPERTY"){
+    if (action?.action == "COMMON_APPROVED"){
       console.log("dataaaaa123",data)
       let workflow = { action: "OPEN", comment: data?.comments, businessService:"ptr", moduleName: "pet-services" };
       applicationData.creationReason = "CREATE"
       submitAction({
         customFunctionToExecute: action?.customFunctionToExecute,
-        Property: {
-          ...applicationData,
+        PetRegistrationApplications: [{
+          applicationData,
           workflow,
-        },
+        }],
       });
           }
     else if (!action?.showFinancialYearsModal) {
@@ -118,10 +119,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         ];
 
       submitAction({
-        Property: {
-          ...applicationData,
+        PetRegistrationApplications: [{
+          applicationData,
           workflow,
-        },
+        }],
       });
     } 
       else {
@@ -129,7 +130,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         customFunctionToExecute: action?.customFunctionToExecute,
         Assessment: {
           financialYear: selectedFinancialYear?.name,
-          propertyId: applicationData?.propertyId,
+          applicationNumber: applicationData?.applicationNumber,
           tenantId,
           source: applicationData?.source,
           channel: applicationData?.channel,

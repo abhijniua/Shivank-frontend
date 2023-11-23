@@ -548,7 +548,7 @@ export const convertToProperty = (data = {}) => {
   data = setPropertyDetails(data);
 
   const formdata = {
-    Property: {
+    PetRegistrationApplications: {
       tenantId: data.tenantId,
       address: data.address,
 
@@ -739,7 +739,7 @@ export const convertToUpdateProperty = (data = {}, t) => {
   data.address.city = data.address.city ? data.address.city : t(`TENANT_TENANTS_${stringReplaceAll(data?.tenantId.toUpperCase(),".","_")}`);
 
   const formdata = {
-    Property: {
+    PetRegistrationApplications: {
       id: data.id,
       accountId: data.accountId,
       acknowldgementNumber: data.acknowldgementNumber,
@@ -780,16 +780,16 @@ export const convertToUpdateProperty = (data = {}, t) => {
   };
 
   let propertyInitialObject = JSON.parse(sessionStorage.getItem("propertyInitialObject"));
-  if (checkArrayLength(propertyInitialObject?.units) && checkIsAnArray(formdata.Property?.units) && data?.isEditProperty) {
+  if (checkArrayLength(propertyInitialObject?.units) && checkIsAnArray(formdata.PetRegistrationApplications?.units) && data?.isEditProperty) {
     propertyInitialObject.units = propertyInitialObject.units.filter((unit) => unit.active);
     let oldUnits = propertyInitialObject.units.map((unit) => {
       return { ...unit, active: false };
     });
-    formdata.Property?.units.push(...oldUnits);
+    formdata.PetRegistrationApplications?.units.push(...oldUnits);
   }
   /* if (
     checkArrayLength(propertyInitialObject?.owners) &&
-    checkIsAnArray(formdata.Property?.owners) &&
+    checkIsAnArray(formdata.PetRegistrationApplications?.owners) &&
     data?.isEditProperty &&
     data.isUpdateProperty == false
   ) {
@@ -797,16 +797,16 @@ export const convertToUpdateProperty = (data = {}, t) => {
     let oldOwners = propertyInitialObject.owners.map((owner) => {
       return { ...owner, status: "INACTIVE" };
     });
-    formdata.Property?.owners.push(...oldOwners);
+    formdata.PetRegistrationApplications?.owners.push(...oldOwners);
   } else {
-    formdata.Property.owners = [...propertyInitialObject.owners];
+    formdata.PetRegistrationApplications.owners = [...propertyInitialObject.owners];
   } */
 
-  if (checkArrayLength(propertyInitialObject?.owners) && checkIsAnArray(formdata.Property?.owners)) {
-    formdata.Property.owners = [...propertyInitialObject.owners];
+  if (checkArrayLength(propertyInitialObject?.owners) && checkIsAnArray(formdata.PetRegistrationApplications?.owners)) {
+    formdata.PetRegistrationApplications.owners = [...propertyInitialObject.owners];
   }
   if (propertyInitialObject?.auditDetails) {
-    formdata.Property["auditDetails"] = { ...propertyInitialObject.auditDetails };
+    formdata.PetRegistrationApplications["auditDetails"] = { ...propertyInitialObject.auditDetails };
   }
   return formdata;
 };
