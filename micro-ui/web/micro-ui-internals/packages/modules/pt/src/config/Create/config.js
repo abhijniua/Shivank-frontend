@@ -23,17 +23,7 @@ export const newConfig =[
             }
         ]
     },
-    // {
-    //     "head": "ES_TITILE_ADDRESS_DETAILS",
-    //     "body": [
-    //         {
-    //             "component": "PTRSelectAddress",
-    //             "withoutLabel": true,
-    //             "key": "address",
-    //             "type": "component"
-    //         }
-    //     ]
-    // },
+    
 
     {
         "head": "PTR_LOCATION_DETAILS",

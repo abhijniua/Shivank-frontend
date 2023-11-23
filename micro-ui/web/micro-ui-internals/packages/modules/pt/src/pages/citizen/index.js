@@ -19,7 +19,7 @@ const App = () => {
     searchParams: {},
   };
 
-  const CreateProperty = Digit?.ComponentRegistryService?.getComponent("PTCreateProperty");
+  const PTRCreate = Digit?.ComponentRegistryService?.getComponent("PTRCreatePet");
   const EditProperty = Digit?.ComponentRegistryService?.getComponent("PTEditProperty");
   const SearchPropertyComponent = Digit?.ComponentRegistryService?.getComponent("PTSearchPropertyComponent");
   const SearchResultsComponent = Digit?.ComponentRegistryService?.getComponent("PTSearchResultsComponent");
@@ -35,7 +35,7 @@ const App = () => {
       <Switch>
         <AppContainer>
           {!shouldHideBackButton(hideBackButtonConfig) ? <BackButton>Back</BackButton> : ""}
-          <PrivateRoute path={`${path}/property/new-application`} component={CreateProperty} />
+          <PrivateRoute path={`${path}/property/new-application`} component={PTRCreate} />
           <PrivateRoute path={`${path}/property/edit-application`} component={EditProperty} />
           <Route path={`${path}/property/citizen-search`} component={SearchPropertyComponent} />
           <Route path={`${path}/property/search-results`} component={SearchResultsComponent} />

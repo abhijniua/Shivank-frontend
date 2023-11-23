@@ -6,7 +6,9 @@ import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from 
 // import { newConfig } from "../../../config/Create/config";
 import { citizenConfig } from "../../../config/Create/citizenconfig";
 
-const CreateProperty = ({ parentRoute }) => {
+// const CreateProperty = ({ parentRoute }) => {
+const PTRCreate = ({ parentRoute }) => {
+
   const queryClient = useQueryClient();
   const match = useRouteMatch();
   const { t } = useTranslation();
@@ -111,7 +113,7 @@ const CreateProperty = ({ parentRoute }) => {
       queryClient.invalidateQueries("PT_CREATE_PROPERTY");
     }
 
-  const createProperty = async () => {
+  const ptrcreate = async () => {
     history.push(`${match.path}/acknowledgement`);
   };
 
@@ -149,7 +151,9 @@ const CreateProperty = ({ parentRoute }) => {
   commonFields.forEach((obj) => {
     config = config.concat(obj.body.filter((a) => !a.hideInCitizen));
   });
+  // config.indexRoute = "info";
   config.indexRoute = "info";
+
   const CheckPage = Digit?.ComponentRegistryService?.getComponent("PTCheckPage");
   const PTAcknowledgement = Digit?.ComponentRegistryService?.getComponent("PTAcknowledgement");
   return (
@@ -164,7 +168,7 @@ const CreateProperty = ({ parentRoute }) => {
         );
       })}
       <Route path={`${match.path}/check`}>
-        <CheckPage onSubmit={createProperty} value={params} />
+        <CheckPage onSubmit={ptrcreate} value={params} />
       </Route>
       <Route path={`${match.path}/acknowledgement`}>
         <PTAcknowledgement data={params} onSuccess={onSuccess} />
@@ -176,4 +180,4 @@ const CreateProperty = ({ parentRoute }) => {
   );
 };
 
-export default CreateProperty;
+export default PTRCreate;

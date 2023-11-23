@@ -27,11 +27,13 @@ import PTROwnerDetails from "./pageComponents/PTROwnerDetails";
 // import PTRSelectAddress from "./pageComponents/PTRSelectAddress";
 import PTRDocumentUpload from "./pageComponents/PTRDocumentUpload";
 import PTRSelectStreet from "./pageComponents/PTRSelectStreet";
+import PTRCreate from "./pages/citizen/Create";
+import PTRCitizenDetails from "./pageComponents/PTRCitizenDetails";
 
 import RentalDetails from "./pageComponents/RentalDetails";
 import SelectInistitutionOwnerDetails from "./pageComponents/SelectInistitutionOwnerDetails";
 import SelectOwnerAddress from "./pageComponents/SelectOwnerAddress";
-import SelectOwnerDetails from "./pageComponents/SelectOwnerDetails";
+// import SelectOwnerDetails from "./pageComponents/SelectOwnerDetails";
 import SelectOwnerShipDetails from "./pageComponents/SelectOwnerShipDetails";
 import SelectProofIdentity from "./pageComponents/SelectProofIdentity";
 import SelectSpecialOwnerCategoryType from "./pageComponents/SelectSpecialOwnerCategoryType";
@@ -50,7 +52,7 @@ import PropertySearchForm from "./components/search/PropertySearchForm";
 import PropertySearchResults from "./components/search/PropertySearchResults";
 import { PTMyPayments } from "./pages/citizen/MyPayments";
 import SelectPTUnits from "./pageComponents/SelectPTUnits";
-import CreateProperty from "./pages/citizen/Create";
+// import CreateProperty from "./pages/citizen/Create";
 import { PTMyApplications } from "./pages/citizen/PTMyApplications";
 import { MyProperties } from "./pages/citizen/MyProperties";
 import PTApplicationDetails from "./pages/citizen/PTApplicationDetails";
@@ -109,7 +111,7 @@ const componentsToRegister = {
   //PTSelectStreet,
   Proof,
   SelectOwnerShipDetails,
-  SelectOwnerDetails,
+  // SelectOwnerDetails,
   SelectSpecialOwnerCategoryType,
   SelectOwnerAddress,
   SelectInistitutionOwnerDetails,
@@ -165,7 +167,7 @@ const componentsToRegister = {
   PTResponse: Response,
   PTTransferOwnership: TransferOwnership,
   PTDocsRequired: DocsRequired,
-  PTCreateProperty: CreateProperty,
+  
   PTMyApplications: PTMyApplications,
   PTMyProperties: MyProperties,
   PTApplicationDetails: PTApplicationDetails,
@@ -184,9 +186,10 @@ const componentsToRegister = {
   
   PTRPetdetails,
   PTROwnerDetails,
-  // PTRSelectAddress,
+  PTRCreatePet: PTRCreate,
   PTRDocumentUpload,
-  PTRSelectStreet
+  PTRSelectStreet,
+  PTRCitizenDetails
 };
 
 const addComponentsToRegistry = () => {
@@ -244,7 +247,7 @@ export const PTLinks = ({ matchPath, userType }) => {
     },
     {
       link: `${matchPath}/property/new-application`,
-      i18nKey: t("PT_CREATE_PROPERTY"),
+      i18nKey: t("PTR_CREATE_PET_REGISTRATION"),
     },
     {
       link: `${matchPath}/property/my-properties`,
