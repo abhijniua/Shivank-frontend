@@ -177,7 +177,7 @@ const OwnerForm = (_props) => {
           ) : null}
 
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{t("PTR_SEARCH_PET_TYPE") + " *"}</CardLabel>
+            <CardLabel className="card-label-smaller">{t("PTR_PET_TYPE ") + " *"}</CardLabel>
             <Controller
               control={control}
               name={"petType"}
@@ -202,7 +202,7 @@ const OwnerForm = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.petType ? errors?.petType?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{t("PTR_SEARCH_BREED_TYPE") + " *"}</CardLabel>
+            <CardLabel className="card-label-smaller">{t("PTR_BREED_TYPE ") + " *"}</CardLabel>
             <Controller
               control={control}
               name={"breedType"}
@@ -286,7 +286,7 @@ const OwnerForm = (_props) => {
           <CardLabelError style={errorStyle}>{localFormState.touched.petAge ? errors?.petAge?.message : ""}</CardLabelError>
 
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{t("PTR_PET_SEX") + " *"}</CardLabel>
+            <CardLabel className="card-label-smaller">{t("PTR_SEX ") + " *"}</CardLabel>
             <Controller
               control={control}
               name={"petGender"}

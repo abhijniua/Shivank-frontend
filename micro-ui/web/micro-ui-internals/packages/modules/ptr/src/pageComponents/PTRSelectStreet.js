@@ -21,7 +21,7 @@ const PTRSelectStreet = ({ t, config, onSelect, userType, formData, formState, s
   } else {
     inputs = [
       {
-        label: "PTR_STREET_NAME",
+        label: "PT_PROPERTY_ADDRESS_STREET_NAME",
         type: "text",
         name: "street",
         validation: {
@@ -31,7 +31,7 @@ const PTRSelectStreet = ({ t, config, onSelect, userType, formData, formState, s
         },
       },
       {
-        label: "PTR_HOUSE_NO",
+        label: "PT_PROPERTY_ADDRESS_HOUSE_NO",
         type: "text",
         name: "doorNo",
         validation: {
@@ -39,16 +39,6 @@ const PTRSelectStreet = ({ t, config, onSelect, userType, formData, formState, s
           // maxlength: 256,
           title: t("CORE_COMMON_DOOR_INVALID"),
         },
-      },
-      {
-        label: "PTR_HOUSE_NAME",
-        type: "text",
-        name: "buildingName",
-        // validation: {
-        //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
-        //   // maxlength: 256,
-        //   title: t("CORE_COMMON_DOOR_INVALID"),
-        // },
       },
       {
         label: "PTR_ADDRESS_LINE1",
@@ -80,7 +70,16 @@ const PTRSelectStreet = ({ t, config, onSelect, userType, formData, formState, s
         //   title: t("CORE_COMMON_DOOR_INVALID"),
         // },
       },
-     
+      {
+        label: "PTR_HouseName",
+        type: "text",
+        name: "buildingName",
+        // validation: {
+        //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
+        //   // maxlength: 256,
+        //   title: t("CORE_COMMON_DOOR_INVALID"),
+        // },
+      },
       
     ];
   }

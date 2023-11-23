@@ -17,7 +17,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
   if (formData?.isUpdateProperty) isEditProperty = true;
   const inputs = [
     {
-      label: "PTR_ADDRESS_PINCODE",
+      label: "PTR_PINCODE",
       type: "text",
       name: "pincode",
       disable: isEditProperty,

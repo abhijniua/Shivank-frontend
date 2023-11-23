@@ -153,7 +153,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData, setError, cl
         </LabelFieldPair>
         <CardLabelError style={errorStyle}>{localFormState.touched.city ? errors?.city?.message : ""}</CardLabelError>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{t("PTR_LOCALITY") + " *"}</CardLabel>
+          <CardLabel className="card-label-smaller">{t("PT_LOCALITY_LABEL") + " *"}</CardLabel>
           <Controller
             name="locality"
             defaultValue={null}
@@ -188,7 +188,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData, setError, cl
       <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>
         <div>
           <CardLabel>{`${t("MYCITY_CODE_LABEL")} `}</CardLabel>
-          <span className={"form-ptr-dropdown-only"}>
+          <span className={"form-pt-dropdown-only"}>
             <RadioOrSelect
               options={cities.sort((a, b) => a.name.localeCompare(b.name))}
               selectedOption={selectedCity}
@@ -201,9 +201,9 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData, setError, cl
               disabled={isEditProperty}
             />
           </span>
-          {selectedCity && localities && <CardLabel>{`${t("PTR_LOCALITY")} `}</CardLabel>}
+          {selectedCity && localities && <CardLabel>{`${t("PT_LOCALITY_LABEL")} `}</CardLabel>}
           {selectedCity && localities && (
-            <span className={"form-ptr-dropdown-only"}>
+            <span className={"form-pt-dropdown-only"}>
               <RadioOrSelect
                 dropdownStyle={{ paddingBottom: "20px" }}
                 isMandatory={config.isMandatory}
