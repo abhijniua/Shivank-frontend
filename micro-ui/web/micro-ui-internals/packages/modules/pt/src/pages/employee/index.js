@@ -285,7 +285,7 @@ const EmployeeApp = ({ path, url, userType }) => {
 
   const getBreadCrumb = () => {
     if (breadcrumbObj[location.pathname]) return t(breadcrumbObj[location.pathname]);
-    else if (location.pathname.includes("/digit-ui/employee/pt/application-details/")) return t("PT_APPLICATION_TITLE");
+    else if (location.pathname.includes("/digit-ui/employee/pt/application-details/")) return t("PTR_APPLICATION_TITLE");
     else if (location.pathname.includes("/digit-ui/employee/pt/property-details/")) return t("PT_PROPERTY_INFORMATION");
     else if (location.pathname.includes("/digit-ui/employee/pt/payment-details/")) return t("PT_PAYMENT_HISTORY");
     else if (location.pathname.includes("/digit-ui/employee/pt/assessment-details/")) return t("PT_ASSESS_PROPERTY");
@@ -354,7 +354,7 @@ const EmployeeApp = ({ path, url, userType }) => {
       },
       {
         path: `/digit-ui/employee/pt/applicationsearch/application-details/${sessionStorage.getItem("applicationNoinAppDetails")}`,
-        content: t("PT_APPLICATION_TITLE"),
+        content: t("PTR_APPLICATION_TITLE"),
         show: location.pathname.includes("/pt/application-details/") || location.pathname.includes("/pt/applicationsearch/application-details/") ? true : false,
       },
       {

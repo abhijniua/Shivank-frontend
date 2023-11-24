@@ -86,7 +86,7 @@ export const newConfig =[
                     "skipText": "CORE_COMMON_SKIP_CONTINUE"
                 },
                 "key": "address",
-                "nextStep": "proof",
+                // "nextStep": "proof",
                 "hideInEmployee": true
             },
             

@@ -24,7 +24,7 @@ import PTSelectPincode from "./pageComponents/PTSelectPincode";
 
 import PTRPetdetails from "./pageComponents/PTRPetdetails";
 import PTROwnerDetails from "./pageComponents/PTROwnerDetails";
-// import PTRSelectAddress from "./pageComponents/PTRSelectAddress";
+import PTRCitizenPet from "./pageComponents/PTRCitizenPet";
 import PTRDocumentUpload from "./pageComponents/PTRDocumentUpload";
 import PTRSelectStreet from "./pageComponents/PTRSelectStreet";
 import PTRCreate from "./pages/citizen/Create";
@@ -100,6 +100,7 @@ import AcknowledgementCF from "@egovernments/digit-ui-module-core/src/components
 //import PTCitizenFeedbackPopUp from "./pageComponents/PTCitizenFeedbackPopUp";
 
 import PTSelectLandmark from "./pageComponents/PTSelectLandmark";
+
 
 const componentsToRegister = {
   PTLandArea,
@@ -189,7 +190,9 @@ const componentsToRegister = {
   PTRCreatePet: PTRCreate,
   PTRDocumentUpload,
   PTRSelectStreet,
-  PTRCitizenDetails
+  PTRCitizenDetails,
+  PTRCitizenPet,
+ 
 };
 
 const addComponentsToRegistry = () => {

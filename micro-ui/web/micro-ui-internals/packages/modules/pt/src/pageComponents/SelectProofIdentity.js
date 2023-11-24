@@ -23,9 +23,15 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   let dropdownData = [];
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
-  const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
-  const docs = Documentsob?.PropertyTax?.Documents;
-  const proofIdentity = Array.isArray(docs) && docs.filter((doc) => doc.code.includes("IDENTITYPROOF"));
+  // const { data: Documentsob = {} } = Digit.Hooks.ptr.usePetMDMS(stateId, "PetService", "Documents");
+  const { isLoading, data } = Digit.Hooks.ptr.usePetMDMS(stateId, "PetService", "Documents");  
+
+  // const docs = Documentsob?.PropertyTax?.Documents;
+  const PTRDocument = data?.PetService?.Documents.map(document => ({
+    ...document,
+    hasDropdown: true
+  }));
+  const proofIdentity = Array.isArray(PTRDocument) && PTRDocument.filter((doc) => doc.code.includes("IDENTITYPROOF"));
   if (proofIdentity.length > 0) {
     dropdownData = proofIdentity[0]?.dropdownData;
     dropdownData.forEach((data) => {

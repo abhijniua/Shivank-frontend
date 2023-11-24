@@ -268,9 +268,7 @@ const ApplicationDetails = () => {
 
   sessionStorage.setItem("applicationNoinAppDetails",applicationNumber);
 
-  useEffect(() => {
-    console.log("Component rendered");
-  }, []);
+  
 
   
   

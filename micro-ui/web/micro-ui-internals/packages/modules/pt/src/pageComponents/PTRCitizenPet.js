@@ -5,30 +5,26 @@ import { useLocation, useRouteMatch } from "react-router-dom";
 import Timeline from "../components/TLTimeline";
 import { Controller } from "react-hook-form";
 
-const PTRCitizenDetails
+const PTRCitizenPet
  = ({ t, config, onSelect, userType, formData, ownerIndex }) => {
-  const { pathname: url } = useLocation();
-  // const editScreen = url.includes("/modify-application/");
-  //const mutationScreen = url.includes("/property-mutation/");
-
-  //let index = mutationScreen ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
+  const { pathname: url } = useLocation(); 
+  let index = window.location.href.charAt(window.location.href.length - 1);
   let validation = {};
-  const [name, setName] = useState((formData.owners && formData.owners[index] && formData.owners[index].name) || formData?.owners?.name || "");
-  const [email, setEmail] = useState((formData.owners && formData.owners[index] && formData.owners[index].email) || formData?.owners?.emailId || "");
+  const [name, setName] = useState((formData. pets && formData. pets[index] && formData. pets[index].name) || formData?. pets?.name || "");
+  const [email, setEmail] = useState((formData. pets && formData. pets[index] && formData. pets[index].email) || formData?. pets?.emailId || "");
   const [mobileNumber, setMobileNumber] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || ""
+    (formData. pets && formData. pets[index] && formData. pets[index].mobileNumber) || formData?. pets?.mobileNumber || ""
   );
   const [altmobileNumber, setAltMobileNumber] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].altmobileNumber) || formData?.owners?.altmobileNumber || ""
+    (formData. pets && formData. pets[index] && formData. pets[index].altmobileNumber) || formData?. pets?.altmobileNumber || ""
   );
 
   
   const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || ""
+    (formData. pets && formData. pets[index] && formData. pets[index].fatherOrHusbandName) || formData?. pets?.fatherOrHusbandName || ""
   );
   
-  // const isUpdateProperty = formData?.isUpdateProperty || false;
-  // let isEditProperty = formData?.isEditProperty || false;
+
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
@@ -56,15 +52,19 @@ const PTRCitizenDetails
   
 
   const goNext = () => {
-    let owner = formData.owners && formData.owners[index];
+    let owner = formData. pets && formData. pets[index];
     let ownerStep;
     if (userType === "citizen") {
       ownerStep = { ...owner, name, mobileNumber,altmobileNumber, fatherOrHusbandName, emailId: email };
       onSelect(config.key, { ...formData[config.key], ...ownerStep }, false, index);
     } else {
-      
+      // if (mutationScreen) {
+      //   ownerStep = { ...owner, name, gender, mobileNumber, fatherOrHusbandName };
+      //   onSelect("", ownerStep);
+      //   return;
+      // }
       ownerStep = { ...owner, name,  mobileNumber,altmobileNumber, fatherOrHusbandName };
-      onSelect(config.key, ownerStep, false);
+      onSelect(config.key, ownerStep, false,index);
     }
   };
 
@@ -78,7 +78,12 @@ const PTRCitizenDetails
   //   // { name: "Other", value: "OTHER", code: "OTHER" },
   // ];
 
-  
+//   const GuardianOptions = [
+//     { name: "HUSBAND", code: "HUSBAND", i18nKey: "PT_RELATION_HUSBAND" },
+//     { name: "Father", code: "FATHER", i18nKey: "PT_RELATION_FATHER" },
+//     // { name: "Husband/Wife", code: "HUSBANDWIFE", i18nKey: "PT_RELATION_HUSBANDWIFE" },
+//     // { name: "Other", code: "OTHER", i18nKey: "PT_RELATION_OTHER" },
+//   ];
 
   useEffect(() => {
     if (userType === "citizen") {
@@ -297,4 +302,4 @@ const PTRCitizenDetails
   );
 };
 
-export default PTRCitizenDetails;
+export default PTRCitizenPet;

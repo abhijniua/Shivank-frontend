@@ -115,7 +115,7 @@ export const PTRSearch = {
                 // ?.filter((e) => e.status === "ACTIVE")
                 ?.map((document) => {
                   return {
-                    title: `PT_${document?.documentType.replace(".", "_")}`,
+                    title: `PTR_${document?.documentType.replace(".", "_")}`,
                     documentType: document?.documentType,
                     documentUid: document?.documentUid,
                     fileStoreId: document?.fileStoreId,
