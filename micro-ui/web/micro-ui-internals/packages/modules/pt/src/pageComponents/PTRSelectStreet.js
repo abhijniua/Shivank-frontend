@@ -85,25 +85,25 @@
       ];
     }
 
-    // const convertValidationToRules = ({ validation, name, messages }) => {
-    //   if (validation) {
-    //     let { pattern: valPattern, maxlength,minlength, required: valReq } = validation || {};
-    //     let pattern = (value) => {
-    //       if (valPattern) {
-    //         if (valPattern instanceof RegExp) return valPattern.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
-    //         else if (typeof valPattern === "string")
-    //           return new RegExp(valPattern)?.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
-    //       }
-    //       return true;
-    //     };
-    //     let maxLength = (value) => (maxlength ? (value?.length <= maxlength ? true : messages?.maxlength || `${name.toUpperCase()}_MAXLENGTH`) : true);
-    //     let minLength = (value) => (minlength ? (value?.length >= minlength ? true : messages?.minlength || `${name.toUpperCase()}_MINLENGTH`) : true);
-    //     let required = (value) => (valReq ? (!!value ? true : messages?.required || `${name.toUpperCase()}_REQUIRED`) : true);
+    const convertValidationToRules = ({ validation, name, messages }) => {
+      // if (validation) {
+      //   let { pattern: valPattern, maxlength,minlength, required: valReq } = validation || {};
+      //   let pattern = (value) => {
+      //     if (valPattern) {
+      //       if (valPattern instanceof RegExp) return valPattern.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
+      //       else if (typeof valPattern === "string")
+      //         return new RegExp(valPattern)?.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
+      //     }
+      //     return true;
+      //   };
+      //   let maxLength = (value) => (maxlength ? (value?.length <= maxlength ? true : messages?.maxlength || `${name.toUpperCase()}_MAXLENGTH`) : true);
+      //   let minLength = (value) => (minlength ? (value?.length >= minlength ? true : messages?.minlength || `${name.toUpperCase()}_MINLENGTH`) : true);
+      //   let required = (value) => (valReq ? (!!value ? true : messages?.required || `${name.toUpperCase()}_REQUIRED`) : true);
 
-    //     return { pattern, required, maxLength,minlength };
-    //   }
-    //   return {};
-    // };
+      //   return { pattern, required, maxLength,minlength };
+      // }
+      return {};
+    };
 
     useEffect(() => {
       trigger();
@@ -140,7 +140,7 @@
                 control={control}
                 defaultValue={formData?.address?.[input.name]}
                 name={input.name}
-                //rules={{ validate: convertValidationToRules(input) }}
+                rules={{ validate: convertValidationToRules(input) }}
                 render={(_props) => (
                   <TextInput
                     id={input.name}
