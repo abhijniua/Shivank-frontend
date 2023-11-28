@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useRouteMatch } from "react-router-dom";
 import getPTAcknowledgementData from "../../../getPTAcknowledgementData";
-import { convertToProperty, convertToUpdateProperty } from "../../../utils";
+import { convertToProperty } from "../../../utils";
 
 const GetActionMessage = (props) => {
   const { t } = useTranslation();
@@ -25,8 +25,8 @@ const BannerPicker = (props) => {
   return (
     <Banner
       message={GetActionMessage(props)}
-      applicationNumber={props.data?.Properties[0].acknowldgementNumber}
-      info={props.isSuccess ? props.t("PT_APPLICATION_NO") : ""}
+      applicationNumber={props.data?.PetRegistrationApplications[0].applicationNumber}
+      info={props.isSuccess ? props.t("PTR_APPLICATION_NO") : ""}
       successful={props.isSuccess}
       style={{width: "100%"}}
     />
@@ -34,32 +34,42 @@ const BannerPicker = (props) => {
 };
 
 const PTAcknowledgement = ({ data, onSuccess }) => {
+
+  console.log("data pt rackno",data )
   const { t } = useTranslation();
-  const isPropertyMutation = window.location.href.includes("property-mutation");
+  // const isPropertyMutation = window.location.href.includes("property-mutation");
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const mutation = Digit.Hooks.pt.usePropertyAPI(
-    data?.address?.city ? data.address?.city?.code : tenantId,
-    !window.location.href.includes("edit-application") && !isPropertyMutation
-  );
+  const mutation = Digit.Hooks.ptr.usePTRCreateAPI("pg.citya");    // need to check why tenant id is going only pg
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const match = useRouteMatch();
   const { tenants } = storeData || {};
 
+  console.log("data in ackno", data)
+
   useEffect(() => {
     try {
-      let tenantId = isPropertyMutation ? data.Property?.address.tenantId : data?.address?.city ? data.address?.city?.code : tenantId;
-      data.tenantId = tenantId;
-      let formdata = !window.location.href.includes("edit-application")
-        ? isPropertyMutation
-          ? data
-          : convertToProperty(data)
-        : convertToUpdateProperty(data,t);
-      formdata.Property.tenantId = formdata?.Property?.tenantId || tenantId;
+      //let tenantId = isPropertyMutation ? data.Property?.address.tenantId : data?.address?.city ? data.address?.city?.code : tenantId;
+      console.log("data under useeffect", data)
+     // data.tenantId = tenantId;
+      let formdata = convertToProperty(data)
+      
+
+      console.log("formdata ", formdata)
+      //  !window.location.href.includes("edit-application")
+      //   ? isPropertyMutation
+      //     ? data
+      //     : convertToProperty(data)
+      //   : convertToUpdateProperty(data,t);
       mutation.mutate(formdata, {
         onSuccess,
       });
     } catch (err) {
     }
+  }, []);
+
+  useEffect (()=>{
+    console.log("Component is rendering very well")
+
   }, []);
 
   const handleDownloadPdf = async () => {
@@ -82,35 +92,17 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
       <BannerPicker t={t} data={mutation.data} isSuccess={mutation.isSuccess} isLoading={mutation.isIdle || mutation.isLoading} />
       {mutation.isSuccess && <CardText>{t("CS_FILE_PROPERTY_RESPONSE")}</CardText>}
       {!mutation.isSuccess && <CardText>{t("CS_FILE_PROPERTY_FAILED_RESPONSE")}</CardText>}
-      {/* {mutation.isSuccess && (
-        <LinkButton
-          label={
-            <div className="response-download-button">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#a82227">
-                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-                </svg>
-              </span>
-              <span className="download-button">{t("CS_COMMON_DOWNLOAD")}</span> 
-            </div>
-          }
-          onClick={handleDownloadPdf}
-          className="w-full"
-        />)}*/}
       <StatusTable>
         {mutation.isSuccess && (
           <Row
             rowContainerStyle={rowContainerStyle}
             last
             label={t("PT_COMMON_TABLE_COL_PT_ID")}
-            text={mutation?.data?.Properties[0]?.propertyId}
+            text={mutation?.data?.PetRegistrationApplications[0]?.applicationNumber}
             textStyle={{ whiteSpace: "pre", width: "60%" }}
           />
         )}
       </StatusTable>
-      {/* {mutation.isSuccess && <Link to={`/digit-ui/citizen/feedback?redirectedFrom=${match.path}&propertyId=${mutation.isSuccess ? mutation?.data?.Properties[0]?.propertyId : ""}&acknowldgementNumber=${mutation.isSuccess ? mutation?.data?.Properties[0]?.acknowldgementNumber : ""}&creationReason=${mutation.isSuccess ? mutation?.data?.Properties[0]?.creationReason : ""}&tenantId=${mutation.isSuccess ? mutation?.data?.Properties[0]?.tenantId : ""}&locality=${mutation.isSuccess ? mutation?.data?.Properties[0]?.address?.locality?.code : ""}`}>
-          <SubmitBar label={t("CS_REVIEW_AND_FEEDBACK")}/>
-      </Link>} */}
       {mutation.isSuccess && <SubmitBar label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />}
       <Link to={`/digit-ui/citizen`}>
         <LinkButton label={t("CORE_COMMON_GO_TO_HOME")} />

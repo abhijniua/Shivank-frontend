@@ -16,7 +16,7 @@
                         "route": "owners",
                         "component": "PTRCitizenDetails",
                         "withoutLabel": true,
-                        "key": "ownerss",
+                        "key": "owners",
                         "type": "component",
                         "nextStep": "pet-details",
                         "hideInEmployee": true,
@@ -101,7 +101,7 @@
                     "body": [
                         {
                             "route": "documents",
-                            "component": "PTRDocumentUpload",
+                            "component": "SelectProofIdentity",
                             "withoutLabel": true,
                             "key": "Documents",
                             "type": "component",

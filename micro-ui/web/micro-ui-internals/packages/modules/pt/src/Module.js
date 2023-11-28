@@ -203,6 +203,7 @@ const addComponentsToRegistry = () => {
   });
 };
 
+
 export const PTModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
 
@@ -213,6 +214,7 @@ export const PTModule = ({ stateCode, userType, tenants }) => {
   addComponentsToRegistry();
 
   Digit.SessionStorage.set("PT_TENANTS", tenants);
+
   useEffect(
     () =>
       userType === "employee" &&

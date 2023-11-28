@@ -488,12 +488,12 @@ const ApplicationDetails = () => {
     Digit.Utils.pdf.generate(data);
   };
 
-  const propertyDetailsPDF = {
+  const petDetailsPDF = {
     order: 1,
     label: t("PTR_APPLICATION"),
     onClick: () => handleDownloadPdf(),
   };
-  let dowloadOptions = [propertyDetailsPDF];
+  let dowloadOptions = [petDetailsPDF];
 
 //  if (applicationDetails?.applicationData?.creationReason === "CREATE"){
 //    return(

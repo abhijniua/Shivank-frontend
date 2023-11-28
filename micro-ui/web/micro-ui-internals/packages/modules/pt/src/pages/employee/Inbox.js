@@ -29,7 +29,7 @@ const Inbox = ({
   // const [getSearchFi]
   const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
   const [pageSize, setPageSize] = useState(initialStates.pageSize || 10);
-  const [sortParams, setSortParams] = useState(initialStates.sortParams || [{ id: "createdTime", desc: false }]);
+  const [sortParams, setSortParams] = useState(initialStates.sortParams || [{ id: "createdTime", desc: true }]);
   const [searchParams, setSearchParams] = useState(initialStates.searchParams || {});
 
   let isMobile = window.Digit.Utils.browser.isMobile();
@@ -56,6 +56,7 @@ const Inbox = ({
         middlewaresWf,
         middlewareSearch,
       });
+
 
       useEffect(() => {
         console.log("rendering inbox");

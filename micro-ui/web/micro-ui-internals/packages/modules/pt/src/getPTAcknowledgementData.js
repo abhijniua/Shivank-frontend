@@ -11,22 +11,21 @@ import {
   getCityLocale,
 } from "./utils";
 
-//need to change it according to Pet registration 
+//need to change it according to Pet registration
 
 const capitalize = (text) => text.substr(0, 1).toUpperCase() + text.substr(1);
 const ulbCamel = (ulb) => ulb.toLowerCase().split(" ").map(capitalize).join(" ");
 
 const getOwner = (application, t, customTitle) => {
   let owners = [];
-  if(customTitle && customTitle.includes("TRANSFEROR"))
-  if (application?.isTransferor && application?.transferorDetails) {
-    application.ownershipCategory = application?.transferorDetails?.ownershipCategory;
-    owners = [...(application?.transferorDetails?.owners) || []];
-  } else {
-    owners = [...(application?.owners.filter((owner) => owner.status == "INACTIVE") || [])];
-  }
-  else
-  owners = [...(application?.owners.filter((owner) => owner.status == "ACTIVE") || [])];
+  if (customTitle && customTitle.includes("TRANSFEROR"))
+    if (application?.isTransferor && application?.transferorDetails) {
+      application.ownershipCategory = application?.transferorDetails?.ownershipCategory;
+      owners = [...(application?.transferorDetails?.owners || [])];
+    } else {
+      owners = [...(application?.owners.filter((owner) => owner.status == "INACTIVE") || [])];
+    }
+  else owners = [...(application?.owners.filter((owner) => owner.status == "ACTIVE") || [])];
   if (application?.ownershipCategory == "INDIVIDUAL.SINGLEOWNER") {
     return {
       title: t(customTitle || "PT_OWNERSHIP_INFO_SUB_HEADER"),
@@ -84,74 +83,86 @@ const getOwner = (application, t, customTitle) => {
 
 const getAssessmentInfo = (application, t) => {
   let values = [
-    { title: t("PT_ASSESMENT_INFO_USAGE_TYPE"), value: application?.usageCategory ? `${t(
-      (application?.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPSUBUSGTYPE_") +
-        (application?.usageCategory?.split(".")[1] ? application?.usageCategory?.split(".")[1] : application?.usageCategory)
-    )}` : t("CS_NA") },
-    { title: t("PT_ASSESMENT_INFO_TYPE_OF_BUILDING"), value: t(getPropertyTypeLocale(application?.propertyType)) || t("CS_NA") },
-    { title: t("PT_ASSESMENT_INFO_PLOT_SIZE"), value: t(application?.landArea) || t("CS_NA") },
-    { title: t("PT_ASSESMENT_INFO_NO_OF_FLOOR"), value: t(application?.noOfFloors) || t("CS_NA") },
-  ];
-  application.units = application?.units?.filter((unit) => unit.active == true) || [];
-  let flrno,
-    i = 0;
-  flrno = application.units && application.units[0]?.floorNo;
-  application.units.map((unit) => {
-    let doc = [
-      {
-        title: (flrno !== unit?.floorNo ? (i = 1) : (i = i + 1)) && i === 1 ? t(`PROPERTYTAX_FLOOR_${unit?.floorNo}`) : "",
-      },
-      {
-        title: t(""),
-      },
-      {
-        title: t(""),
-      },
-      {
-        title: t(""),
-      },
-      { title: t("PT_UNIT")+" "+ i },
-      {
-        title: t(""),
-      },
-      {
-        title: t(""),
-      },
-      {
-        title: t(""),
-      },
-      {
-        title: (flrno = unit?.floorNo) > -3 ? t("PT_ASSESSMENT_UNIT_USAGE_TYPE") : "",
-        value: (flrno = unit?.floorNo) > -3 ? t(getPropertySubUsageTypeLocale(unit?.usageCategory)) || t("CS_NA") : "",
-      },
-      {
-        title: (flrno = unit?.floorNo) > -3 ? t("PT_ASSESMENT_INFO_OCCUPLANCY") : "",
-        value: (flrno = unit?.floorNo) > -3 ? t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) || t("CS_NA") : "",
-      },
-      {
-        title: (flrno = unit?.floorNo) > -3 ? t("PT_FORM2_BUILT_AREA") : "",
-        value: (flrno = unit?.floorNo) > -3 ? t(unit?.constructionDetail?.builtUpArea) || t("CS_NA") : "",
-      },
-      {
-        title:
-          (flrno = unit?.floorNo) > -3
-            ? t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) === "Rented"
-              ? t("PT_FORM2_TOTAL_ANNUAL_RENT")
-              : t("")
-            : "",
-        value:
-          (flrno = unit?.floorNo) > -3
-            ? t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) === "Rented"
-              ? (unit?.arv && `₹${t(unit?.arv)}`) || "NA"
-              : t("")
-            : "",
-      },
-    ];
+    {
+      title: t("PTR_PET_NAME"),
+      // value: application?.usageCategory
+      //   ? `${t(
+      //       (application?.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPSUBUSGTYPE_") +
+      //         (application?.usageCategory?.split(".")[1] ? application?.usageCategory?.split(".")[1] : application?.usageCategory)
+      //     )}`
+      //   : t("CS_NA"),
+      value: application?.applicationData?.petDetails.petName,
+    },
+    // { title: t("PT_ASSESMENT_INFO_TYPE_OF_BUILDING"), value: t(getPropertyTypeLocale(application?.propertyType)) || t("CS_NA") },
+    { title: t("PTR_PET_TYPE"), value: application?.applicationData?.petDetails.petType },
+    // { title: t("PT_ASSESMENT_INFO_PLOT_SIZE"), value: t(application?.landArea) || t("CS_NA") },
 
-    values.push(...doc);
-  });
+    { title: t("PTR_BREED_TYPE"), value: application?.applicationData.petDetails.breedType },
+    // { title: t("PT_ASSESMENT_INFO_NO_OF_FLOOR"), value: t(application?.noOfFloors) || t("CS_NA") },
+    { title: t("PTR_VACCINATED_DATE"), value: application?.applicationData.petDetails.lastVaccineDate },
+    { title: t("PTR_VACCINATION_NUMBER"), value: application?.applicationData.petDetails.vaccinationNumber },
+  ];
+  // application.units = application?.units?.filter((unit) => unit.active == true) || [];
+  // let flrno,
+  //   i = 0;
+  // flrno = application.units && application.units[0]?.floorNo;
+  //application.units.map((unit) => {
+  // let doc = [
+  //   {
+  //     title: (flrno !== unit?.floorNo ? (i = 1) : (i = i + 1)) && i === 1 ? t(`PROPERTYTAX_FLOOR_${unit?.floorNo}`) : "",
+  //   },
+  //   {
+  //     title: t(""),
+  //   },
+  //   {
+  //     title: t(""),
+  //   },
+  //   {
+  //     title: t(""),
+  //   },
+  //   { title: t("PT_UNIT") + " " + i },
+  //   {
+  //     title: t(""),
+  //   },
+  //   {
+  //     title: t(""),
+  //   },
+  //   {
+  //     title: t(""),
+  //   },
+  //   {
+  //     title: (flrno = unit?.floorNo) > -3 ? t("PT_ASSESSMENT_UNIT_USAGE_TYPE") : "",
+  //     value: (flrno = unit?.floorNo) > -3 ? t(getPropertySubUsageTypeLocale(unit?.usageCategory)) || t("CS_NA") : "",
+  //   },
+  //   {
+  //     title: (flrno = unit?.floorNo) > -3 ? t("PT_ASSESMENT_INFO_OCCUPLANCY") : "",
+  //     value: (flrno = unit?.floorNo) > -3 ? t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) || t("CS_NA") : "",
+  //   },
+  //   {
+  //     title: (flrno = unit?.floorNo) > -3 ? t("PT_FORM2_BUILT_AREA") : "",
+  //     value: (flrno = unit?.floorNo) > -3 ? t(unit?.constructionDetail?.builtUpArea) || t("CS_NA") : "",
+  //   },
+  //   {
+  //     title:
+  //       (flrno = unit?.floorNo) > -3
+  //         ? t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) === "Rented"
+  //           ? t("PT_FORM2_TOTAL_ANNUAL_RENT")
+  //           : t("")
+  //         : "",
+  //     value:
+  //       (flrno = unit?.floorNo) > -3
+  //         ? t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) === "Rented"
+  //           ? (unit?.arv && `₹${t(unit?.arv)}`) || "NA"
+  //           : t("")
+  //         : "",
+  //   },
+  // ];
+
+  // values.push(...doc);
+  // });
   return {
-    title: t("PT_ASSESMENT_INFO_SUB_HEADER"),
+    // title: t("PT_ASSESMENT_INFO_SUB_HEADER"),
+    title: t("ES_TITILE_PET_DETAILS"),
     values: values,
   };
 };
@@ -167,7 +178,12 @@ const getMutationDetails = (application, t) => {
           : t("CS_NA"),
       },
       { title: t("PT_MUTATION_COURT_CASE_DETAILS"), value: application?.additionalDetails?.caseDetails || t("CS_NA") },
-      { title: t("PT_MUTATION_STATE_ACQUISITION"), value: application?.additionalDetails?.isPropertyUnderGovtPossession ? t(`PT_MUTATION_STATE_ACQUISITION_${application?.additionalDetails?.isPropertyUnderGovtPossession}`) : t("CS_NA") },
+      {
+        title: t("PT_MUTATION_STATE_ACQUISITION"),
+        value: application?.additionalDetails?.isPropertyUnderGovtPossession
+          ? t(`PT_MUTATION_STATE_ACQUISITION_${application?.additionalDetails?.isPropertyUnderGovtPossession}`)
+          : t("CS_NA"),
+      },
       { title: t("PT_MUTATION_GOVT_ACQUISITION_DETAILS"), value: application?.additionalDetails?.govtAcquisitionDetails || t("CS_NA") },
     ],
   };
@@ -198,7 +214,7 @@ const mutationRegistrationDetails = (application, t) => {
 
 const getPTAcknowledgementData = async (application, tenantInfo, t) => {
   const filesArray = application?.documents?.map((value) => value?.fileStoreId);
-  const res = filesArray?.length>0 && await Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getStateId());
+  const res = filesArray?.length > 0 && (await Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getStateId()));
 
   if (application.creationReason === "MUTATION") {
     return {
@@ -241,46 +257,53 @@ const getPTAcknowledgementData = async (application, tenantInfo, t) => {
       ],
     };
   }
-
+  console.log("$$$$$$$$", application);
   return {
     t: t,
     tenantId: tenantInfo?.code,
     name: `${t(tenantInfo?.i18nKey)} ${ulbCamel(t(`ULBGRADE_${tenantInfo?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`))}`,
     email: tenantInfo?.emailId,
     phoneNumber: tenantInfo?.contactNumber,
-    heading: t("PT_ACKNOWLEDGEMENT"),
+    heading: t("PTR_ACKNOWLEDGEMENT"),
     details: [
       {
         title: t("CS_TITLE_APPLICATION_DETAILS"),
         values: [
-          { title: t("PT_APPLICATION_NO"), value: application?.applicationNumber },
-          { title: t("PT_PROPERRTYID"), value: application?.propertyId },
+          { title: t("PT_APPLICATION_NO"), value: application?.applicationData?.applicationNumber },
+          // { title: t("PT_PROPERRTYID"), value: application?.propertyId },
           {
             title: t("CS_APPLICATION_DETAILS_APPLICATION_DATE"),
-            value: Digit.DateUtils.ConvertTimestampToDate(application?.auditDetails?.createdTime, "dd/MM/yyyy"),
+            value: Digit.DateUtils.ConvertTimestampToDate(application?.applicationData?.auditDetails?.createdTime, "dd/MM/yyyy"),
+          },
+          {
+            title: t("PTR_APPLICANT_NAME"),
+            value: application?.applicationData?.applicantName,
           },
         ],
       },
-      getOwner(application, t),
+      //getOwner(application, t),
       getAssessmentInfo(application, t),
       {
-        title: t("PT_PROPERTY_ADDRESS_SUB_HEADER"),
+        // title: t("PT_PROPERTY_ADDRESS_SUB_HEADER"),
+        title: t("PTR_LOCATION_DETAILS"),
         values: [
-          { title: t("PT_PROPERTY_ADDRESS_PINCODE"), value: application?.address?.pincode || t("CS_NA") },
-          { title: t("PT_PROPERTY_ADDRESS_CITY"), value: t(getCityLocale(application?.tenantId)) || t("CS_NA") },
-          {
-            title: t("PT_PROPERTY_ADDRESS_MOHALLA"),
-            value: t(`${getMohallaLocale(application?.address?.locality?.code, application?.tenantId)}`) || t("CS_NA"),
-          },
-          { title: t("PT_PROPERTY_ADDRESS_STREET_NAME"), value: application?.address?.street || t("CS_NA") },
-          { title: t("PT_PROPERTY_ADDRESS_HOUSE_NO"), value: application?.address?.doorNo || t("CS_NA") },
-          application?.channel === "CITIZEN" ? { title: t("PT_PROPERTY_ADDRESS_LANDMARK"), value: application?.address?.landmark || t("CS_NA") }: {},
+          // { title: t("PT_PROPERTY_ADDRESS_PINCODE"), value: application?.address?.pincode || t("CS_NA") },
+          { title: t("PTR_PINCODE"), value: application?.applicationData?.address?.pincode },
+          { title: t("PTR_CITY"), value: application?.applicationData?.address?.city },
+          // { title: t("PT_PROPERTY_ADDRESS_CITY"), value: t(getCityLocale(application?.tenantId)) || t("CS_NA") },
+          // {
+          //   title: t("PT_PROPERTY_ADDRESS_MOHALLA"),
+          //   value: t(`${getMohallaLocale(application?.address?.locality?.code, application?.tenantId)}`) || t("CS_NA"),
+          // },
+          { title: t("PTR_STREET_NAME"), value: application?.applicationData?.address?.street },
+          { title: t("PTR_HOUSE_NO"), value: application?.applicationData?.address?.doorNo },
+          // application?.channel === "CITIZEN" ? { title: t("PT_PROPERTY_ADDRESS_LANDMARK"), value: application?.address?.landmark || t("CS_NA") } : {},
         ],
       },
       {
         title: t("PT_COMMON_DOCS"),
         values:
-        application.documents && application.documents.length > 0
+          application.documents && application.documents.length > 0
             ? application.documents.map((document, index) => {
                 let documentLink = pdfDownloadLink(res?.data, document?.fileStoreId);
                 return {
@@ -289,9 +312,9 @@ const getPTAcknowledgementData = async (application, tenantInfo, t) => {
                 };
               })
             : {
-              title: t("PT_NO_DOCUMENTS"),
-              value: " ",
-            },
+                title: t("PT_NO_DOCUMENTS"),
+                value: " ",
+              },
       },
     ],
   };
