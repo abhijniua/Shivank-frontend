@@ -9,17 +9,17 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   // const editScreen = url.includes("/modify-application/");
   const isMutation = url.includes("property-mutation");
 
-  let index = isMutation ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
+  let index =  window.location.href.charAt(window.location.href.length - 1);
 
-  const [uploadedFile, setUploadedFile] = useState(() => formData?.owners[index]?.documents?.proofIdentity?.fileStoreId || null);
-  const [file, setFile] = useState(formData?.owners[index]?.documents?.proofIdentity);
+  const [uploadedFile, setUploadedFile] = useState(() => formData?.Documents[index]?.documents?.proofIdentity?.fileStoreId || null);
+  const [file, setFile] = useState(formData?.Documents[index]?.documents?.proofIdentity);
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
   const onSkip = () => onSelect();
   const isUpdateProperty = formData?.isUpdateProperty || false;
   let isEditProperty = formData?.isEditProperty || false;
 
-  const [dropdownValue, setDropdownValue] = useState(formData?.owners[index]?.documents?.proofIdentity?.documentType);
+  const [dropdownValue, setDropdownValue] = useState(formData?.Documents[index]?.documents?.proofIdentity?.documentType);
   let dropdownData = [];
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
@@ -31,7 +31,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
     ...document,
     hasDropdown: true
   }));
-  const proofIdentity = Array.isArray(PTRDocument) && PTRDocument.filter((doc) => doc.code.includes("IDENTITYPROOF"));
+  const proofIdentity = Array.isArray(PTRDocument) && PTRDocument
   if (proofIdentity.length > 0) {
     dropdownData = proofIdentity[0]?.dropdownData;
     dropdownData.forEach((data) => {
@@ -72,9 +72,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
 
   const handleSubmit = () => {
     setmultipleownererror(null);
-    if (formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" && formData?.owners?.length <= 1 && index == "0" && !isMutation) {
+    if (formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" && formData?.Documents?.length <= 1 && index == "0" && !isMutation) {
       setmultipleownererror("PT_MULTI_OWNER_ADD_ERR_MSG");
-    } else if (isMutation && formData?.owners?.length <= 1 && formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") {
+    } else if (isMutation && formData?.Documents?.length <= 1 && formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") {
       setmultipleownererror("PT_MULTI_OWNER_ADD_ERR_MSG");
     } else {
       let fileStoreId = uploadedFile;
@@ -83,7 +83,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         fileDetails.documentType = dropdownValue;
         fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
       }
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = formData.Documents && formData.Documents[index];
       if (ownerDetails && ownerDetails.documents) {
         if (!isMutation) ownerDetails.documents["proofIdentity"] = fileDetails;
         else ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId };
@@ -108,7 +108,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         setError(t("ERR_DEFAULT_INPUT_FIELD_MSG"));
         return;
       }
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = formData.Documents && formData.Documents[index];
       if (ownerDetails && ownerDetails.documents) {
         ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId: uploadedFile };
       } else {
@@ -126,7 +126,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       fileDetails.documentType = dropdownValue;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
-    let ownerDetails = formData.owners && formData.owners[index];
+    let ownerDetails = formData.Documents && formData.Documents[index];
     if (ownerDetails && ownerDetails.documents) {
       ownerDetails.documents["proofIdentity"] = fileDetails;
     } else {

@@ -29,6 +29,7 @@ import PTRDocumentUpload from "./pageComponents/PTRDocumentUpload";
 import PTRSelectStreet from "./pageComponents/PTRSelectStreet";
 import PTRCreate from "./pages/citizen/Create";
 import PTRCitizenDetails from "./pageComponents/PTRCitizenDetails";
+import PTRCitizenAddress from "./pageComponents/PTRCitizenAddress";
 
 import RentalDetails from "./pageComponents/RentalDetails";
 import SelectInistitutionOwnerDetails from "./pageComponents/SelectInistitutionOwnerDetails";
@@ -192,6 +193,7 @@ const componentsToRegister = {
   PTRSelectStreet,
   PTRCitizenDetails,
   PTRCitizenPet,
+  PTRCitizenAddress
  
 };
 

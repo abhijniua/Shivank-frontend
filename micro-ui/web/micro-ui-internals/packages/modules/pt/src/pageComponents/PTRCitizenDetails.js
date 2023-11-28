@@ -3,7 +3,6 @@ import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown,
 import { cardBodyStyle } from "../utils";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import Timeline from "../components/TLTimeline";
-import { Controller } from "react-hook-form";
 
 const PTRCitizenDetails
  = ({ t, config, onSelect, userType, formData, ownerIndex }) => {
@@ -11,20 +10,21 @@ const PTRCitizenDetails
   // const editScreen = url.includes("/modify-application/");
   //const mutationScreen = url.includes("/property-mutation/");
 
-  //let index = mutationScreen ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
+  let index =  window.location.href.charAt(window.location.href.length - 1);
   let validation = {};
-  const [name, setName] = useState((formData.owners && formData.owners[index] && formData.owners[index].name) || formData?.owners?.name || "");
-  const [email, setEmail] = useState((formData.owners && formData.owners[index] && formData.owners[index].email) || formData?.owners?.emailId || "");
+
+  const [applicantName, setName] = useState((formData.owners && formData.owners[index] && formData.owners[index].applicantName) || formData?.owners?.applicantName || "");
+  const [emailId, setEmail] = useState((formData.owners && formData.owners[index] && formData.owners[index].emailId) || formData?.owners?.emailId || "");
   const [mobileNumber, setMobileNumber] = useState(
     (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || ""
   );
-  const [altmobileNumber, setAltMobileNumber] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].altmobileNumber) || formData?.owners?.altmobileNumber || ""
+  const [alternateNumber, setAltMobileNumber] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].alternateNumber) || formData?.owners?.alternateNumber || ""
   );
 
   
-  const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || ""
+  const [fatherName, setFatherOrHusbandName] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].fatherName) || formData?.owners?.fatherName || ""
   );
   
   // const isUpdateProperty = formData?.isUpdateProperty || false;
@@ -59,145 +59,27 @@ const PTRCitizenDetails
     let owner = formData.owners && formData.owners[index];
     let ownerStep;
     if (userType === "citizen") {
-      ownerStep = { ...owner, name, mobileNumber,altmobileNumber, fatherOrHusbandName, emailId: email };
+      ownerStep = { ...owner, applicantName, mobileNumber,alternateNumber, fatherName, emailId};
       onSelect(config.key, { ...formData[config.key], ...ownerStep }, false, index);
     } else {
       
-      ownerStep = { ...owner, name,  mobileNumber,altmobileNumber, fatherOrHusbandName };
-      onSelect(config.key, ownerStep, false);
+      ownerStep = { ...owner, applicantName,  mobileNumber,alternateNumber, fatherName,emailId };
+      onSelect(config.key, ownerStep, false,index);
     }
   };
 
   const onSkip = () => onSelect();
-  // As Ticket RAIN-2619 other option in gender and gaurdian will be enhance , dont uncomment it
-  // const options = [
-  //   { name: "Female", value: "FEMALE", code: "FEMALE" },
-  //   { name: "Male", value: "MALE", code: "MALE" },
-  //   { name: "Transgender", value: "TRANSGENDER", code: "TRANSGENDER" },
-  //   { name: "OTHERS", value: "OTHERS", code: "OTHERS" },
-  //   // { name: "Other", value: "OTHER", code: "OTHER" },
-  // ];
 
+  
   
 
   useEffect(() => {
     if (userType === "citizen") {
       goNext();
     }
-  }, [name, mobileNumber,altmobileNumber, fatherOrHusbandName]);
+  }, [applicantName, mobileNumber,alternateNumber, fatherName, emailId]);
 
-  // if (userType === "employee") {
-  //   return (
-  //     <div>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_MOBILE_NUMBER")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             type={"text"}
-  //             t={t}
-  //             isMandatory={false}
-  //             name="mobileNumber"
-  //             value={mobileNumber}
-  //             onChange={setMobileNo}
-  //             ValidationRequired = {true}
-  //             {...(validation = {
-  //               isRequired: true,
-  //               pattern: "[6-9]{1}[0-9]{9}",
-  //               type: "tel",
-  //               title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
-  //             })}
-  //             //PTRCitizenDetails
-
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_OWNER_NAME")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             t={t}
-  //             type={"text"}
-  //             isMandatory={false}
-  //             name="name"
-  //             value={name}
-  //             onChange={setOwnerName}
-  //             ValidationRequired = {true}
-  //             {...(validation = {
-  //               isRequired: true,
-  //               pattern: "^[a-zA-Z-.`' ]*$",
-  //               type: "tel",
-  //               title: t("PT_NAME_ERROR_MESSAGE"),
-  //             })}
-  //             //PTRCitizenDetails
-
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             t={t}
-  //             type={"text"}
-  //             isMandatory={false}
-  //             name="fatherOrHusbandName"
-  //             value={fatherOrHusbandName}
-  //             onChange={setGuardiansName}
-  //             ValidationRequired = {true}
-  //             {...(validation = {
-  //               pattern: "^[a-zA-Z-.`' ]*$",
-  //               title: t("PT_NAME_ERROR_MESSAGE"),
-  //             })}
-  //             //PTRCitizenDetails
-
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_RELATIONSHIP")}`}</CardLabel>
-  //         <Dropdown
-  //           className="form-field"
-  //           selected={relationship?.length === 1 ? relationship[0] : relationship}
-  //           disable={relationship?.length === 1 || editScreen}
-  //           option={GuardianOptions}
-  //           select={setGuardianName}
-  //           optionKey="i18nKey"
-  //           t={t}
-  //           name="relationship"
-  //         />
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_GENDER")}`}</CardLabel>
-  //         <Dropdown
-  //           className="form-field"
-  //           selected={gender?.length === 1 ? gender[0] : gender}
-  //           disable={gender?.length === 1 || editScreen}
-  //           option={menu}
-  //           select={setGenderName}
-  //           optionKey="code"
-  //           t={t}
-  //           name="gender"
-  //         />
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_OWNER_EMAIL")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             t={t}
-  //             type={"email"}
-  //             isMandatory={false}
-  //             optionKey="i18nKey"
-  //             name="email"
-  //             value={email}
-  //             onChange={setOwnerEmail}
-  //             //PTRCitizenDetails
-
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //     </div>
-  //   );
-  // }
+ 
 
   return (
     <React.Fragment>
@@ -213,7 +95,7 @@ const PTRCitizenDetails
       onSelect={goNext}
       onSkip={onSkip}
       t={t}
-      isDisabled={!name || !mobileNumber || !altmobileNumber|| !fatherOrHusbandName}
+      isDisabled={!applicantName || !mobileNumber || !alternateNumber|| !fatherName || !emailId}
     >
       <div>
         <CardLabel>{`${t("PTR_APPLICANT_NAME")}`}</CardLabel>
@@ -222,13 +104,13 @@ const PTRCitizenDetails
           type={"text"}
           isMandatory={false}
           optionKey="i18nKey"
-          name="name"
-          value={name}
+          name="applicantName"
+          value={applicantName}
           onChange={setOwnerName}
           //disable={isUpdateProperty || isEditProperty}
-          ValidationRequired = {true}
+          ValidationRequired = {false}
           {...(validation = {
-            isRequired: true,
+            isRequired: false,
             pattern: "^[a-zA-Z-.`' ]*$",
             type: "text",
             title: t("PT_NAME_ERROR_MESSAGE"),
@@ -246,8 +128,8 @@ const PTRCitizenDetails
 
         <CardLabel>{`${t("PTR_ALT_MOBILE_NUMBER")}`}</CardLabel>
           <MobileNumber
-            value={altmobileNumber}
-            name="altmobileNumber"
+            value={alternateNumber}
+            name="alternateNumber"
             onChange={(value) => setAltMobileNo({ target: { value } })}
             //disable={isUpdateProperty || isEditProperty}
             {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
@@ -258,11 +140,11 @@ const PTRCitizenDetails
           type={"text"}
           isMandatory={false}
           optionKey="i18nKey"
-          name="fatherOrHusbandName"
-          value={fatherOrHusbandName}
+          name="fatherName"
+          value={fatherName}
           onChange={setGuardiansName}
           //disable={isUpdateProperty || isEditProperty}
-          ValidationRequired = {true}
+          ValidationRequired = {false}
           {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
@@ -277,11 +159,11 @@ const PTRCitizenDetails
           type={"text"}
           isMandatory={true}
           optionKey="i18nKey"
-          name="email"
-          value={email}
+          name="emailId"
+          value={emailId}
           onChange={setOwnerEmail}
           //disable={isUpdateProperty || isEditProperty}
-          ValidationRequired = {true}
+          ValidationRequired = {false}
           {...(validation = {
             isRequired: true,
             pattern: "[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$",

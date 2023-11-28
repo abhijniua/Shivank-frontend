@@ -44,66 +44,66 @@
           label: "PTR_HOUSE_NAME",
           type: "text",
           name: "buildingName",
-           validation: {
-          //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
-          //   // maxlength: 256,
-          //   title: t("CORE_COMMON_DOOR_INVALID"),
-           },
+          //  validation: {
+          // //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
+          // //   // maxlength: 256,
+          // //   title: t("CORE_COMMON_DOOR_INVALID"),
+          //  },
         },
         {
           label: "PTR_ADDRESS_LINE1",
           type: "text",
           name: "addressLine1",
-           validation: {
-          //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
-          //   // maxlength: 256,
-          //   title: t("CORE_COMMON_DOOR_INVALID"),
-           },
+          //  validation: {
+          // //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
+          // //   // maxlength: 256,
+          // //   title: t("CORE_COMMON_DOOR_INVALID"),
+          //  },
         },
         {
           label: "PTR_ADDRESS_LINE2",
           type: "text",
           name: "addressLine2",
-           validation: {
-          //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
-          //   // maxlength: 256,
-          //   title: t("CORE_COMMON_DOOR_INVALID"),
-           },
+          //  validation: {
+          // //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
+          // //   // maxlength: 256,
+          // //   title: t("CORE_COMMON_DOOR_INVALID"),
+          //  },
         },
         {
           label: "PTR_landmark",
           type: "text",
           name: "landmark",
-           validation: {
-          //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
-          //   // maxlength: 256,
-          //   title: t("CORE_COMMON_DOOR_INVALID"),
-           },
+          //  validation: {
+          // //   pattern: "[a-zA-Z0-9 !@#$%^&*()_+\-={};':\\\\|,.<>/?]{1,64}",
+          // //   // maxlength: 256,
+          // //   title: t("CORE_COMMON_DOOR_INVALID"),
+          //  },
         },
       
         
       ];
     }
 
-    const convertValidationToRules = ({ validation, name, messages }) => {
-      if (validation) {
-        let { pattern: valPattern, maxlength,minlength, required: valReq } = validation || {};
-        let pattern = (value) => {
-          if (valPattern) {
-            if (valPattern instanceof RegExp) return valPattern.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
-            else if (typeof valPattern === "string")
-              return new RegExp(valPattern)?.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
-          }
-          return true;
-        };
-        let maxLength = (value) => (maxlength ? (value?.length <= maxlength ? true : messages?.maxlength || `${name.toUpperCase()}_MAXLENGTH`) : true);
-        let minLength = (value) => (minlength ? (value?.length >= minlength ? true : messages?.minlength || `${name.toUpperCase()}_MINLENGTH`) : true);
-        let required = (value) => (valReq ? (!!value ? true : messages?.required || `${name.toUpperCase()}_REQUIRED`) : true);
+    // const convertValidationToRules = ({ validation, name, messages }) => {
+    //   if (validation) {
+    //     let { pattern: valPattern, maxlength,minlength, required: valReq } = validation || {};
+    //     let pattern = (value) => {
+    //       if (valPattern) {
+    //         if (valPattern instanceof RegExp) return valPattern.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
+    //         else if (typeof valPattern === "string")
+    //           return new RegExp(valPattern)?.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
+    //       }
+    //       return true;
+    //     };
+    //     let maxLength = (value) => (maxlength ? (value?.length <= maxlength ? true : messages?.maxlength || `${name.toUpperCase()}_MAXLENGTH`) : true);
+    //     let minLength = (value) => (minlength ? (value?.length >= minlength ? true : messages?.minlength || `${name.toUpperCase()}_MINLENGTH`) : true);
+    //     let required = (value) => (valReq ? (!!value ? true : messages?.required || `${name.toUpperCase()}_REQUIRED`) : true);
 
-        return { pattern, required, maxLength,minlength };
-      }
-      return {};
-    };
+    //     return { pattern, required, maxLength,minlength };
+    //   }
+    //   return {};
+    // };
 
     useEffect(() => {
       trigger();
@@ -140,7 +140,7 @@
                 control={control}
                 defaultValue={formData?.address?.[input.name]}
                 name={input.name}
-                rules={{ validate: convertValidationToRules(input) }}
+                //rules={{ validate: convertValidationToRules(input) }}
                 render={(_props) => (
                   <TextInput
                     id={input.name}
@@ -170,10 +170,7 @@
         _defaultValues={{
           street: formData?.address.street,
           doorNo: formData?.address.doorNo,
-          buildingName: formData?.address.buildingName,
-          addressLine1: formData?.address.addressLine1,
-          addressLine2: formData?.address.addressLine2,
-          landmark: formData?.address.landmark  
+           
          }}
 
         onSelect={(data) => onSelect(config.key, data)}

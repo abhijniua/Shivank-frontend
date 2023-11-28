@@ -16,7 +16,7 @@
                         "route": "owners",
                         "component": "PTRCitizenDetails",
                         "withoutLabel": true,
-                        "key": "owners",
+                        "key": "ownerss",
                         "type": "component",
                         "nextStep": "pet-details",
                         "hideInEmployee": true,
@@ -35,7 +35,7 @@
                         "route": "pet-details",
                         "component": "PTRCitizenPet",
                         "withoutLabel": true,
-                        "key": " pets",
+                        "key": "pets",
                         "type": "component",
                         "isMandatory": true,
                         "hideInEmployee": true,
@@ -82,7 +82,7 @@
                         {
                         "type": "component",
                         "route": "street",
-                        "component": "PTRSelectStreet",
+                        "component": "PTRCitizenAddress",
                         "key": "address",
                         "withoutLabel": true,
                         "texts": {
@@ -101,9 +101,9 @@
                     "body": [
                         {
                             "route": "documents",
-                            "component": "SelectProofIdentity",
+                            "component": "PTRDocumentUpload",
                             "withoutLabel": true,
-                            "key": "owners",
+                            "key": "Documents",
                             "type": "component",
                             "nextStep":null,
                             "texts": {

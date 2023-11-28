@@ -1,208 +1,156 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown, Menu, MobileNumber } from "@egovernments/digit-ui-react-components";
+import { FormStep, TextInput, CardLabel, RadioButtons, Dropdown } from "@egovernments/digit-ui-react-components";
 import { cardBodyStyle } from "../utils";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import Timeline from "../components/TLTimeline";
-import { Controller } from "react-hook-form";
+
 
 const PTRCitizenPet
- = ({ t, config, onSelect, userType, formData, ownerIndex }) => {
+= ({ t, config, onSelect, userType,formData, ownerIndex }) => {
   const { pathname: url } = useLocation(); 
   let index = window.location.href.charAt(window.location.href.length - 1);
   let validation = {};
-  const [name, setName] = useState((formData. pets && formData. pets[index] && formData. pets[index].name) || formData?. pets?.name || "");
-  const [email, setEmail] = useState((formData. pets && formData. pets[index] && formData. pets[index].email) || formData?. pets?.emailId || "");
-  const [mobileNumber, setMobileNumber] = useState(
-    (formData. pets && formData. pets[index] && formData. pets[index].mobileNumber) || formData?. pets?.mobileNumber || ""
-  );
-  const [altmobileNumber, setAltMobileNumber] = useState(
-    (formData. pets && formData. pets[index] && formData. pets[index].altmobileNumber) || formData?. pets?.altmobileNumber || ""
+  const [petType, setPetType] = useState((formData.pets && formData.pets[index] && formData.pets[index].petType) || formData?.pets?.petType || "");
+  const [breedType, setBreedType] = useState((formData.pets && formData.pets[index] && formData.pets[index].breedType) || formData?.pets?.breedType || "");
+  const [petGender, setPetGender] = useState((formData.pets && formData.pets[index] && formData.pets[index].petGender) || formData?.pets?.petGender || "");
+
+
+  const [petName, setPetName] = useState(
+    (formData.pets && formData.pets[index] && formData.pets[index].petName) || formData?.pets?.petName || ""
   );
 
-  
-  const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
-    (formData. pets && formData. pets[index] && formData. pets[index].fatherOrHusbandName) || formData?. pets?.fatherOrHusbandName || ""
+  const [petAge, setPetAge] = useState(
+    (formData.pets && formData.pets[index] && formData.pets[index].petAge) || formData?.pets?.petAge || ""
+  );
+
+  const [doctorName, setDoctorName] = useState(
+    (formData.pets && formData.pets[index] && formData.pets[index].doctorName) || formData?.pets?.doctorName || ""
+  );
+
+  const [clinicName, setClinicName] = useState(
+    (formData.pets && formData.pets[index] && formData.pets[index].clinicName) || formData?.pets?.clinicName || ""
+  );
+
+  const [vaccinationNumber, setVaccinationNumber] = useState(
+    (formData.pets && formData.pets[index] && formData.pets[index].vaccinationNumber) || formData?.pets?.vaccinationNumber || ""
   );
   
+  const [lastVaccineDate, setVaccinationDate] = useState(
+    (formData.pets && formData.pets[index] && formData.pets[index].lastVaccineDate) || formData?.pets?.lastVaccineDate || ""
+  );
 
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
 
+  const { data: Menu } = Digit.Hooks.ptr.usePTRPetMDMS(stateId, "PetService", "PetType");  
+  
+  const { data: Breed_Type } = Digit.Hooks.ptr.useBreedTypeMDMS(stateId, "PetService", "BreedType" );  // hooks for breed type
+
+  let menu = [];   //variable name for pettype
+  let breed_type = [];  
+    // variable name for breedtype
+
+  Menu &&
+    Menu.map((petone) => {
+      menu.push({ i18nKey: `PTR_PET_${petone.code}`, code: `${petone.code}`, value: `${petone.name}` });
+  });
+
+  console.log("Menu", menu)
+
+  //Need to integrate accordingly 
+
+  // TO DO: Need to apply the filter to get the data according to the selection of pet type before deployement 
+  Breed_Type &&
+  Breed_Type.map((breedss) => {
+    
+      breed_type.push({ i18nKey: `PTR_BREED_TYPE_${breedss.code}`, code: `${breedss.code}`, value: `${breedss.name}` });
+  });
+
+
+  const { data: Pet_Sex } = Digit.Hooks.ptr.usePTRGenderMDMS(stateId, "common-masters", "GenderType");       // this hook is for Pet gender type { male, female}
+
+  let pet_sex = [];    //for pet gender 
+
+  Pet_Sex &&
+  Pet_Sex.map((ptrgenders) => {                                      
+    if(ptrgenders.code !=="TRANSGENDER")
+    pet_sex.push({ i18nKey: `PTR_GENDER_${ptrgenders.code}`, code: `${ptrgenders.code}`, name: `${ptrgenders.code}` });
+  });
+
   
 
-  function setOwnerName(e) {
-    setName(e.target.value);
+  function setpettype(e) {
+    setPetType(e.target.value);
   }
-  function setOwnerEmail(e) {
-    setEmail(e.target.value);
+
+  function setbreedtype(e) {
+    setBreedType(e.target.value);
   }
+
+  function setpetgender(e) {
+    setPetGender(e.target.value);
+  }
+
+
   
 
-  function setMobileNo(e) {
-    setMobileNumber(e.target.value);
+
+  function setpetage(e) {
+    setPetAge(e.target.value);
   }
+
+  function setdoctorname(e) {
+    setDoctorName(e.target.value);
+  }
+  function setclinicname(e) {
+    setClinicName(e.target.value);
+  }
+
+  function setvaccinationdate(e) {
+    setVaccinationDate(e.target.value);
+  }
+
+  function setvaccinationnumber(e) {
+    setVaccinationNumber(e.target.value);
+  }
+
+  function setpetname(e) {
+    setPetName(e.target.value);
+  }
+
   
-  function setAltMobileNo(e) {
-    setAltMobileNumber(e.target.value);
-  }
-  function setGuardiansName(e) {
-    setFatherOrHusbandName(e.target.value);
-  }
+
+  
   
 
   const goNext = () => {
-    let owner = formData. pets && formData. pets[index];
+    let owner = formData.pets && formData.pets[index];
     let ownerStep;
     if (userType === "citizen") {
-      ownerStep = { ...owner, name, mobileNumber,altmobileNumber, fatherOrHusbandName, emailId: email };
+      ownerStep = { ...owner, petType,breedType,petGender,petName,petAge,doctorName,clinicName, lastVaccineDate,vaccinationNumber };
       onSelect(config.key, { ...formData[config.key], ...ownerStep }, false, index);
     } else {
-      // if (mutationScreen) {
-      //   ownerStep = { ...owner, name, gender, mobileNumber, fatherOrHusbandName };
-      //   onSelect("", ownerStep);
-      //   return;
-      // }
-      ownerStep = { ...owner, name,  mobileNumber,altmobileNumber, fatherOrHusbandName };
+      
+      ownerStep = { ...owner, petType,breedType, petGender, petName,petAge,doctorName,clinicName, lastVaccineDate,vaccinationNumber };
       onSelect(config.key, ownerStep, false,index);
     }
   };
 
   const onSkip = () => onSelect();
-  // As Ticket RAIN-2619 other option in gender and gaurdian will be enhance , dont uncomment it
-  // const options = [
-  //   { name: "Female", value: "FEMALE", code: "FEMALE" },
-  //   { name: "Male", value: "MALE", code: "MALE" },
-  //   { name: "Transgender", value: "TRANSGENDER", code: "TRANSGENDER" },
-  //   { name: "OTHERS", value: "OTHERS", code: "OTHERS" },
-  //   // { name: "Other", value: "OTHER", code: "OTHER" },
-  // ];
-
-//   const GuardianOptions = [
-//     { name: "HUSBAND", code: "HUSBAND", i18nKey: "PT_RELATION_HUSBAND" },
-//     { name: "Father", code: "FATHER", i18nKey: "PT_RELATION_FATHER" },
-//     // { name: "Husband/Wife", code: "HUSBANDWIFE", i18nKey: "PT_RELATION_HUSBANDWIFE" },
-//     // { name: "Other", code: "OTHER", i18nKey: "PT_RELATION_OTHER" },
-//   ];
+  
 
   useEffect(() => {
     if (userType === "citizen") {
       goNext();
     }
-  }, [name, mobileNumber,altmobileNumber, fatherOrHusbandName]);
+  }, [petType,breedType, petGender,petName,petAge,doctorName, lastVaccineDate]);
 
-  // if (userType === "employee") {
-  //   return (
-  //     <div>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_MOBILE_NUMBER")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             type={"text"}
-  //             t={t}
-  //             isMandatory={false}
-  //             name="mobileNumber"
-  //             value={mobileNumber}
-  //             onChange={setMobileNo}
-  //             ValidationRequired = {true}
-  //             {...(validation = {
-  //               isRequired: true,
-  //               pattern: "[6-9]{1}[0-9]{9}",
-  //               type: "tel",
-  //               title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
-  //             })}
-  //             //PTRCitizenDetails
+  
 
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_OWNER_NAME")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             t={t}
-  //             type={"text"}
-  //             isMandatory={false}
-  //             name="name"
-  //             value={name}
-  //             onChange={setOwnerName}
-  //             ValidationRequired = {true}
-  //             {...(validation = {
-  //               isRequired: true,
-  //               pattern: "^[a-zA-Z-.`' ]*$",
-  //               type: "tel",
-  //               title: t("PT_NAME_ERROR_MESSAGE"),
-  //             })}
-  //             //PTRCitizenDetails
+  
+  
 
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             t={t}
-  //             type={"text"}
-  //             isMandatory={false}
-  //             name="fatherOrHusbandName"
-  //             value={fatherOrHusbandName}
-  //             onChange={setGuardiansName}
-  //             ValidationRequired = {true}
-  //             {...(validation = {
-  //               pattern: "^[a-zA-Z-.`' ]*$",
-  //               title: t("PT_NAME_ERROR_MESSAGE"),
-  //             })}
-  //             //PTRCitizenDetails
-
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_RELATIONSHIP")}`}</CardLabel>
-  //         <Dropdown
-  //           className="form-field"
-  //           selected={relationship?.length === 1 ? relationship[0] : relationship}
-  //           disable={relationship?.length === 1 || editScreen}
-  //           option={GuardianOptions}
-  //           select={setGuardianName}
-  //           optionKey="i18nKey"
-  //           t={t}
-  //           name="relationship"
-  //         />
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_GENDER")}`}</CardLabel>
-  //         <Dropdown
-  //           className="form-field"
-  //           selected={gender?.length === 1 ? gender[0] : gender}
-  //           disable={gender?.length === 1 || editScreen}
-  //           option={menu}
-  //           select={setGenderName}
-  //           optionKey="code"
-  //           t={t}
-  //           name="gender"
-  //         />
-  //       </LabelFieldPair>
-  //       <LabelFieldPair>
-  //         <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_OWNER_EMAIL")}`}</CardLabel>
-  //         <div className="field">
-  //           <TextInput
-  //             t={t}
-  //             type={"email"}
-  //             isMandatory={false}
-  //             optionKey="i18nKey"
-  //             name="email"
-  //             value={email}
-  //             onChange={setOwnerEmail}
-  //             //PTRCitizenDetails
-
-  //           />
-  //         </div>
-  //       </LabelFieldPair>
-  //     </div>
-  //   );
-  // }
 
   return (
     <React.Fragment>
@@ -218,20 +166,61 @@ const PTRCitizenPet
       onSelect={goNext}
       onSkip={onSkip}
       t={t}
-      isDisabled={!name || !mobileNumber || !altmobileNumber|| !fatherOrHusbandName}
+      isDisabled={!petType || !breedType || !petGender|| !petName || !petAge || !doctorName || !clinicName ||!lastVaccineDate || !vaccinationNumber}
     >
       <div>
-        <CardLabel>{`${t("PTR_APPLICANT_NAME")}`}</CardLabel>
+        <CardLabel>{`${t("PTR_SEARCH_PET_TYPE")}`}</CardLabel>
+        {/* <Dropdown
+        t={t}
+        options={menu}
+        name="petType"
+        value={petType}
+        optionKey="i18nKey"
+        selectedOption={petType}
+        onSelect={setPetType}
+        placeholder={t("SELECT_PET_TYPE")}
+      /> */}
+        
+       <RadioButtons
+          t={t}
+          options={menu}
+          optionsKey="i18nKey"
+          name="petType"
+          value={petType}
+          selectedOption={petType}
+          onSelect={setPetType}
+        // isDependent={true}
+          labelKey="PTR_SERACH_PET_TYPE"
+        // disabled={isUpdateProperty || isEditProperty}
+  />
+        
+
+        <CardLabel>{`${t("PTR_SEARCH_BREED_TYPE")}`}</CardLabel>
+        <RadioButtons
+          t={t}
+          options={breed_type}
+          optionsKey="i18nKey"
+          name="breedType"
+          value={breedType}
+          selectedOption={breedType}
+          onSelect={setBreedType}
+        // isDependent={true}
+          labelKey="PTR_SERACH_BREED_TYPE"
+        // disabled={isUpdateProperty || isEditProperty}
+        />
+        
+
+        <CardLabel>{`${t("PTR_PET_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           type={"text"}
           isMandatory={false}
           optionKey="i18nKey"
-          name="name"
-          value={name}
-          onChange={setOwnerName}
+          name="petName"
+          value={petName}
+          onChange={setpetname}
           //disable={isUpdateProperty || isEditProperty}
-          ValidationRequired = {true}
+          ValidationRequired = {false}
           {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
@@ -239,35 +228,51 @@ const PTRCitizenPet
             title: t("PT_NAME_ERROR_MESSAGE"),
           })}
         />
-       
-        <CardLabel>{`${t("PTR_MOBILE_NUMBER")}`}</CardLabel>
-        <MobileNumber
-          value={mobileNumber}
-          name="mobileNumber"
-          onChange={(value) => setMobileNo({ target: { value } })}
-          //disable={isUpdateProperty || isEditProperty}
-          {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
+
+        <CardLabel>{`${t("PTR_PET_SEX")}`}</CardLabel>
+        
+        <RadioButtons
+          t={t}
+          options={pet_sex}
+          optionsKey="i18nKey"
+          name="petGender"
+          value={petGender}
+          selectedOption={petGender}
+          onSelect={setPetGender}
+        // isDependent={true}
+          labelKey="PTR_SERACH_BREED_TYPE"
+        // disabled={isUpdateProperty || isEditProperty}
         />
 
-        <CardLabel>{`${t("PTR_ALT_MOBILE_NUMBER")}`}</CardLabel>
-          <MobileNumber
-            value={altmobileNumber}
-            name="altmobileNumber"
-            onChange={(value) => setAltMobileNo({ target: { value } })}
-            //disable={isUpdateProperty || isEditProperty}
-            {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
-          />
-        <CardLabel>{`${t("PTR_FATHER_HUSBAND_NAME")}`}</CardLabel>
+        <CardLabel>{`${t("PTR_PET_AGE")}`}</CardLabel>
+        <TextInput
+        t={t}
+          type={"text"}
+          isMandatory={false}
+          optionKey="i18nKey"
+          name="petAge"
+          value={petAge}
+          onChange={setpetage}
+          placeholder="in months"
+          rules={{
+            required: t("CORE_COMMON_REQUIRED_ERRMSG"),
+            validate: (v) => (/^\d{1,4}$/.test(v) && parseInt(v, 10) >= 0 && parseInt(v, 10) <= 1440 ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
+
+          }}
+          
+        />
+
+        <CardLabel>{`${t("PTR_DOCTOR_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           type={"text"}
           isMandatory={false}
           optionKey="i18nKey"
-          name="fatherOrHusbandName"
-          value={fatherOrHusbandName}
-          onChange={setGuardiansName}
+          name="doctorName"
+          value={doctorName}
+          onChange={setdoctorname}
           //disable={isUpdateProperty || isEditProperty}
-          ValidationRequired = {true}
+          ValidationRequired = {false}
           {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
@@ -276,24 +281,60 @@ const PTRCitizenPet
           })}
         />
 
-        <CardLabel>{`${t("PTR_EMAIL_ID")}`}</CardLabel>
+        <CardLabel>{`${t("PTR_CLINIC_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           type={"text"}
-          isMandatory={true}
+          isMandatory={false}
           optionKey="i18nKey"
-          name="email"
-          value={email}
-          onChange={setOwnerEmail}
+          name="clinicName"
+          value={clinicName}
+          onChange={setclinicname}
           //disable={isUpdateProperty || isEditProperty}
-          ValidationRequired = {true}
+          ValidationRequired = {false}
           {...(validation = {
             isRequired: true,
-            pattern: "[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$",
+            pattern: "^[a-zA-Z-.`' ]*$",
             type: "text",
-            title: t("PTR_NAME_ERROR_MESSAGE"),
+            title: t("PT_NAME_ERROR_MESSAGE"),
           })}
         />
+
+        <CardLabel>{`${t("PTR_VACCINATED_DATE")}`}</CardLabel>
+        <TextInput
+          t={t}
+          type={"date"}
+          isMandatory={false}
+          optionKey="i18nKey"
+          name="lastVaccineDate"
+          value={lastVaccineDate}
+          onChange={setvaccinationdate}
+          max={new Date().toISOString().split('T')[0]}
+          rules={{
+            required: t("CORE_COMMON_REQUIRED_ERRMSG"),
+            validDate: (val) => (/^\d{4}-\d{2}-\d{2}$/.test(val) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
+          }}
+          
+        />
+
+        <CardLabel>{`${t("PTR_VACCINATION_NUMBER")}`}</CardLabel>
+        <TextInput
+          t={t}
+          type={"text"}
+          isMandatory={false}
+          optionKey="i18nKey"
+          name="vaccinationNumber"
+          value={vaccinationNumber}
+          onChange={setvaccinationnumber}
+          
+        />
+      
+        
+
+        
+      
+
+      
         
         
       </div>
