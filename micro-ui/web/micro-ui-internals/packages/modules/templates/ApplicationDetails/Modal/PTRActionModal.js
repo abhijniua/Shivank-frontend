@@ -91,22 +91,23 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       }
     })();
   }, [file]);
-  console.log("application data525245 ", applicationData)
+  console.log("application data525245 ", applicationData);
 
   function submit(data) {
-    if (action?.action == "COMMON_APPROVED"){
-      console.log("dataaaaa123",data)
-      let workflow = { action: "OPEN", comment: data?.comments, businessService:"ptr", moduleName: "pet-services" };
-      applicationData.creationReason = "CREATE"
+    if (action?.action == "COMMON_APPROVED") {
+      console.log("dataaaaa123", data);
+      let workflow = { action: "OPEN", comment: data?.comments, businessService: "ptr", moduleName: "pet-services" };
+      applicationData.creationReason = "CREATE";
       submitAction({
         customFunctionToExecute: action?.customFunctionToExecute,
-        PetRegistrationApplications: [{
-          applicationData,
-          workflow,
-        }],
+        PetRegistrationApplications: [
+          {
+            applicationData,
+            workflow,
+          },
+        ],
       });
-          }
-    else if (!action?.showFinancialYearsModal) {
+    } else if (!action?.showFinancialYearsModal) {
       let workflow = { action: action?.action, comment: data?.comments, businessService, moduleName: moduleCode };
       workflow["assignes"] = action?.isTerminateState || !selectedApprover ? [] : [selectedApprover];
       if (uploadedFile)
@@ -119,13 +120,14 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         ];
 
       submitAction({
-        PetRegistrationApplications: [{
-          applicationData,
-          workflow,
-        }],
+        PetRegistrationApplications: [
+          {
+            applicationData,
+            workflow,
+          },
+        ],
       });
-    } 
-      else {
+    } else {
       submitAction({
         customFunctionToExecute: action?.customFunctionToExecute,
         Assessment: {

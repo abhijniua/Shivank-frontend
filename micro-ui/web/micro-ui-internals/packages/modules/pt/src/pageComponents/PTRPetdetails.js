@@ -46,7 +46,7 @@ const PTRPetdetails = ({ config, onSelect, userType, formData, setError, formSta
   const { data: Menu } = Digit.Hooks.ptr.usePTRPetMDMS(stateId, "PetService", "PetType");  
   
   const { data: Breed_Type } = Digit.Hooks.ptr.useBreedTypeMDMS(stateId, "PetService", "BreedType" );  // hooks for breed type
- 
+  console.log("breeedddddd",Breed_Type)
   let menu = [];   //variable name for pettype
   let breed_type = [];  
     // variable name for breedtype
@@ -61,11 +61,33 @@ const PTRPetdetails = ({ config, onSelect, userType, formData, setError, formSta
   //Need to integrate accordingly 
 
   // TO DO: Need to apply the filter to get the data according to the selection of pet type before deployement 
+
   Breed_Type &&
   Breed_Type.map((breedss) => {
-    
+console.log("bredddddddddddddddddddd",breedss)    
       breed_type.push({ i18nKey: `PTR_BREED_TYPE_${breedss.code}`, code: `${breedss.code}`, value: `${breedss.name}` });
+
   });
+
+  // Breed_Type && 
+  // Breed_Type.map((breedss) => {
+  //   if(breedss.PetType="DOG") {
+  //     breed_type.push({
+  //       i18nKey: `PTR_BREED_TYPE_${breedss.code}`,
+  //       code: `${breedss.code}`,  
+  //       value: `${breedss.name}` 
+  //     });
+  //   }
+  //   if(breedss.PetType="CAT") {
+  //     breed_type.push({
+  //       i18nKey: `PTR_BREED_TYPE_${breedss.code}`,
+  //       code: `${breedss.code}`,
+  //       value: `${breedss.name}`
+  //     });
+  //   }
+  // });
+
+  
 
 
   const { data: Pet_Sex } = Digit.Hooks.ptr.usePTRGenderMDMS(stateId, "common-masters", "GenderType");       // this hook is for Pet gender type { male, female}

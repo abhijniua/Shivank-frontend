@@ -154,7 +154,7 @@ const PTWFApplicationTimeline = (props) => {
                       <CheckPoint
                         keyValue={index}
                         isCompleted={index === 0}
-                       // label={checkpoint.state ? t(`WF_${businessService}_${checkpoint.state}`) : "NA"}
+                       //label={checkpoint.state ? t(`WF_${businessService}_${checkpoint.state}`) : "NA"}
                        label={t(
                         `ES_PTR_COMMON_STATUS_${data?.processInstances[index].state?.["state"]
                         }${timelineStatusPostfix}`

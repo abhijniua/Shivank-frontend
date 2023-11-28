@@ -102,22 +102,32 @@ const Response = (props) => {
 
   // TODO: will need to add a specific module for pdf to download the pdf 
 
-  const handleDownloadPdf = async () => {
-    //const { PetRegistrationApplication = [] } = mutation.data || successData;
-    const PetRegistrationApplications = PetRegistrationApplications?.[0] || {};
-    const tenantInfo = tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
+  // const handleDownloadPdf = async () => {
+  //   //const { PetRegistrationApplication = [] } = mutation.data || successData;
+  //   const PetRegistrationApplications = PetRegistrationApplications?.[0] || {};
+  //   const tenantInfo = tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
     
-    let tenantId = PetRegistrationApplications.tenantId || tenantId;
-    // const propertyDetails = await Digit.PTService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.propertyId, status: "INACTIVE" } }); 
-    const petDetails = await Digit.PTRService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
+  //   let tenantId = PetRegistrationApplications.tenantId || tenantId;
+  //   // const propertyDetails = await Digit.PTService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.propertyId, status: "INACTIVE" } }); 
+  //   const petDetails = await Digit.PTRService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
   
-    PetRegistrationApplications.transferorDetails = petDetails?.PetRegistrationApplications?.[0] || [];
-    PetRegistrationApplications.isTransferor = true;
-    PetRegistrationApplications.transferorOwnershipCategory = petDetails?.PetRegistrationApplications?.[0]?.ownershipCategory
+  //   PetRegistrationApplications.transferorDetails = petDetails?.PetRegistrationApplications?.[0] || [];
+  //   PetRegistrationApplications.isTransferor = true;
+  //   PetRegistrationApplications.transferorOwnershipCategory = petDetails?.PetRegistrationApplications?.[0]?.ownershipCategory
     
-    const data = await getPTAcknowledgementData({ ...PetRegistrationApplications, auditData }, tenantInfo, t);
+  //   const data = await getPTAcknowledgementData({ ...PetRegistrationApplications, auditData }, tenantInfo, t);
+  //   Digit.Utils.pdf.generate(data);
+  // };
+
+  const handleDownloadPdf = async () => {
+    const PetRegistrationApplications = props?.data?.PetRegistrationApplications?.[0] ;
+    const tenantInfo  = "pg.citya"
+    // tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
+
+    const data = await getPTAcknowledgementData(PetRegistrationApplications, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
   };
+  
 
   if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;

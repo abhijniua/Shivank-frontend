@@ -480,6 +480,7 @@ const ApplicationDetails = () => {
   //     },
   //   ];
   // }
+  
   const handleDownloadPdf = async () => {
     const PetRegistrationApplications = appDetailsToShow?.applicationData ;
     const tenantInfo  = tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);

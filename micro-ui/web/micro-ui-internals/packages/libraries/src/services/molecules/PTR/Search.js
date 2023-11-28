@@ -1,49 +1,31 @@
-// import { getPropertySubtypeLocale, getPropertyTypeLocale } from "../../../utils/pt";
+/*
+
+  @author - Shivank-NIUA
+
+  this file is created to show the Application Detail page from both search application and inbox
+  as this file is specially designed for Pet-Registration 
+
+  Note - Please Do Not Copy and paste this file without understanding the context  **it may conflit**
+          
+
+
+*/
+
+
+
+
 import { PTRService } from "../../elements/PTR";
 
 export const PTRSearch = {
   
   all: async (tenantId, filters = {}) => {
-    console.log("olo", response)
     
     const response = await PTRService.search({ tenantId, filters });
     
     return response;
   },
  
-  // genericPropertyDetails: async (t, tenantId, applicationNumber) => {
-  //   console.log("sdfjsdks", applicationNumber)
-  //   console.log("tenantid",tenantId )
-  //   const filters = { applicationNumber };
-  //   const PetRegistrationApplications = await PTRSearch.application(tenantId, filters);
-  //   console.log("PetRegistrationApplications", PetRegistrationApplications)
-  //   const addressDetails = {
-  //     title: "PT_PROPERTY_ADDRESS_SUB_HEADER",
-  //     asSectionHeader: true,
-  //     values: [
-  //       { title: "PT_PROPERTY_ADDRESS_PINCODE", value: PetRegistrationApplications?.address?.pincode },
-  //       { title: "PT_PROPERTY_ADDRESS_CITY", value: PetRegistrationApplications?.address?.city },
-        
-  //       // {
-  //       //   title: "PT_PROPERTY_ADDRESS_STREET_NAME",
-  //       //   value: PetRegistrationApplications?.address?.street,
-  //       //   privacy: {
-  //       //     uuid: PetRegistrationApplications?.owners?.[0]?.uuid,
-  //       //     fieldName: "street",
-  //       //     model: "Property",
-  //       //     showValue: false,
-  //       //     loadData: {
-  //       //       serviceName:"/pet-services/pet-registration/_search",
-  //       //       requestBody: {},
-  //       //       requestParam: { tenantId, applicationNumber },
-  //       //       jsonPath: "PetRegistrationApplications[0].address.street",
-  //       //       isArray: false,
-  //       //     },
-  //       //   },
-  //       // },
-  //     ],
-  //   };
-   
+  
 
   //   const applicationDetails = [propertyDetail, addressDetails, assessmentDetails, ownerdetails];
   //   return {
