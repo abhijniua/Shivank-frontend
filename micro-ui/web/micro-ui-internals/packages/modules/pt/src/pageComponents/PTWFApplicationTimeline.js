@@ -156,7 +156,7 @@ const PTWFApplicationTimeline = (props) => {
                         isCompleted={index === 0}
                        // label={checkpoint.state ? t(`WF_${businessService}_${checkpoint.state}`) : "NA"}
                        label={t(
-                        `ES_PT_COMMON_STATUS_${data?.processInstances[index].state?.["state"]
+                        `ES_PTR_COMMON_STATUS_${data?.processInstances[index].state?.["state"]
                         }${timelineStatusPostfix}`
                       )}
                         customChild={getTimelineCaptions(checkpoint)}

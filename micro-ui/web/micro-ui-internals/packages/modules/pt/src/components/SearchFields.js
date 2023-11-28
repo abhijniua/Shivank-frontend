@@ -35,15 +35,13 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
 
     return <>
                 <SearchField>
-                    <label>{t("PT_APPLICATION_NO_LABEL")}</label>
-                    <TextInput name="acknowledgementIds" inputRef={register({})} />
+                    <label>{t("PTR_APPLICATION_NO_LABEL")}</label>
+                    <TextInput name="applicationNumber" inputRef={register({})} />
                 </SearchField>
+
+                
                 <SearchField>
-                    <label>{t("PT_SEARCHPROPERTY_TABEL_PID")}</label>
-                    <TextInput name="propertyIds" inputRef={register({})} />
-                </SearchField>
-                <SearchField>
-                <label>{t("PT_OWNER_MOBILE_NO")}</label>
+                <label>{t("PTR_OWNER_MOBILE_NO")}</label>
                 <MobileNumber
                     name="mobileNumber"
                     inputRef={register({
@@ -124,7 +122,7 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
                     <p style={{marginTop:"10px"}}
                      onClick={() => {
                         reset({ 
-                            acknowledgementIds: "", 
+                            applicationNumber: "", 
                             fromDate: "", 
                             toDate: "",
                             propertyIds: "",

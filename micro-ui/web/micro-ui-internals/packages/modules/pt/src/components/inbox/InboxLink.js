@@ -10,19 +10,19 @@ const InboxLinks = ({ parentRoute, businessService }) => {
     {
       text: "ES_TITLE_NEW_PET_REGISTRATION",
       link: "/digit-ui/employee/pt/new-application",
-      businessService: "PT",
+      businessService: "ptr",
       roles: ["PT_CEMP"],
     },
     {
       text: "PTR_SEARCH_PET",
       link: `/digit-ui/employee/pt/search`,
-      businessService: "PT",
+      businessService: "ptr",
       roles: [],
     },
     {
       text: "PTR_COMMON_APPLICATION_SEARCH",
       link: `/digit-ui/employee/pt/application-search`,
-      businessService: "PT",
+      businessService: "ptr",
       roles: [],
     },
     // { text: "PT_REPORTS", hyperLink: true, link: "/digit-ui/employee/integration/dss/propertytax", roles: [], businessService: "PT" },

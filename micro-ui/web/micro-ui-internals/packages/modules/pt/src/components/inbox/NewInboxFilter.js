@@ -15,16 +15,9 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
   const ApplicationTypeMenu = [
     {
       label: "PTR_NEW_REGISTRATION",
-      value: "PTR.CREATE",
+      value: "ptr",
     },
-    // {
-    //   label: "ES_PT_TRANSFER_OWNERSHIP",
-    //   value: "PT.MUTATION",
-    // },
-    {
-      label: "PTR_UPDATE_APPLICATION",
-      value: "PTR.UPDATE",
-    },
+    
   ];
 
   const localParamChange = (filterParam) => {
@@ -97,7 +90,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
             )}
           </div>
           <div>
-            <RadioButtons
+            {/* <RadioButtons
               onSelect={(d) => localParamChange({ uuid: d })}
               selectedOption={_searchParams?.uuid}
               t={t}
@@ -106,7 +99,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
                 { code: "ASSIGNED_TO_ME", name: "ES_INBOX_ASSIGNED_TO_ME" },
                 { code: "ASSIGNED_TO_ALL", name: "ES_INBOX_ASSIGNED_TO_ALL" },
               ]}
-            />
+             /> */}
             <div>
               <div className="filter-label" style={{ fontWeight: "normal" }}>
                 {t("ES_INBOX_LOCALITY")}:
@@ -128,7 +121,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
             </div>
             <div>
               <div className="filter-label" style={{ fontWeight: "normal" }}>
-                {t("ES_PT_APP_TYPE")}
+                {t("ES_PTR_APP_TYPE")}
               </div>
               {ApplicationTypeMenu.map((e, index) => {
                 const checked = _searchParams?.services?.includes(e.value);

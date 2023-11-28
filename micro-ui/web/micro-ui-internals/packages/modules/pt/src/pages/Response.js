@@ -6,7 +6,7 @@ import { useQueryClient } from "react-query";
 import getPTAcknowledgementData from "../getPTAcknowledgementData";
 
 const GetMessage = (type, action, isSuccess, isEmployee, t) => {
-  return t(`${isEmployee ? "E" : "C"}S_PT_RESPONSE_${action ? action : "CREATE"}_${type}${isSuccess ? "" : "_ERROR"}`);
+  return t(`${isEmployee ? "E" : "C"}S_PTR_RESPONSE_${action ? action : "CREATE"}_${type}${isSuccess ? "" : "_ERROR"}`);
 };
 
 const GetActionMessage = (action, isSuccess, isEmployee, t) => {
@@ -73,6 +73,11 @@ const Response = (props) => {
     if (mutation1.data && mutation1.isSuccess) setsuccessData(mutation1.data);
   }, [mutation1.data]);
 
+  /* 
+  This useEffect is created in a logic that once you successfully submitted
+  It clears the query cache to force a data refresh.  handling the response.
+
+  */
   useEffect(() => {
     const onSuccess = async () => {queryClient.clear(); };
 
@@ -98,17 +103,17 @@ const Response = (props) => {
   // TODO: will need to add a specific module for pdf to download the pdf 
 
   const handleDownloadPdf = async () => {
-    const { Properties = [] } = mutation.data || successData;
-    const PetRegistrationApplications = (Properties && Properties[0]) || {};
+    //const { PetRegistrationApplication = [] } = mutation.data || successData;
+    const PetRegistrationApplications = PetRegistrationApplications?.[0] || {};
     const tenantInfo = tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
     
     let tenantId = PetRegistrationApplications.tenantId || tenantId;
     // const propertyDetails = await Digit.PTService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.propertyId, status: "INACTIVE" } }); 
-    const propertyDetails = await Digit.PTRService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
+    const petDetails = await Digit.PTRService.search({ tenantId, filters: { applicationNumber: PetRegistrationApplications?.applicationNumber, status: "INACTIVE" } });   
   
-    PetRegistrationApplications.transferorDetails = propertyDetails?.Properties?.[0] || [];
+    PetRegistrationApplications.transferorDetails = petDetails?.PetRegistrationApplications?.[0] || [];
     PetRegistrationApplications.isTransferor = true;
-    PetRegistrationApplications.transferorOwnershipCategory = propertyDetails?.Properties?.[0]?.ownershipCategory
+    PetRegistrationApplications.transferorOwnershipCategory = petDetails?.PetRegistrationApplications?.[0]?.ownershipCategory
     
     const data = await getPTAcknowledgementData({ ...PetRegistrationApplications, auditData }, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
