@@ -1,11 +1,12 @@
 /*
 
+
   @author - Shivank-NIUA
 
   this file is created to show the Application Detail page from both search application and inbox
   as this file is specially designed for Pet-Registration 
 
-  Note - Please Do Not Copy and paste this file without understanding the context  **it may conflit**
+  Note- Please Do Not Copy and paste this file without understanding the context  **it may conflit**
           
 
 
@@ -92,9 +93,8 @@ export const PTRSearch = {
           
           documents: [
             {
-             // title: "PT_COMMON_DOCS",//
+             
               values: response?.documents
-                // ?.filter((e) => e.status === "ACTIVE")
                 ?.map((document) => {
                   return {
                     title: `PTR_${document?.documentType.replace(".", "_")}`,
@@ -120,6 +120,7 @@ export const PTRSearch = {
       //additionalDetails: response?.additionalDetails,
       applicationData: response,
       transformToAppDetailsForEmployee: PTRSearch.RegistrationDetails,
+      
     };
   },
 };

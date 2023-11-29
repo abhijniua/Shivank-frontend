@@ -5,6 +5,7 @@ import { useQueryClient } from "react-query";
 import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom";
 // import { newConfig } from "../../../config/Create/config";
 import { citizenConfig } from "../../../config/Create/citizenconfig";
+import { data } from "jquery";
 
 // const CreateProperty = ({ parentRoute }) => {
 const PTRCreate = ({ parentRoute }) => {
@@ -182,6 +183,7 @@ const PTRCreate = ({ parentRoute }) => {
       </Route>
       <Route path={`${match.path}/acknowledgement`}>
         <PTAcknowledgement data={params} onSuccess={onSuccess} />
+        {console.log("data passing in ackkkkkk************",params)}
       </Route>
       <Route>
         <Redirect to={`${match.path}/${config.indexRoute}`} />

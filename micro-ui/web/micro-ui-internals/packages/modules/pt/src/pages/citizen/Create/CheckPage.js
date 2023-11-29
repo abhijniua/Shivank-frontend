@@ -66,7 +66,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
   };
   return (
     <React.Fragment>
-     {window.location.href.includes("/citizen") ? <Timeline currentStep={4}/> : null}
+     {window.location.href.includes("/citizen") ? <Timeline currentStep={5}/> : null}
     <Card>
       <CardHeader>{t("PTR_CHECK_YOUR_DETAILS")}</CardHeader>
       <div>

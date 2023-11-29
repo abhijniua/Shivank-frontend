@@ -14,6 +14,7 @@ const PTRCitizenPet
   const [breedType, setBreedType] = useState((formData.pets && formData.pets[index] && formData.pets[index].breedType) || formData?.pets?.breedType || "");
   const [petGender, setPetGender] = useState((formData.pets && formData.pets[index] && formData.pets[index].petGender) || formData?.pets?.petGender || "");
 
+  
 
   const [petName, setPetName] = useState(
     (formData.pets && formData.pets[index] && formData.pets[index].petName) || formData?.pets?.petName || ""
@@ -40,6 +41,7 @@ const PTRCitizenPet
   );
 
 
+
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
 
@@ -56,16 +58,20 @@ const PTRCitizenPet
       menu.push({ i18nKey: `PTR_PET_${petone.code}`, code: `${petone.code}`, value: `${petone.name}` });
   });
 
-  console.log("Menu", menu)
 
-  //Need to integrate accordingly 
+  
 
-  // TO DO: Need to apply the filter to get the data according to the selection of pet type before deployement 
-  Breed_Type &&
+  Breed_Type && 
   Breed_Type.map((breedss) => {
-    
-      breed_type.push({ i18nKey: `PTR_BREED_TYPE_${breedss.code}`, code: `${breedss.code}`, value: `${breedss.name}` });
-  });
+    if(breedss.PetType== petType?.code) {
+      breed_type.push({
+        i18nKey: `PTR_BREED_TYPE_${breedss.code}`,
+        code: `${breedss.code}`,  
+        value: `${breedss.name}` 
+      });
+    }
+  
+   });
 
 
   const { data: Pet_Sex } = Digit.Hooks.ptr.usePTRGenderMDMS(stateId, "common-masters", "GenderType");       // this hook is for Pet gender type { male, female}
@@ -170,16 +176,7 @@ const PTRCitizenPet
     >
       <div>
         <CardLabel>{`${t("PTR_SEARCH_PET_TYPE")}`}</CardLabel>
-        {/* <Dropdown
-        t={t}
-        options={menu}
-        name="petType"
-        value={petType}
-        optionKey="i18nKey"
-        selectedOption={petType}
-        onSelect={setPetType}
-        placeholder={t("SELECT_PET_TYPE")}
-      /> */}
+        
         
        <RadioButtons
           t={t}
@@ -204,9 +201,8 @@ const PTRCitizenPet
           value={breedType}
           selectedOption={breedType}
           onSelect={setBreedType}
-        // isDependent={true}
           labelKey="PTR_SERACH_BREED_TYPE"
-        // disabled={isUpdateProperty || isEditProperty}
+       
         />
         
 

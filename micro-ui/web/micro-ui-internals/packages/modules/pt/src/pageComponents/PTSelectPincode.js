@@ -82,7 +82,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
   const onSkip = () => onSelect();
   return (
     <React.Fragment>
-    {window.location.href.includes("/citizen") ? <Timeline currentStep={1}/> : null}
+    {window.location.href.includes("/citizen") ? <Timeline currentStep={3}/> : null}
     <FormStep
       t={t}
       config={{ ...config, inputs }}

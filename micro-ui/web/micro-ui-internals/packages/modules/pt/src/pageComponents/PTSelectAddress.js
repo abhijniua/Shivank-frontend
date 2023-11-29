@@ -182,7 +182,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData, setError, cl
         window.location.href.includes("/citizen/pt/property/property-mutation") ? (
           <Timeline currentStep={1} flow="PT_MUTATE" />
         ) : (
-          <Timeline currentStep={1} />
+          <Timeline currentStep={3} />
         )
       ) : null}
       <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>

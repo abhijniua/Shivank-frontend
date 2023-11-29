@@ -164,7 +164,7 @@ const PTRCitizenAddress = ({ t, config, onSelect, userType, formData, formState,
   }
   return (
     <React.Fragment>
-    {window.location.href.includes("/citizen") ? <Timeline currentStep={1}/> : null}
+    {window.location.href.includes("/citizen") ? <Timeline currentStep={3}/> : null}
     <FormStep
       config={{ ...config, inputs }}
       _defaultValues={{

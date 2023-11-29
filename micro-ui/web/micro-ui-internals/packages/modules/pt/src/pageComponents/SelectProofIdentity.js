@@ -9,18 +9,20 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   // const editScreen = url.includes("/modify-application/");
   const isMutation = url.includes("property-mutation");
 
-  let index = window.location.href.charAt(window.location.href.length - 1);
+  // let index = "0";
   // isMutation ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
 
-  const [uploadedFile, setUploadedFile] = useState(() => formData?.owners[index]?.documents?.proofIdentity?.fileStoreId || null);
-  const [file, setFile] = useState(formData?.owners[index]?.documents?.proofIdentity);
+  const [uploadedFile, setUploadedFile] = useState(() => formData?.docc?.documents?.proofIdentity?.fileStoreId || null);
+  const [file, setFile] = useState(formData?.docc?.documents?.proofIdentity);
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
   const onSkip = () => onSelect();
   const isUpdateProperty = formData?.isUpdateProperty || false;
   let isEditProperty = formData?.isEditProperty || false;
 
-  const [dropdownValue, setDropdownValue] = useState(formData?.owners[index]?.documents?.proofIdentity?.documentType);
+  console.log("formdata in docccc--------------------------*********",formData)
+
+  const [dropdownValue, setDropdownValue] = useState(formData?.docc?.documents?.proofIdentity?.documentType);
   let dropdownData = [];
   // let dropdownData1 = [];
   // let dropdownData2 = [];
@@ -119,9 +121,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
 
   const handleSubmit = () => {
     setmultipleownererror(null);
-    if (formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" && formData?.owners?.length <= 1 && index == "0" && !isMutation) {
+    if (formData?.docchipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" && formData?.docc?.length <= 1 &&  !isMutation) {
       setmultipleownererror("PT_MULTI_OWNER_ADD_ERR_MSG");
-    } else if (isMutation && formData?.owners?.length <= 1 && formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") {
+    } else if (isMutation && formData?.docc?.length <= 1 && formData?.docchipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") {
       setmultipleownererror("PT_MULTI_OWNER_ADD_ERR_MSG");
     } else {
       let fileStoreId = uploadedFile;
@@ -130,7 +132,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         fileDetails.documentType = dropdownValue;
         fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
       }
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = formData.docc && formData.docc;
       if (ownerDetails && ownerDetails.documents) {
         if (!isMutation) ownerDetails.documents["proofIdentity"] = fileDetails;
         else ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId };
@@ -146,7 +148,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       //   }
       // }
 
-      onSelect(config.key, isMutation ? [ownerDetails] : ownerDetails, "", index);
+      onSelect(config.key, isMutation ? [ownerDetails] : ownerDetails, "");
     }
     // onSelect(config.key, { specialProofIdentity: fileDetails }, "", index);
   };
@@ -157,7 +159,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         setError(t("ERR_DEFAULT_INPUT_FIELD_MSG"));
         return;
       }
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = formData.docc && formData.docc;
       if (ownerDetails && ownerDetails.documents) {
         ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId: uploadedFile };
       } else {
@@ -168,27 +170,27 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       return;
     }
 
-    let newIndex = parseInt(index) + 1;
+    // let newIndex = parseInt(index) + 1;
     let fileStoreId = uploadedFile;
     let fileDetails = file;
     if (fileDetails) {
       fileDetails.documentType = dropdownValue;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
-    let ownerDetails = formData.owners && formData.owners[index];
+    let ownerDetails = formData.docc && formData.docc;
     if (ownerDetails && ownerDetails.documents) {
       ownerDetails.documents["proofIdentity"] = fileDetails;
     } else {
       ownerDetails["documents"] = [];
       ownerDetails.documents["proofIdentity"] = fileDetails;
     }
-    onSelect("owner-details", {}, false, newIndex, true);
+    onSelect("owner-details", {}, false,  true);
   }
 
   const checkMutatePT = window.location.href.includes("citizen/pt/property/property-mutation/") ? (
     <Timeline currentStep={1} flow="PT_MUTATE" />
   ) : (
-    <Timeline currentStep={3} />
+    <Timeline currentStep={4} />
   );
   return (
     <React.Fragment>
@@ -201,7 +203,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         forcedError={t(multipleownererror)}
         isDisabled={isUpdateProperty || isEditProperty ? false : multipleownererror || !uploadedFile || !dropdownValue || error}
         onAdd={onAdd}
-        isMultipleAllow={formData?.ownershipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS"}
+        isMultipleAllow={formData?.docchipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS"}
       >
 
         {components_ar}

@@ -7,7 +7,6 @@
                             "route":"info",
                             "component":"PropertyTax",
                             "nextStep": "owners",
-                            // "hideInEmployee": true,
                             "key": "Documents"
                         },
 
@@ -16,7 +15,7 @@
                         "route": "owners",
                         "component": "PTRCitizenDetails",
                         "withoutLabel": true,
-                        "key": "owners",
+                        "key": "ownerss",
                         "type": "component",
                         "nextStep": "pet-details",
                         "hideInEmployee": true,
@@ -103,7 +102,7 @@
                             "route": "documents",
                             "component": "SelectProofIdentity",
                             "withoutLabel": true,
-                            "key": "Documents",
+                            "key": "document",
                             "type": "component",
                             "nextStep":null,
                             "texts": {

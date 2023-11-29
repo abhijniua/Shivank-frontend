@@ -86,7 +86,7 @@ const PTRCitizenDetails
     {
       window.location.href.includes("/citizen") ?
         window.location.href.includes("/citizen/pt/property/property-mutation") ? 
-          <Timeline currentStep={1} flow="PT_MUTATE" /> : <Timeline currentStep={2} />
+          <Timeline currentStep={1} flow="PT_MUTATE" /> : <Timeline currentStep={1} />
     : null
     }
 

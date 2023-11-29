@@ -58,16 +58,7 @@ const PTRPetdetails = ({ config, onSelect, userType, formData, setError, formSta
 
   console.log("Menu", menu)
 
-  //Need to integrate accordingly 
-
-  // TO DO: Need to apply the filter to get the data according to the selection of pet type before deployement 
-
-//   Breed_Type &&
-//   Breed_Type.map((breedss) => {
-// console.log("bredddddddddddddddddddd",breedss)    
-//       breed_type.push({ i18nKey: `PTR_BREED_TYPE_${breedss.code}`, code: `${breedss.code}`, value: `${breedss.name}` });
-
-//   });
+ 
 
 Breed_Type && 
   Breed_Type.map((breedss) => {
@@ -78,22 +69,7 @@ Breed_Type &&
         value: `${breedss.name}` 
       });
     }
-  // Breed_Type && 
-  // Breed_Type.map((breedss) => {
-  //   if(breedss.PetType==pets?.petType) {
-  //     breed_type.push({
-  //       i18nKey: `PTR_BREED_TYPE_${breedss.code}`,
-  //       code: `${breedss.code}`,  
-  //       value: `${breedss.name}` 
-  //     });
-  //   }
-  //   // if(breedss.PetType="CAT") {
-  //   //   breed_type.push({
-  //   //     i18nKey: `PTR_BREED_TYPE_${breedss.code}`,
-  //   //     code: `${breedss.code}`,
-  //   //     value: `${breedss.name}`
-  //   //   });
-  //   // }
+  
    });
 
   
