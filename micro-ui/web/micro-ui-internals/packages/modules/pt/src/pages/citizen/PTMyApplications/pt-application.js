@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const PTApplication = ({ application, tenantId, buttonLabel }) => {
-  console.log("application in pt-application for index",application)
+  console.log("aplicattttttttttttttttt",application)
   const { t } = useTranslation();
   return (
     <Card>

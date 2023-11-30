@@ -64,7 +64,7 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
   if (window.location.href.includes("/search-results")) fetchBillParams = { consumerCode };
 
   const paymentDetails = Digit.Hooks.useFetchBillsForBuissnessService(
-    { businessService: "PT", ...fetchBillParams, tenantId: city },
+    { businessService: "ptr", ...fetchBillParams, tenantId: city },
     {
       enabled: consumerCode ? true : false,
       retry: false,

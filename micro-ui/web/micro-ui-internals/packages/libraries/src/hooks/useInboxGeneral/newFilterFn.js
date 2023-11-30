@@ -58,7 +58,6 @@ export const filterFunctions = {
     const workflowFilters = {};
 
     const { applicationNumbers, mobileNumber, limit, offset, sortBy, sortOrder, total, applicationStatus, services } = filtersArg || {};
-    console.log("yyyyy",applicationNumbers )
 
     if (filtersArg?.applicationNumber) {
       searchFilters.applicationNumber = filtersArg?.applicationNumber;
@@ -66,9 +65,7 @@ export const filterFunctions = {
     if (filtersArg?.applicationNumbers) {
       searchFilters.applicationNumber = applicationNumbers;
     }
-    // if (filtersArg?.oldapplicationNumbers) {
-    //   searchFilters.oldapplicationNumbers = filtersArg?.oldapplicationNumbers;
-    // }
+    
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.status = applicationStatus.map((status) => status.uuid);
       if (applicationStatus?.some((e) => e.nonActionableRole)) {
@@ -85,7 +82,6 @@ export const filterFunctions = {
       searchFilters.mobileNumber = mobileNumber;
     }
 
-    console.log("zzzz",  workflowFilters.businessService )
 
     if (services) {
       workflowFilters.businessService = services;

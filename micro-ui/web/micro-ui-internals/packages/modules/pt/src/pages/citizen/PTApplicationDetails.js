@@ -50,10 +50,10 @@ const PTApplicationDetails = () => {
   const PetRegistrationApplications = get(data, "PetRegistrationApplications", []);
   // const propertyId = get(data, "PetRegistrationApplications[0].applicationNumber", []);
   
-  let property = (PetRegistrationApplications && PetRegistrationApplications.length > 0 && PetRegistrationApplications[0]) || {};
-  const application = property;
+  let pet_details = (PetRegistrationApplications && PetRegistrationApplications.length > 0 && PetRegistrationApplications[0]) || {};
+  const application = pet_details;
   sessionStorage.setItem("pt-property", JSON.stringify(application));
-  console.log("property equal to petregistration")
+  console.log("pet_details equal to petregistration",pet_details)
 
   useMemo(() => {
     if((data?.PetRegistrationApplications?.[0]?.status === "ACTIVE"  || data?.PetRegistrationApplications?.[0]?.status === "INACTIVE")&& popup == false && servicedata?.Service?.length == 0)
@@ -61,10 +61,10 @@ const PTApplicationDetails = () => {
   },[data,servicedata])
 
   useEffect(async () => {
-    if (applicationNumber && tenantId && property) {
+    if (applicationNumber && tenantId && pet_details) {
       const res = await Digit.PaymentService.searchBill(tenantId, { Service: "PT.MUTATION", consumerCode: applicationNumber });
       if (!res.Bill.length) {
-        const res1 = await Digit.PTService.ptCalculateMutation({ Property: property }, tenantId);
+        const res1 = await Digit.PTService.ptCalculateMutation({ Pet_Details: pet_details }, tenantId);
         setBillAmount(res1?.[applicationNumber]?.totalAmount || t("CS_NA"));
         setBillStatus(t(`PT_MUT_BILL_ACTIVE`));
       } else {
@@ -72,7 +72,7 @@ const PTApplicationDetails = () => {
         setBillStatus(t(`PT_MUT_BILL_${res?.Bill[0]?.status?.toUpperCase()}`));
       }
     }
-  }, [tenantId, applicationNumber, property]);
+  }, [tenantId, applicationNumber, pet_details]);
 
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.ptr.usePTRSearch(
     {
@@ -81,8 +81,6 @@ const PTApplicationDetails = () => {
     },
     {
       enabled: true,
-      // select: (d) =>
-      //   d.PetRegistrationApplications.filter((e) => e.status === "ACTIVE")?.sort((a, b) => b.auditDetails.lastModifiedTime - a.auditDetails.lastModifiedTime),
     }
   );
 
@@ -96,12 +94,12 @@ const PTApplicationDetails = () => {
     { enabled: applicationNumber ? true : false }
   );
 
-  if (!property.workflow) {
+   if (!pet_details.workflow) {
     let workflow = {
       id: null,
-      tenantId: tenantId,
+      tenantId: application?.tenantId,
       businessService: "ptr",
-      businessId: application?.applicationNumber,
+      businessIds: application?.applicationNumber,
       action: "",
       moduleName: "pet-services",
       state: null,
@@ -109,13 +107,15 @@ const PTApplicationDetails = () => {
       documents: null,
       assignes: null,
     };
-    property.workflow = workflow;
-  }
+    pet_details.workflow = workflow;
+   }
 
-  if (property && property.owners && property.owners.length > 0) {
+  
+
+  if (pet_details && pet_details.owners && pet_details.owners.length > 0) {
     let ownersTemp = [];
     let owners = [];
-    property.owners.map((owner) => {
+    pet_details.owners.map((owner) => {
       owner.documentUid = owner.documents ? owner.documents[0].documentUid : "NA";
       owner.documentType = owner.documents ? owner.documents[0].documentType : "NA";
       if (owner.status == "ACTIVE") {
@@ -124,60 +124,60 @@ const PTApplicationDetails = () => {
         owners.push(owner);
       }
     });
-    property.ownersInit = owners;
-    property.ownersTemp = ownersTemp;
+    pet_details.ownersInit = owners;
+    pet_details.ownersTemp = ownersTemp;
   }
-  property.ownershipCategoryTemp = property?.ownershipCategory;
-  property.ownershipCategoryInit = "NA";
+  // pet_details.ownershipCategoryTemp = pet_details?.ownershipCategory;
+  // pet_details.ownershipCategoryInit = "NA";
   // Set Institution/Applicant info card visibility
   if (get(application, "PetRegistrationApplications[0].ownershipCategory", "")?.startsWith("INSTITUTION")) {
-    property.institutionTemp = property.institution;
+    pet_details.institutionTemp = pet_details.institution;
   }
 
   if (auditResponse && Array.isArray(get(auditResponse, "PetRegistrationApplications", [])) && get(auditResponse, "PetRegistrationApplications", []).length > 0) {
     const propertiesAudit = get(auditResponse, "PetRegistrationApplications", []);
-    const propertyIndex = property.status == "ACTIVE" ? 1 : 0;
+    const propertyIndex = pet_details.status == "ACTIVE" ? 1 : 0;
     // const previousActiveProperty = propertiesAudit.filter(property => property.status == 'ACTIVE').sort((x, y) => y.auditDetails.lastModifiedTime - x.auditDetails.lastModifiedTime)[propertyIndex];
     // Removed filter(property => property.status == 'ACTIVE') condition to match result in qa env
     const previousActiveProperty = propertiesAudit
-      .filter((property) => property.status == "ACTIVE")
+      .filter((pet_details) => pet_details.status == "ACTIVE")
       .sort((x, y) => y.auditDetails.lastModifiedTime - x.auditDetails.lastModifiedTime)[propertyIndex];
-    property.ownershipCategoryInit = previousActiveProperty?.ownershipCategory;
-    property.ownersInit = previousActiveProperty?.owners?.filter((owner) => owner.status == "ACTIVE");
+    // pet_details.ownershipCategoryInit = previousActiveProperty?.ownershipCategory;
+    pet_details.ownersInit = previousActiveProperty?.owners?.filter((owner) => owner.status == "ACTIVE");
 
     const curWFProperty = propertiesAudit.sort((x, y) => y.auditDetails.lastModifiedTime - x.auditDetails.lastModifiedTime)[0];
-    property.ownersTemp = curWFProperty.owners.filter((owner) => owner.status == "ACTIVE");
+    pet_details.ownersTemp = curWFProperty.owners.filter((owner) => owner.status == "ACTIVE");
 
-    if (property?.ownershipCategoryInit?.startsWith("INSTITUTION")) {
-      property.institutionInit = previousActiveProperty.institution;
-    }
+    // if (pet_details?.ownershipCategoryInit?.startsWith("INSTITUTION")) {
+    //   pet_details.institutionInit = previousActiveProperty.institution;
+    // }
   }
 
-  let transfereeOwners = get(property, "ownersTemp", []);
-  let transferorOwners = get(property, "ownersInit", []);
+  // let transfereeOwners = get(pet_details, "ownersTemp", []);
+  // let transferorOwners = get(pet_details, "ownersInit", []);
 
-  let transfereeInstitution = get(property, "institutionTemp", []);
-  let isInstitution = property?.ownershipCategoryInit?.startsWith("INSTITUTION");
-  let transferorInstitution = get(property, "institutionInit", []);
+  // let transfereeInstitution = get(pet_details, "institutionTemp", []);
+  // let isInstitution = pet_details?.ownershipCategoryInit?.startsWith("INSTITUTION");
+  // let transferorInstitution = get(pet_details, "institutionInit", []);
 
-  let units = [];
-  units = application?.units;
-  units &&
-    units.sort((x, y) => {
-      let a = x.floorNo,
-        b = y.floorNo;
-      if (x.floorNo < 0) {
-        a = x.floorNo * -20;
-      }
-      if (y.floorNo < 0) {
-        b = y.floorNo * -20;
-      }
-      if (a > b) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
+  // let units = [];
+  // units = application?.units;
+  // units &&
+  //   units.sort((x, y) => {
+  //     let a = x.floorNo,
+  //       b = y.floorNo;
+  //     if (x.floorNo < 0) {
+  //       a = x.floorNo * -20;
+  //     }
+  //     if (y.floorNo < 0) {
+  //       b = y.floorNo * -20;
+  //     }
+  //     if (a > b) {
+  //       return 1;
+  //     } else {
+  //       return -1;
+  //     }
+  //   });
   let owners = [];
   owners = application?.owners;
   let docs = [];
@@ -187,11 +187,11 @@ const PTApplicationDetails = () => {
     return <Loader />;
   }
 
-  let flrno,
-    i = 0;
-  flrno = units && units[0]?.floorNo;
+  // let flrno,
+  //   i = 0;
+  // flrno = units && units[0]?.floorNo;
 
-  const isPropertyTransfer = property?.creationReason && property.creationReason === "MUTATION" ? true : false;
+  // const isPropertyTransfer = pet_details?.creationReason && pet_details.creationReason === "MUTATION" ? true : false;
 
   const getAcknowledgementData = async () => {
     const applications = application || {};
@@ -202,8 +202,8 @@ const PTApplicationDetails = () => {
   };
 
   let documentDate = t("CS_NA");
-  if (property?.additionalDetails?.documentDate) {
-    const date = new Date(property?.additionalDetails?.documentDate);
+  if (pet_details?.additionalDetails?.documentDate) {
+    const date = new Date(pet_details?.additionalDetails?.documentDate);
     const month = Digit.Utils.date.monthNames[date.getMonth()];
     documentDate = `${date.getDate()} ${month} ${date.getFullYear()}`;
   }
@@ -231,7 +231,7 @@ const PTApplicationDetails = () => {
   let dowloadOptions = [];
 
   dowloadOptions.push({
-    label: data?.PetRegistrationApplications?.[0]?.creationReason === "MUTATION" ? t("MT_APPLICATION") : t("PT_APPLICATION_ACKNOWLEDGMENT"),
+    label: data?.PetRegistrationApplications?.[0]?.creationReason === "MUTATION" ? t("MT_APPLICATION") : t("PTR_APPLICATION"),
     onClick: () => getAcknowledgementData(),
   });
   if (reciept_data && reciept_data?.Payments.length > 0 && recieptDataLoading == false)
@@ -249,7 +249,7 @@ const PTApplicationDetails = () => {
     <React.Fragment>
       <div>
         <div className="cardHeaderWithOptions" style={{ marginRight: "auto", maxWidth: "960px" }}>
-          <Header styles={{ fontSize: "32px" }}>{t("PT_MUTATION_APPLICATION_DETAILS")}</Header>
+          <Header styles={{ fontSize: "32px" }}>{t("PTR_PET_APPLICATION_DETAILS")}</Header>
           {dowloadOptions && dowloadOptions.length > 0 && (
             <MultiLink
               className="multilinkWrapper"
@@ -263,284 +263,45 @@ const PTApplicationDetails = () => {
           <StatusTable>
             <Row
               className="border-none"
-              label={t("PT_APPLICATION_NUMBER_LABEL")}
-              text={property?.applicationNumber} /* textStyle={{ whiteSpace: "pre" }} */
+              label={t("PTR_APPLICATION_NO_LABEL")}
+              text={pet_details?.applicationNumber} 
             />
-            {/* <Row
-              className="border-none"
-              label={t("PT_SEARCHPROPERTY_TABEL_PTUID")}
-              text={property?.propertyId} /* textStyle={{ whiteSpace: "pre" }} */
-            /> */}
-            <Row
-              className="border-none"
-              label={t("PT_APPLICATION_CHANNEL_LABEL")}
-              text={t(`ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${property?.channel}`)}
-            />
-
-            {isPropertyTransfer && (
-              <React.Fragment>
-                <Row className="border-none" label={t("PT_FEE_AMOUNT")} text={billAmount || t("₹0")} textStyle={{ whiteSpace: "pre" }} />
-                <Row className="border-none" label={t("PT_PAYMENT_STATUS")} text={billStatus} textStyle={{ whiteSpace: "pre" }} />
-              </React.Fragment>
-            )}
           </StatusTable>
-          <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_PROPERTY_ADDRESS_SUB_HEADER")}</CardSubHeader>
+           
+          <CardSubHeader style={{ fontSize: "24px" }}>{t("PTR_ADDRESS_HEADER")}</CardSubHeader>
           <StatusTable>
-            <Row className="border-none" label={t("PT_PROPERTY_ADDRESS_PINCODE")} text={property?.address?.pincode || t("CS_NA")} />
-            <Row className="border-none" label={t("PT_COMMON_CITY")} text={property?.address?.city || t("CS_NA")} />
-            <Row
-              className="border-none"
-              label={t("PT_COMMON_LOCALITY_OR_MOHALLA")}
-              text=/* {`${t(application?.address?.locality?.name)}` || t("CS_NA")} */ {t(`${property?.address?.locality?.area}`) || t("CS_NA")}
-            />
-            <Row className="border-none" label={t("PT_PROPERTY_ADDRESS_STREET_NAME")} text={property?.address?.street || t("CS_NA")} />
-            {isPropertyTransfer ? (
-              <Row className="border-none" label={t("PT_DOOR_OR_HOUSE")} text={property?.address?.doorNo || t("CS_NA")} />
-            ) : (
-              <Row className="border-none" label={t("PT_PROPERTY_ADDRESS_COLONY_NAME")} text={property?.address?.buildingName || t("CS_NA")} />
-            )}
+            <Row className="border-none" label={t("PTR_PINCODE")} text={pet_details?.address?.pincode || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_CITY")} text={pet_details?.address?.city || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_STREET_NAME")} text={pet_details?.address?.street || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_HOUSE_NO")} text={pet_details?.address?.doorNo || t("CS_NA")} />
           </StatusTable>
 
-          {isPropertyTransfer ? (
-            <React.Fragment>
-              <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_MUTATION_TRANSFEROR_DETAILS")}</CardSubHeader>
-              <div>
-                {Array.isArray(transferorOwners) &&
-                  transferorOwners.map((owner, index) => (
-                    <div key={index}>
-                      <CardSubHeader>
-                        {transferorOwners.length != 1 && (
-                          <span>
-                            {t("PT_OWNER_SUB_HEADER")} - {index + 1}{" "}
-                          </span>
-                        )}
-                      </CardSubHeader>
-                      <StatusTable>
-                        <Row className="border-none" label={t("PT_COMMON_APPLICANT_NAME_LABEL")} text={owner?.name || t("CS_NA")} />
-                        <Row className="border-none" label={t("PT_FORM3_GUARDIAN_NAME")} text={owner?.fatherOrHusbandName || t("CS_NA")} />
-                        <Row className="border-none" label={t("PT_FORM3_MOBILE_NUMBER")} text={owner?.mobileNumber || t("CS_NA")} />
-                        <Row className="border-none" label={t("PT_MUTATION_AUTHORISED_EMAIL")} text={owner?.emailId || t("CS_NA")} />
-                        <Row
-                          className="border-none"
-                          label={t("PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY")}
-                          text={owner?.ownerType.toLowerCase() || t("CS_NA")}
-                        />
-                        <Row className="border-none" label={t("PT_OWNERSHIP_INFO_CORR_ADDR")} text={owner?.correspondenceAddress || t("CS_NA")} />
-                      </StatusTable>
-                    </div>
-                  ))}
-              </div>
+          <CardSubHeader style={{ fontSize: "24px" }}>{t("PTR_APPLICANT_DETAILS_HEADER")}</CardSubHeader>
+          <StatusTable>
+            <Row className="border-none" label={t("PTR_APPLICANT_NAME")} text={pet_details?.applicantName || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_FATHER/HUSBAND_NAME")} text={pet_details?.fatherName || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_APPLICANT_MOBILE_NO")} text={pet_details?.mobileNumber || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_APPLICANT_EMAILID")} text={pet_details?.doorNo || t("CS_NA")} />
+          </StatusTable>
 
-              <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_MUTATION_TRANSFEREE_DETAILS")}</CardSubHeader>
-              {isInstitution ? (
-                <div>
-                  {Array.isArray(transfereeOwners) &&
-                    transfereeOwners.map((owner, index) => (
-                      <div key={index}>
-                        <CardSubHeader>
-                          {transfereeOwners.length != 1 && (
-                            <span>
-                              {t("PT_OWNER_SUB_HEADER")} - {index + 1}{" "}
-                            </span>
-                          )}
-                        </CardSubHeader>
-                        <StatusTable>
-                          <Row className="border-none" label={t("PT_INSTITUTION_NAME")} text={transferorInstitution?.name || t("CS_NA")} />
-                          <Row className="border-none" label={t("PT_TYPE_OF_INSTITUTION")} text={`${t(transferorInstitution?.type)}` || t("CS_NA")} />
-                          <Row
-                            className="border-none"
-                            label={t("PT_NAME_AUTHORIZED_PERSON")}
-                            text={transferorInstitution?.nameOfAuthorizedPerson || t("CS_NA")}
-                          />
-                          <Row className="border-none" label={t("PT_LANDLINE_NUMBER")} text={owner?.altContactNumber || t("CS_NA")} />
-                          <Row className="border-none" label={t("PT_FORM3_MOBILE_NUMBER")} text={owner?.mobileNumber || t("CS_NA")} />
-                          <Row
-                            className="border-none"
-                            label={t("PT_INSTITUTION_DESIGNATION")}
-                            text={transferorInstitution?.designation || t("CS_NA")}
-                          />
-                          <Row className="border-none" label={t("PT_MUTATION_AUTHORISED_EMAIL")} text={owner?.emailId || t("CS_NA")} />
-                          <Row className="border-none" label={t("PT_OWNERSHIP_INFO_CORR_ADDR")} text={owner?.correspondenceAddress || t("CS_NA")} />
-                        </StatusTable>
-                      </div>
-                    ))}
-                </div>
-              ) : (
-                <div>
-                  {Array.isArray(transfereeOwners) &&
-                    transfereeOwners.map((owner, index) => (
-                      <div key={index}>
-                        <CardSubHeader>
-                          {transfereeOwners.length != 1 && (
-                            <span>
-                              {t("PT_OWNER_SUB_HEADER")} - {index + 1}{" "}
-                            </span>
-                          )}
-                        </CardSubHeader>
-                        <StatusTable>
-                          <Row className="border-none" label={t("PT_COMMON_APPLICANT_NAME_LABEL")} text={owner?.name || t("CS_NA")} />
-                          <Row className="border-none" label={t("PT_FORM3_GUARDIAN_NAME")} text={owner?.fatherOrHusbandName || t("CS_NA")} />
-                          <Row className="border-none" label={t("PT_COMMON_GENDER_LABEL")} text={owner?.gender || t("CS_NA")} />
-                          <Row
-                            className="border-none"
-                            label={t("PT_FORM3_OWNERSHIP_TYPE")}
-                            text={`${application?.ownershipCategory ? t(`PT_OWNERSHIP_${application?.ownershipCategory}`) : t("CS_NA")}`}
-                          />
-                          <Row className="border-none" label={t("PT_FORM3_MOBILE_NUMBER")} text={owner?.mobileNumber || t("CS_NA")} />
-                          <Row className="border-none" label={t("PT_MUTATION_AUTHORISED_EMAIL")} text={owner?.emailId || t("CS_NA")} />
-                          <Row
-                            className="border-none"
-                            label={t("PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY")}
-                            text={(owner?.ownerType).toLowerCase() || t("CS_NA")}
-                          />
-                          <Row className="border-none" label={t("PT_OWNERSHIP_INFO_CORR_ADDR")} text={owner?.correspondenceAddress || t("CS_NA")} />
-                        </StatusTable>
-                      </div>
-                    ))}
-                </div>
-              )}
-              <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_MUTATION_DETAILS")}</CardSubHeader>
-              <StatusTable>
-                <Row
-                  className="border-none"
-                  label={t("PT_MUTATION_PENDING_COURT")}
-                  text={property?.additionalDetails?.isMutationInCourt || t("CS_NA")}
-                />
-                <Row className="border-none" label={t("PT_DETAILS_COURT_CASE")} text={property?.additionalDetails?.caseDetails || t("CS_NA")} />
-                <Row
-                  className="border-none"
-                  label={t("PT_PROP_UNDER_GOV_AQUISITION")}
-                  text={property?.additionalDetails?.isPropertyUnderGovtPossession || t("CS_NA")}
-                />
-                <Row className="border-none" label={t("PT_DETAILS_GOV_AQUISITION")} text={t("CS_NA")} />
-              </StatusTable>
+          <CardSubHeader style={{ fontSize: "24px" }}>{t("PTR_PET_DETAILS_HEADER")}</CardSubHeader>
+          <StatusTable>
+            <Row className="border-none" label={t("PTR_PET_TYPE")} text={pet_details?.petDetails?.petType || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_BREED_TYPE")} text={pet_details?.petDetails?.breedType || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_DOCTOR_NAME")} text={pet_details?.petDetails?.doctorName || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_CLINIC_NAME")} text={pet_details?.petDetails?.clinicName || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_VACCINATED_DATE")} text={pet_details?.petDetails?.lastVaccineDate || t("CS_NA")} />
+            <Row className="border-none" label={t("PTR_VACCINATION_NUMBER")} text={pet_details?.petDetails?.vaccinationNumber || t("CS_NA")} />
+          </StatusTable>
 
-              <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_REGISTRATION_DETAILS")}</CardSubHeader>
-              <StatusTable>
-                <Row
-                  className="border-none"
-                  label={t("PT_REASON_PROP_TRANSFER")}
-                  text={`${t(property?.additionalDetails?.reasonForTransfer)}` || t("CS_NA")}
-                />
-                <Row className="border-none" label={t("PT_PROP_MARKET_VALUE")} text={property?.additionalDetails?.marketValue || t("CS_NA")} />
-                <Row className="border-none" label={t("PT_REG_NUMBER")} text={property?.additionalDetails?.documentNumber || t("CS_NA")} />
-                <Row className="border-none" label={t("PT_DOC_ISSUE_DATE")} text={documentDate} />
-                <Row className="border-none" label={t("PT_REG_DOC_VALUE")} text={property?.additionalDetails?.documentValue || t("CS_NA")} />
-                <Row className="border-none" label={t("PT_REMARKS")} text={t("CS_NA")} />
-              </StatusTable>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <CardSubHeader style={{ fontSize: "24px" }}> {t("PT_PROPERTY_ASSESSMENT_DETAILS_HEADER")}</CardSubHeader>
-              <StatusTable>
-                <Row
-                  className="border-none"
-                  label={t("PT_ASSESMENT_INFO_USAGE_TYPE")}
-                  text={
-                    `${t(
-                      (property?.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPSUBUSGTYPE_") +
-                        (property?.usageCategory?.split(".")[1] ? property?.usageCategory?.split(".")[1] : property?.usageCategory)
-                    )}` || t("CS_NA")
-                  }
-                />
-                <Row
-                  className="border-none"
-                  label={t("PT_COMMON_PROPERTY_TYPE")}
-                  text={`${t(getPropertyTypeLocale(property?.propertyType))}` || t("CS_NA")}
-                />
-                <Row
-                  className="border-none"
-                  label={t("PT_ASSESMENT1_PLOT_SIZE")}
-                  text={(property?.landArea && `${t(`${property?.landArea} sq.ft`)}`) || t("CS_NA")}
-                />
-                <Row className="border-none" label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${t(property?.noOfFloors)}` || t("CS_NA")} />
-              </StatusTable>
-              <div>
-                {Array.isArray(units) &&
-                  units.length > 0 &&
-                  units.map((unit, index) => (
-                    <div key={index}>
-                      {(flrno !== unit?.floorNo ? (i = 1) : (i = i + 1)) && i === 1 && (
-                        <CardSubHeader>{t(`PROPERTYTAX_FLOOR_${unit?.floorNo}`)}</CardSubHeader>
-                      )}
-                      <div style={{ border: "groove", padding: "7px", marginBottom: "10px" }}>
-                        <CardSubHeader>
-                          {t("ES_APPLICATION_DETAILS_UNIT")} {i}
-                        </CardSubHeader>
-                        {(flrno = unit?.floorNo) > -3 && (
-                          <StatusTable>
-                            <Row
-                              className="border-none"
-                              label={t("PT_ASSESSMENT_UNIT_USAGE_TYPE")}
-                              text={
-                                `${t(
-                                  (property?.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPUSGTYPE_") +
-                                    (property?.usageCategory?.split(".")[1] ? property?.usageCategory?.split(".")[1] : property?.usageCategory)
-                                )}` || t("CS_NA")
-                              }
-                            />
-                            <Row
-                              className="border-none"
-                              label={t("PT_OCCUPANY_TYPE_LABEL")}
-                              text={`${t("PROPERTYTAX_OCCUPANCYTYPE_" + unit?.occupancyType)}` || t("CS_NA")}
-                            />
-                            <Row
-                              className="border-none"
-                              label={t("PT_BUILTUP_AREA_LABEL")}
-                              text={`${`${unit?.constructionDetail?.builtUpArea} sq.ft` || t("CS_NA")}`}
-                            />
-                            {unit.occupancyType == "RENTED" && (
-                              <Row
-                                className="border-none"
-                                label={t("PT_FORM2_TOTAL_ANNUAL_RENT")}
-                                text={`${(unit?.arv && `₹${unit?.arv}`) || t("CS_NA")}`}
-                              />
-                            )}
-                          </StatusTable>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-              </div>
-              <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_COMMON_PROPERTY_OWNERSHIP_DETAILS_HEADER")}</CardSubHeader>
-              <div>
-                {Array.isArray(owners) &&
-                  owners.map((owner, index) => (
-                    <div key={index}>
-                      <CardSubHeader>
-                        {owners.length != 1 && (
-                          <span>
-                            {t("PT_OWNER_SUB_HEADER")} - {index + 1}{" "}
-                          </span>
-                        )}
-                      </CardSubHeader>
-                      <StatusTable>
-                        <Row className="border-none" label={t("PT_COMMON_APPLICANT_NAME_LABEL")} text={owner?.name || t("CS_NA")} />
-                        <Row className="border-none" label={t("PT_FORM3_GUARDIAN_NAME")} text={owner?.fatherOrHusbandName || t("CS_NA")} />
-                        <Row className="border-none" label={t("PT_COMMON_GENDER_LABEL")} text={owner?.gender || t("CS_NA")} />
-                        <Row
-                          className="border-none"
-                          label={t("PT_FORM3_OWNERSHIP_TYPE")}
-                          text={`${property?.ownershipCategory ? t(`PT_OWNERSHIP_${property?.ownershipCategory}`) : t("CS_NA")}`}
-                        />
-                        <Row className="border-none" label={t("PT_FORM3_MOBILE_NUMBER")} text={owner?.mobileNumber} />
-                        <Row className="border-none" label={t("PT_MUTATION_AUTHORISED_EMAIL")} text={`${owner?.emailId || t("CS_NA")}`} />
-                        <Row className="border-none" label={t("PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY")} text={(owner?.ownerType).toLowerCase()} />
-                        <Row className="border-none" label={t("PT_OWNERSHIP_INFO_CORR_ADDR")} text={owner?.correspondenceAddress || t("CS_NA")} />
-                      </StatusTable>
-                    </div>
-                  ))}
-              </div>
-            </React.Fragment>
-          )}
 
-          <CardSubHeader style={{ fontSize: "24px" }}>{t("PT_COMMON_DOCS")}</CardSubHeader>
+          <CardSubHeader style={{ fontSize: "24px" }}>{t("PTR_DOCUMENT_DETAILS")}</CardSubHeader>
           <div>
             {Array.isArray(docs) ? (
-              docs.length > 0 && <PropertyDocument property={property}></PropertyDocument>
+              docs.length > 0 && <PropertyDocument pet_details={pet_details}></PropertyDocument>
             ) : (
               <StatusTable>
-                <Row className="border-none" text={t("PT_NO_DOCUMENTS_MSG")} />
+                <Row className="border-none" text={t("PTR_NO_DOCUMENTS_MSG")} />
               </StatusTable>
             )}
           </div>
@@ -556,12 +317,7 @@ const PTApplicationDetails = () => {
           />
         )}
         </Card>
-        {/* <LinkButton style={{marginLeft:"5%",color:"#a82227"}} label={t("CS_RATE_US")} onClick={() => setpopup(true)} /> */}
-        {/* {popup && (<PopUp>
-          <div style={{margin:"0 auto", top:"15%", position:"relative"}}>
-          <PTCitizenFeedback popup={true} onClose={setpopup} setShowToast={setShowToast} data={data}/>
-          </div>
-        </PopUp>)} */}
+
         {popup && <PTCitizenFeedbackPopUp setpopup={setpopup} setShowToast={setShowToast} data={data} />}
       </div>
     </React.Fragment>
@@ -569,3 +325,14 @@ const PTApplicationDetails = () => {
 };
 
 export default PTApplicationDetails;
+
+            
+
+            
+           
+           
+            
+
+         
+
+        

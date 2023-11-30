@@ -87,7 +87,8 @@ const Urls = {
     getDefaulterNoticeStatus:"/pdf-service/v1/_getBulkDefaulterNoticeRecordsDetails"
     
   },
-  ptr: {  //urls for ptr
+  
+  ptr: {  
     
     create:"/pet-services/pet-registration/_create",
     search:"/pet-services/pet-registration/_search",

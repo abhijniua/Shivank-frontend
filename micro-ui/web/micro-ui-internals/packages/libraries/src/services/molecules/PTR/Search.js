@@ -1,12 +1,12 @@
 /*
 
 
-  @author - Shivank-NIUA
+@author - Shivank-NIUA
 
-  this file is created to show the Application Detail page from both search application and inbox
-  as this file is specially designed for Pet-Registration 
+this file is created to show the Application Detail page from both search application and inbox
+as this file is specially designed for Pet-Registration 
 
-  Note- Please Do Not Copy and paste this file without understanding the context  **it may conflit**
+Note- Please Do Not Copy and paste this file without understanding the context  **it may conflit**
           
 
 
@@ -25,16 +25,6 @@ export const PTRSearch = {
     
     return response;
   },
- 
-  
-
-  //   const applicationDetails = [propertyDetail, addressDetails, assessmentDetails, ownerdetails];
-  //   return {
-  //     tenantId: PetRegistrationApplications?.tenantId,
-  //     applicationDetails,
-  //     applicationData: PetRegistrationApplications,
-  //   };
-  //},
 
   
   application: async (tenantId, filters = {}) => {
