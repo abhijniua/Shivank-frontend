@@ -48,9 +48,9 @@ const SearchPTID = ({ tenantId, t, onSubmit, onReset, searchBy, PTSearchFields, 
   let formValue = watch();
   const fields = PTSearchFields?.[searchBy] || {};
   sessionStorage.removeItem("revalidateddone");
-  console.log("payload",payload,formValue)
+  //console.log("payload",payload,formValue)
  const setProptype =(e)=>{
-  console.log("e",e.code)
+  //console.log("e",e.code)
   setUsageType
   formValue.propertyType= "bbb"
  }

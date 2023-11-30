@@ -15,7 +15,7 @@ import { size } from "lodash";
 const PTApplicationDetails = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const { acknowledgementIds, tenantId } = useParams();
+  const { applicationNumber, tenantId } = useParams();
   const [acknowldgementData, setAcknowldgementData] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   const [popup, setpopup] = useState(false);
@@ -23,83 +23,87 @@ const PTApplicationDetails = () => {
   // const tenantId = Digit.ULBService.getCurrentTenantId();
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
-  const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
-    { filters: { acknowledgementIds, tenantId } },
-    { filters: { acknowledgementIds, tenantId } }
+  const { isLoading, isError, error, data } = Digit.Hooks.ptr.usePTRSearch(
+    { filters: { applicationNumber, tenantId } },
+    { filters: { applicationNumber, tenantId } }
   );
   const [billAmount, setBillAmount] = useState(null);
   const [billStatus, setBillStatus] = useState(null);
 
   let serviceSearchArgs = {
     tenantId : tenantId,
-    code: [`PT_${data?.Properties?.[0]?.creationReason}`], 
-    module: ["PT"],
-    referenceIds : [data?.Properties?.[0]?.acknowldgementNumber]
+    code: [`${data?.PetRegistrationApplications?.[0]?.creationReason}`], 
+    module: ["pet-services"],
+    referenceId : [data?.PetRegistrationApplications?.[0]?.applicationNumber]
+    
     //removing thid as of now sending ack no in referenceId
     // attributes: {
     //         "attributeCode": "referenceId",
-    //         "value": data?.Properties?.[0]?.acknowldgementNumber,
+    //         "value": data?.PetRegistrationApplications?.[0]?.applicationNumber,
     //     }
   }
+  console.log("refrenseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",data)
 
-  const { isLoading:serviceloading, error : serviceerror, data : servicedata} = Digit.Hooks.pt.useServiceSearchCF({ filters: { serviceSearchArgs } },{ filters: { serviceSearchArgs }, enabled : data?.Properties?.[0]?.acknowldgementNumber ?true : false, cacheTime : 0 });
+  const { isLoading:serviceloading, error : serviceerror, data : servicedata} = Digit.Hooks.pt.useServiceSearchCF({ filters: { serviceSearchArgs } },{ filters: { serviceSearchArgs }, enabled : data?.PetRegistrationApplications?.[0]?.applicationNumber ?true : false, cacheTime : 0 });
 
 
-  const properties = get(data, "Properties", []);
-  const propertyId = get(data, "Properties[0].propertyId", []);
-  let property = (properties && properties.length > 0 && properties[0]) || {};
+  const PetRegistrationApplications = get(data, "PetRegistrationApplications", []);
+  // const propertyId = get(data, "PetRegistrationApplications[0].applicationNumber", []);
+  
+  let property = (PetRegistrationApplications && PetRegistrationApplications.length > 0 && PetRegistrationApplications[0]) || {};
   const application = property;
   sessionStorage.setItem("pt-property", JSON.stringify(application));
+  console.log("property equal to petregistration")
 
   useMemo(() => {
-    if((data?.Properties?.[0]?.status === "ACTIVE"  || data?.Properties?.[0]?.status === "INACTIVE")&& popup == false && servicedata?.Service?.length == 0)
+    if((data?.PetRegistrationApplications?.[0]?.status === "ACTIVE"  || data?.PetRegistrationApplications?.[0]?.status === "INACTIVE")&& popup == false && servicedata?.Service?.length == 0)
       setpopup(true);
   },[data,servicedata])
 
   useEffect(async () => {
-    if (acknowledgementIds && tenantId && property) {
-      const res = await Digit.PaymentService.searchBill(tenantId, { Service: "PT.MUTATION", consumerCode: acknowledgementIds });
+    if (applicationNumber && tenantId && property) {
+      const res = await Digit.PaymentService.searchBill(tenantId, { Service: "PT.MUTATION", consumerCode: applicationNumber });
       if (!res.Bill.length) {
         const res1 = await Digit.PTService.ptCalculateMutation({ Property: property }, tenantId);
-        setBillAmount(res1?.[acknowledgementIds]?.totalAmount || t("CS_NA"));
+        setBillAmount(res1?.[applicationNumber]?.totalAmount || t("CS_NA"));
         setBillStatus(t(`PT_MUT_BILL_ACTIVE`));
       } else {
         setBillAmount(res?.Bill[0]?.totalAmount || t("CS_NA"));
         setBillStatus(t(`PT_MUT_BILL_${res?.Bill[0]?.status?.toUpperCase()}`));
       }
     }
-  }, [tenantId, acknowledgementIds, property]);
+  }, [tenantId, applicationNumber, property]);
 
-  const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.pt.usePropertySearch(
+  const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { propertyIds: propertyId, audit: true },
+      filters: { applicationNumber: applicationNumber, audit: true },
     },
     {
       enabled: true,
       // select: (d) =>
-      //   d.Properties.filter((e) => e.status === "ACTIVE")?.sort((a, b) => b.auditDetails.lastModifiedTime - a.auditDetails.lastModifiedTime),
+      //   d.PetRegistrationApplications.filter((e) => e.status === "ACTIVE")?.sort((a, b) => b.auditDetails.lastModifiedTime - a.auditDetails.lastModifiedTime),
     }
   );
 
   const { data: reciept_data, isLoading: recieptDataLoading } = Digit.Hooks.useRecieptSearch(
     {
       tenantId: tenantId,
-      businessService: "PT.MUTATION",
-      consumerCodes: acknowledgementIds,
+      businessService: "ptr",
+      consumerCodes: applicationNumber,
       isEmployee: false,
     },
-    { enabled: acknowledgementIds ? true : false }
+    { enabled: applicationNumber ? true : false }
   );
 
   if (!property.workflow) {
     let workflow = {
       id: null,
       tenantId: tenantId,
-      businessService: "PT.MUTATION",
-      businessId: application?.acknowldgementNumber,
+      businessService: "ptr",
+      businessId: application?.applicationNumber,
       action: "",
-      moduleName: "PT",
+      moduleName: "pet-services",
       state: null,
       comment: null,
       documents: null,
@@ -126,12 +130,12 @@ const PTApplicationDetails = () => {
   property.ownershipCategoryTemp = property?.ownershipCategory;
   property.ownershipCategoryInit = "NA";
   // Set Institution/Applicant info card visibility
-  if (get(application, "Properties[0].ownershipCategory", "")?.startsWith("INSTITUTION")) {
+  if (get(application, "PetRegistrationApplications[0].ownershipCategory", "")?.startsWith("INSTITUTION")) {
     property.institutionTemp = property.institution;
   }
 
-  if (auditResponse && Array.isArray(get(auditResponse, "Properties", [])) && get(auditResponse, "Properties", []).length > 0) {
-    const propertiesAudit = get(auditResponse, "Properties", []);
+  if (auditResponse && Array.isArray(get(auditResponse, "PetRegistrationApplications", [])) && get(auditResponse, "PetRegistrationApplications", []).length > 0) {
+    const propertiesAudit = get(auditResponse, "PetRegistrationApplications", []);
     const propertyIndex = property.status == "ACTIVE" ? 1 : 0;
     // const previousActiveProperty = propertiesAudit.filter(property => property.status == 'ACTIVE').sort((x, y) => y.auditDetails.lastModifiedTime - x.auditDetails.lastModifiedTime)[propertyIndex];
     // Removed filter(property => property.status == 'ACTIVE') condition to match result in qa env
@@ -219,7 +223,7 @@ const PTApplicationDetails = () => {
   };
 
   const printCertificate = async () => {
-    let response = await Digit.PaymentService.generatePdf(tenantId, { Properties: [data?.Properties?.[0]] }, "ptmutationcertificate");
+    let response = await Digit.PaymentService.generatePdf(tenantId, { PetRegistrationApplications: [data?.PetRegistrationApplications?.[0]] }, "ptmutationcertificate");
     const fileStore = await Digit.PaymentService.printReciept(tenantId, { fileStoreIds: response.filestoreIds[0] });
     window.open(fileStore[response?.filestoreIds[0]], "_blank");
   };
@@ -227,7 +231,7 @@ const PTApplicationDetails = () => {
   let dowloadOptions = [];
 
   dowloadOptions.push({
-    label: data?.Properties?.[0]?.creationReason === "MUTATION" ? t("MT_APPLICATION") : t("PT_APPLICATION_ACKNOWLEDGMENT"),
+    label: data?.PetRegistrationApplications?.[0]?.creationReason === "MUTATION" ? t("MT_APPLICATION") : t("PT_APPLICATION_ACKNOWLEDGMENT"),
     onClick: () => getAcknowledgementData(),
   });
   if (reciept_data && reciept_data?.Payments.length > 0 && recieptDataLoading == false)
@@ -235,7 +239,7 @@ const PTApplicationDetails = () => {
       label: t("MT_FEE_RECIEPT"),
       onClick: () => getRecieptSearch({ tenantId: reciept_data?.Payments[0]?.tenantId, payments: reciept_data?.Payments[0] }),
     });
-  if (data?.Properties?.[0]?.creationReason === "MUTATION" && data?.Properties?.[0]?.status === "ACTIVE")
+  if (data?.PetRegistrationApplications?.[0]?.creationReason === "MUTATION" && data?.PetRegistrationApplications?.[0]?.status === "ACTIVE")
     dowloadOptions.push({
       label: t("MT_CERTIFICATE"),
       onClick: () => printCertificate(),
@@ -260,13 +264,13 @@ const PTApplicationDetails = () => {
             <Row
               className="border-none"
               label={t("PT_APPLICATION_NUMBER_LABEL")}
-              text={property?.acknowldgementNumber} /* textStyle={{ whiteSpace: "pre" }} */
+              text={property?.applicationNumber} /* textStyle={{ whiteSpace: "pre" }} */
             />
-            <Row
+            {/* <Row
               className="border-none"
               label={t("PT_SEARCHPROPERTY_TABEL_PTUID")}
               text={property?.propertyId} /* textStyle={{ whiteSpace: "pre" }} */
-            />
+            /> */}
             <Row
               className="border-none"
               label={t("PT_APPLICATION_CHANNEL_LABEL")}
@@ -540,7 +544,7 @@ const PTApplicationDetails = () => {
               </StatusTable>
             )}
           </div>
-          <PTWFApplicationTimeline application={application} id={acknowledgementIds} userType={"citizen"} />
+          <PTWFApplicationTimeline application={application} id={applicationNumber} userType={"citizen"} />
           {showToast && (
           <Toast
             error={showToast.key}

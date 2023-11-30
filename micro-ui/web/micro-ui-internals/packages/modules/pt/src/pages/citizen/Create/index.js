@@ -101,7 +101,7 @@ const PTRCreate = ({ parentRoute }) => {
     if (nextStep === null) {
       return redirectWithHistory(`${match.path}/check`);
     }
-    console.log("nextstep",nextStep )
+    //console.log("nextstep",nextStep )
     if (!isNaN(nextStep.split("/").pop())) {
       nextPage = `${match.path}/${nextStep}`;
     }
@@ -163,7 +163,7 @@ const PTRCreate = ({ parentRoute }) => {
   const CheckPage = Digit?.ComponentRegistryService?.getComponent("PTCheckPage");
   const PTAcknowledgement = Digit?.ComponentRegistryService?.getComponent("PTAcknowledgement");
 
-  console.log("params", params)
+  //console.log("params", params)
   
   return (
     <Switch>
@@ -183,7 +183,6 @@ const PTRCreate = ({ parentRoute }) => {
       </Route>
       <Route path={`${match.path}/acknowledgement`}>
         <PTAcknowledgement data={params} onSuccess={onSuccess} />
-        {console.log("data passing in ackkkkkk************",params)}
       </Route>
       <Route>
         <Redirect to={`${match.path}/${config.indexRoute}`} />

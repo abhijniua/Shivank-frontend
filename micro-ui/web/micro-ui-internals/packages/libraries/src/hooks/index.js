@@ -259,6 +259,7 @@ import usePTRGenderMDMS from "./ptr/usePTRGenderMDMS";
 import usePTRSearch from "./ptr/usePTRSearch";
 import usePtrApplicationDetail from "./ptr/usePtrApplicationDetail";
 import usePTRApplicationAction from "./ptr/usePTRApplicationAction";
+import useServiceSearchPTR from "./ptr/useServiceSearchPTR";
 
 
 
@@ -410,7 +411,8 @@ const ptr = {
  usePTRGenderMDMS,
  usePTRSearch,
  usePtrApplicationDetail,
- useTenantsPTR
+ useTenantsPTR,
+ useServiceSearchPTR
 };
 
 

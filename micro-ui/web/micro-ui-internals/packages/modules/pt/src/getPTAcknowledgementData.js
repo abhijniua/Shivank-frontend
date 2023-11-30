@@ -257,7 +257,7 @@ const getPTAcknowledgementData = async (application, tenantInfo, t) => {
       ],
     };
   }
-  console.log("$$$$$$$$", application);
+  //console.log("$$$$$$$$", application);
   return {
     t: t,
     tenantId: tenantInfo?.code,

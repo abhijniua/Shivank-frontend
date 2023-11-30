@@ -31,8 +31,8 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
   Digit.Hooks.useClickOutside(modalRef, closeModal, modalData);
 
   if (mobileNumber) filters.mobileNumber = mobileNumber;
-  if (propertyIds) filters.propertyIds = propertyIds;
-  if (oldPropertyIds) filters.oldPropertyIds = oldPropertyIds;
+  // if (propertyIds) filters.propertyIds = propertyIds;
+  // if (oldPropertyIds) filters.oldPropertyIds = oldPropertyIds;
   if (locality) filters.locality = locality;
   if (doorNo) filters.doorNo = doorNo;
   if (name) filters.name = name;
@@ -56,7 +56,7 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
   const auth =true;
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const searchArgs = city ? { tenantId: city, filters, auth } : { filters, auth };
-  const result = Digit.Hooks.pt.usePropertySearch(searchArgs);
+  const result = Digit.Hooks.ptr.usePTRSearch(searchArgs);
   const consumerCode = result?.data?.Properties?.map((a) => a.propertyId).join(",");
 
   let fetchBillParams = mobileNumber ? { mobileNumber, consumerCode } : { consumerCode };

@@ -20,7 +20,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   const isUpdateProperty = formData?.isUpdateProperty || false;
   let isEditProperty = formData?.isEditProperty || false;
 
-  console.log("formdata in docccc--------------------------*********",formData)
+  //console.log("formdata in docccc--------------------------*********",formData)
 
   const [dropdownValue, setDropdownValue] = useState(formData?.docc?.documents?.proofIdentity?.documentType);
   let dropdownData = [];
@@ -40,11 +40,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
     hasDropdown: true
   }));
 
-  console.log("documenst ", data?.PetService?.Documents.map(document => ({
-    ...document,
-    hasDropdown: true
-  })))
-  console.log("PThmnfnenf", PTRDocument)
+ 
 
   const proofIdentity = Array.isArray(PTRDocument) && PTRDocument;
   for (let i = 0; i < 4; i++) {

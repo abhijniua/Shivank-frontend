@@ -109,7 +109,7 @@ function PTRSelectDocument({
   propertyInitialValues,
 }) {
   const filteredDocument = documents?.filter((item) => item?.documentType?.includes(doc?.code))[0];
-  //console.log("ffffffff", filteredDocument);
+  ////console.log("ffffffff", filteredDocument);
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [selectedDocument, setSelectedDocument] = useState(
@@ -120,18 +120,18 @@ function PTRSelectDocument({
       : {}
   );
 
-  //console.log("4444444444",selectedDocument);
+  ////console.log("4444444444",selectedDocument);
   const [file, setFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(() => filteredDocument?.fileStoreId || null);
 
   const handlePTRSelectDocument = (value) => setSelectedDocument(value);
-  //console.log("7/////////////",handlePTRSelectDocument);
+  ////console.log("7/////////////",handlePTRSelectDocument);
 
   function selectfile(e) {
     setFile(e.target.files[0]);
   }
   const { dropdownData } = doc;
-  console.log("dshdfsgfhshfjshfjhsfhu",dropdownData)
+  //console.log("dshdfsgfhshfjshfjhsfhu",dropdownData)
   //const { dropdownFilter, enabledActions, filterCondition } = doc?.additionalDetails || {};
   var dropDownData = dropdownData;
    //let hideInput = false;
@@ -196,7 +196,7 @@ function PTRSelectDocument({
       const docType = dropDownData
         .filter((e) => e.code === originalDoc?.documentType)
         .map((e) => ({ ...e, i18nKey: e?.code?.replaceAll(".", "_") }))[0];
-        console.log("5555555555", docType);
+        //console.log("5555555555", docType);
       if (!docType) setHidden(true);
       else {
         setSelectedDocument(docType);

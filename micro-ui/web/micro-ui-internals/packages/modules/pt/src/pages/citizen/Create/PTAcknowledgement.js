@@ -35,26 +35,26 @@ const BannerPicker = (props) => {
 
 const PTAcknowledgement = ({ data, onSuccess }) => {
 
-  console.log("data pt rackno",data )
+  //console.log("data pt rackno",data )
   const { t } = useTranslation();
   // const isPropertyMutation = window.location.href.includes("property-mutation");
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const mutation = Digit.Hooks.ptr.usePTRCreateAPI("pg.citya");    // need to check why tenant id is going only pg
+  const mutation = Digit.Hooks.ptr.usePTRCreateAPI(data.address?.city?.code); 
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const match = useRouteMatch();
   const { tenants } = storeData || {};
 
-  console.log("data in ackno", data)
+  //console.log("data in ackno", data)
 
   useEffect(() => {
     try {
       //let tenantId = isPropertyMutation ? data.Property?.address.tenantId : data?.address?.city ? data.address?.city?.code : tenantId;
-      console.log("data under useeffect", data)
-     // data.tenantId = tenantId;
+      //console.log("data under useeffect", data)
+      data.tenantId = data.address?.city?.code;
       let formdata = convertToProperty(data)
       
 
-      console.log("formdata ", formdata)
+      //console.log("formdata ", formdata)
       //  !window.location.href.includes("edit-application")
       //   ? isPropertyMutation
       //     ? data
@@ -68,7 +68,7 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
   }, []);
 
   useEffect (()=>{
-    console.log("Component is rendering very well")
+    //console.log("Component is rendering very well")
 
   }, []);
 
@@ -97,13 +97,13 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
           <Row
             rowContainerStyle={rowContainerStyle}
             last
-            label={t("PT_COMMON_TABLE_COL_PT_ID")}
+            label={t("PTR_APPLIACATION_NUMBER")}
             text={mutation?.data?.PetRegistrationApplications[0]?.applicationNumber}
             textStyle={{ whiteSpace: "pre", width: "60%" }}
           />
         )}
       </StatusTable>
-      {mutation.isSuccess && <SubmitBar label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />}
+      {mutation.isSuccess && <SubmitBar label={t("PTR_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />}
       <Link to={`/digit-ui/citizen`}>
         <LinkButton label={t("CORE_COMMON_GO_TO_HOME")} />
       </Link>

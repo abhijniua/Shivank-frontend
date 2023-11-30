@@ -14,7 +14,7 @@ const PTWFApplicationTimeline = (props) => {
     id: props.id,
     moduleCode: businessService,
   });
-  console.log("timelinbe business service ", businessService)
+  //console.log("timelinbe business service ", businessService)
 
   function OpenImage(imageSource, index, thumbnailsToShow) {
     window.open(thumbnailsToShow?.fullImage?.[0], "_blank");

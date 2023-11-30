@@ -23,10 +23,10 @@ export const PTMyApplications = () => {
     ? { limit: "50", sortOrder: "ASC", sortBy: "createdTime", offset: off, tenantId }
     : { limit: "4", sortOrder: "ASC", sortBy: "createdTime", offset: "0",mobileNumber:user?.mobileNumber, tenantId };
 
-  const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch({ filters: filter1 }, { filters: filter1 });
+  const { isLoading, isError, error, data } = Digit.Hooks.ptr.usePTRSearch({ filters: filter1 }, { filters: filter1 });
   
   const {PetRegistrationApplications: applicationsList } = data || {};
-  let combinedApplicationNumber = applicationsList?.length > 0 ? applicationsList?.map((ob) => ob?.acknowldgementNumber) : [];
+  let combinedApplicationNumber = applicationsList?.length > 0 ? applicationsList?.map((ob) => ob?.applicationNumber) : [];
   let serviceSearchArgs = {
     tenantId : tenantId,
     referenceIds : combinedApplicationNumber,
@@ -35,7 +35,7 @@ export const PTMyApplications = () => {
   const { isLoading:serviceloading, data : servicedata} = Digit.Hooks.useFeedBackSearch({ filters: { serviceSearchArgs } },{ filters: { serviceSearchArgs }, enabled : combinedApplicationNumber?.length > 0 ?true : false, cacheTime : 0 });
 
   function getLabelValue(curservice){
-    let foundValue = servicedata?.Service?.find((ob) => ob?.referenceId?.includes(curservice?.acknowldgementNumber));
+    let foundValue = servicedata?.Service?.find((ob) => ob?.referenceId?.includes(curservice?.applicationNumber));
 
     if(foundValue)
     return t("CS_CF_VIEW")

@@ -32,9 +32,9 @@ const CheckPage = ({ onSubmit, value = {} }) => {
   const { t } = useTranslation();
   const history = useHistory();
 
-  console.log("onSubmit",onSubmit )
+  //console.log("onSubmit",onSubmit )
 
-  console.log("checkpage",value)
+  //console.log("checkpage",value)
 
   const {
     address,
@@ -56,7 +56,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
 
   
 
-  console.log("value", value)
+  //console.log("value", value)
   const typeOfApplication = !isEditProperty && !isUpdateProperty ? `new-application` : `edit-application`;
 
 

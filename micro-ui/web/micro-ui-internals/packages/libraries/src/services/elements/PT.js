@@ -130,6 +130,7 @@ export const PTService = {
       data: {...filters},
       //params: { tenantId, ...filters },
     }),
+    
     cfsearch: ({ filters, auth }) =>
     Request({
       url: Urls.pt.cfsearch,

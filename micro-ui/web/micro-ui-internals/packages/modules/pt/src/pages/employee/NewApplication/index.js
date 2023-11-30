@@ -25,7 +25,7 @@ const NewApplication = () => {
 
   const onFormValueChange = (setValue, formData, formState) => {
     
-    console.log("data",formData, setValue, setSubmitValve ) ; // to check in console
+    //console.log("data",formData, setValue, setSubmitValve ) ; // to check in console
     
     setSubmitValve(!Object.keys(formState.errors).length);
 
@@ -41,7 +41,7 @@ const NewApplication = () => {
   };
 
   const onPetSubmit = (data) => {
-    console.log("dataaaaaaaaaaaaaaaaaa",data)
+    //console.log("dataaaaaaaaaaaaaaaaaa",data)
 
 
     
@@ -95,7 +95,7 @@ const NewApplication = () => {
     
 
    
-    console.log("ddddddddddddddddddddd",formData )
+    //console.log("ddddddddddddddddddddd",formData )
     history.replace("/digit-ui/employee/pt/response", { PetRegistrationApplications: formData }); //current wala
     //history.replace("/digit-ui/employee/pt/response", {PetRegistrationApplications:formData});
     
@@ -118,7 +118,7 @@ const NewApplication = () => {
       //isDisabled={canSubmit}
       label={t("ES_COMMON_APPLICATION_SUBMIT")}
       config={configs.map((config) => {
-        console.log("jjjjjjjjjjjj",config)
+        //console.log("jjjjjjjjjjjj",config)
         return {
           ...config,
           body: config.body.filter((a) => !a.hideInEmployee),

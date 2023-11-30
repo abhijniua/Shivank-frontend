@@ -22,7 +22,7 @@ const DisplayText = (action, isSuccess, isEmployee, t) => {
 };
 
 const BannerPicker = (props) => {
-  console.log("propssss", props)
+  //console.log("propssss", props)
   return (
     <Banner
       message={GetActionMessage(props?.data?.PetRegistrationApplications?.[0]?.applicationStatus || props.action, props.isSuccess, props.isEmployee, props.t)}

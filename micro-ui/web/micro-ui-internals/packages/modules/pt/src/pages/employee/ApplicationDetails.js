@@ -257,7 +257,7 @@ const ApplicationDetails = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { tenants } = storeData || {};
   const { id: applicationNumber } = useParams();
-  console.log("Application Number:", applicationNumber);
+  //console.log("Application Number:", applicationNumber);
   const [showToast, setShowToast] = useState(null);
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
   const [showOptions, setShowOptions] = useState(false);
@@ -276,7 +276,7 @@ const ApplicationDetails = () => {
 
   const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.ptr.usePtrApplicationDetail(t, tenantId, applicationNumber);
   
-  console.log("isError",applicationDetails)
+  //console.log("isError",applicationDetails)
 
   
   
@@ -288,19 +288,19 @@ const ApplicationDetails = () => {
     mutate,
   } = Digit.Hooks.ptr.usePTRApplicationAction(tenantId);
   
-  console.log("updatingApplication", updatingApplication )
-  console.log("updateApplicationError", updateApplicationError )
-  console.log("updateResponse", updateResponse )
-  console.log("updateError", updateError )
-  console.log("mutate", mutate )
+  //console.log("updatingApplication", updatingApplication )
+  //console.log("updateApplicationError", updateApplicationError )
+  //console.log("updateResponse", updateResponse )
+  //console.log("updateError", updateError )
+  //console.log("mutate", mutate )
 
 
 
-  console.log("======================" )
-  console.log("applicationDetails",  applicationDetails?.applicationData?.tenantId )
-    // console.log("applicationData", applicationData )
+  //console.log("======================" )
+  //console.log("applicationDetails",  applicationDetails?.applicationData?.tenantId )
+    // //console.log("applicationData", applicationData )
 
-  console.log("====================="  )
+  //console.log("====================="  )
 
   let workflowDetails = Digit.Hooks.useWorkflowDetails({
   tenantId: applicationDetails?.applicationData?.tenantId || tenantId,
@@ -310,7 +310,7 @@ const ApplicationDetails = () => {
 });
   
   
-  console.log("what is workflowDetails servie = ",workflowDetails )
+  //console.log("what is workflowDetails servie = ",workflowDetails )
 
   
 
@@ -324,7 +324,7 @@ const ApplicationDetails = () => {
    // { enabled: enableAudit, select: (data) => data.PetRegistrationApplications?.filter((e) => e.status === "ACTIVE") }
   );
 
-  // console.log("$$$$", applicationDetails?.data)
+  // //console.log("$$$$", applicationDetails?.data)
   // const showTransfererDetails = React.useCallback(() => {
   //   if (
   //     auditData &&
@@ -348,7 +348,7 @@ const ApplicationDetails = () => {
 
   useEffect(() => {
     if (applicationDetails) {
-      console.log("use effect application details", applicationDetails);
+      //console.log("use effect application details", applicationDetails);
       setAppDetailsToShow(_.cloneDeep(applicationDetails));
       // if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
         // setEnableAudit(true);
@@ -364,7 +364,7 @@ const ApplicationDetails = () => {
   // }, [auditData, applicationDetails, appDetailsToShow]);
 
   useEffect(() => {
-    // console.log("use effect Workflow Details:", workflowDetails?.data?.applicationBusinessService);
+    // //console.log("use effect Workflow Details:", workflowDetails?.data?.applicationBusinessService);
     // if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE"))
     if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "ptr" && businessService === "ptr"))
     
@@ -378,7 +378,7 @@ const ApplicationDetails = () => {
     }
   }, [workflowDetails.data]);
 
-  console.log("use effect :", workflowDetails.data);
+  //console.log("use effect :", workflowDetails.data);
 
 
   //const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
@@ -511,7 +511,6 @@ const ApplicationDetails = () => {
     <div>
         <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
       <Header styles={{ marginLeft: "0px", paddingTop: "10px", fontSize: "32px" }}>{t("PTR_PET_APPLICATION_DETAILS")}</Header>
-      {console.log(" dowloadOptions", dowloadOptions)}
       {dowloadOptions && dowloadOptions.length > 0 && (
             <MultiLink
               className="multilinkWrapper employee-mulitlink-main-div"
@@ -524,8 +523,7 @@ const ApplicationDetails = () => {
             />
           )}
           </div>
-          {console.log("what is workflowDetails ", workflowDetails)}
-          {console.log("what is businessService ", businessService)}
+          
       
       <ApplicationDetailsTemplate
         applicationDetails={appDetailsToShow}

@@ -59,10 +59,10 @@ const Inbox = ({
 
 
       useEffect(() => {
-        console.log("rendering inbox");
+        //console.log("rendering inbox");
       }, []);
 
-      console.log("data is coming", data)
+      //console.log("data is coming", data)
 
 
 

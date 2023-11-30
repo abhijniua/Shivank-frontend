@@ -182,7 +182,7 @@ const handleClick=()=>{
 
       setIsEnableLoader(true);
       if (typeof data?.customFunctionToExecute === "function") {
-        console.log("customFunctionToExecute")
+        //console.log("customFunctionToExecute")
        
         data?.customFunctionToExecute({ ...data });
        
@@ -266,14 +266,14 @@ const handleClick=()=>{
     return <Loader />;
   }
   const closeModal = () => {
-    console.log("closeModal")
+    //console.log("closeModal")
     setshowModal(true)
   };
 
   const closeWarningPopup = () => {
     setWarningPopUp(false);
   };
-  console.log("billData",fetchBillData?.Bill?.[0])
+  //console.log("billData",fetchBillData?.Bill?.[0])
   return (
     <React.Fragment>
       <Header>{t("PT_PROPERTY_INFORMATION")}</Header>

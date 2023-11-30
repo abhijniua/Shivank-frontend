@@ -76,7 +76,7 @@ export const propertyCardBodyStyle = {
 };
 
 export const setAddressDetails = (data) => {
-  console.log("data for address", data)
+  //console.log("data for address", data)
   let { address } = data;
 
   let propAddress = {
@@ -567,7 +567,7 @@ export const getSuperBuiltUpareafromob = (data) => {
 /*   method to convert collected details to proeprty create object */
 
 export const convertToProperty = (data) => {
-  console.log("datataaa*******************------------------",data)
+  //console.log("datataaa*******************------------------",data)
 
   
 
@@ -579,8 +579,7 @@ export const convertToProperty = (data) => {
 
   const formdata = {
     PetRegistrationApplications: [{
-      tenantId: "pg",
-      // data.tenantId,
+      tenantId: data.tenantId,
       ...data?.ownerss,
       address: data.address,
       petDetails: data.pets,
@@ -595,7 +594,7 @@ export const convertToProperty = (data) => {
     }],
   };
 
-  console.log("returning form data ", formdata)
+  //console.log("returning form data ", formdata)
   return formdata;
 };
 
@@ -896,7 +895,7 @@ export const convertEpochToDate = (dateEpoch,businessService) => {
     let year = dateFromApi.getFullYear();
     month = (month > 9 ? "" : "0") + month;
     day = (day > 9 ? "" : "0") + day;
-    if(businessService == "PT")
+    if(businessService == "ptr")
     return `${day}-${month}-${year}`;
     else
     return `${day}/${month}/${year}`;
