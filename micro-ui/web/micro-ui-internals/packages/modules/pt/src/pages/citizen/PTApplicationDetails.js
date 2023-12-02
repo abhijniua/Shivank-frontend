@@ -305,7 +305,7 @@ const PTApplicationDetails = () => {
               </StatusTable>
             )}
           </div>
-          <PTWFApplicationTimeline application={application} id={applicationNumber} userType={"citizen"} />
+          <PTWFApplicationTimeline application={application} id={application?.applicationNumber} userType={"citizen"} />
           {showToast && (
           <Toast
             error={showToast.key}
