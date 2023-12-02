@@ -15,6 +15,7 @@ const usePTRSearch = ({ tenantId, filters, auth,searchedFrom="" }, config = {}) 
     //     property.owners =property.owners.filter((owner) => owner.status ===(property.creationReason=="MUTATION" ?"INACTIVE": "ACTIVE"));
     //   })
     // }  
+    // console.log("data before returning in hook API", data)
     return data;
   };
 

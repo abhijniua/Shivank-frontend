@@ -53,6 +53,9 @@ const PTRCitizenDetails
   function setGuardiansName(e) {
     setFatherOrHusbandName(e.target.value);
   }
+
+  
+
   
 
   const goNext = () => {

@@ -24,8 +24,10 @@ export const PTMyApplications = () => {
     : { limit: "4", sortOrder: "ASC", sortBy: "createdTime", offset: "0",mobileNumber:user?.mobileNumber, tenantId };
 
   const { isLoading, isError, error, data } = Digit.Hooks.ptr.usePTRSearch({ filters: filter1 }, { filters: filter1 });
+  console.log("data in indexxxxxxxxxxxxxxxxxxxxxx",data)
   
   const {PetRegistrationApplications: applicationsList } = data || {};
+  
   let combinedApplicationNumber = applicationsList?.length > 0 ? applicationsList?.map((ob) => ob?.applicationNumber) : [];
   let serviceSearchArgs = {
     tenantId : tenantId,
@@ -55,26 +57,28 @@ export const PTMyApplications = () => {
       <Header>{`${t("CS_TITLE_MY_APPLICATIONS")} ${applicationsList ? `(${applicationsList.length})` : ""}`}</Header>
       <div>
         {applicationsList?.length > 0 &&
-          applicationsList.map((application, index) => (
+          applicationsList.map((application, index) => 
+          (
+            
             <div key={index}>
               <PTApplication application={application} tenantId={user?.permanentCity} buttonLabel={getLabelValue(application)}/>
             </div>
           ))}
-        {!applicationsList?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PT_NO_APPLICATION_FOUND_MSG")}</p>}
+        {!applicationsList?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PTR_NO_APPLICATION_FOUND_MSG")}</p>}
 
         {applicationsList?.length !== 0 && (
           <div>
             <p style={{ marginLeft: "16px", marginTop: "16px" }}>
-              <span className="link">{<Link to={`/digit-ui/citizen/pt/property/my-applications/${t1}`}>{t("PT_LOAD_MORE_MSG")}</Link>}</span>
+              <span className="link">{<Link to={`/digit-ui/citizen/pt/property/my-applications/${t1}`}>{t("PTR_LOAD_MORE_MSG")}</Link>}</span>
             </p>
           </div>
         )}
       </div>
 
       <p style={{ marginLeft: "16px", marginTop: "16px" }}>
-        {t("PT_TEXT_NOT_ABLE_TO_FIND_THE_APPLICATION")}{" "}
+        {t("PTR_TEXT_NOT_ABLE_TO_FIND_THE_APPLICATION")}{" "}
         <span className="link" style={{ display: "block" }}>
-          <Link to="/digit-ui/citizen/pt/property/new-application/info">{t("PT_COMMON_CLICK_HERE_TO_REGISTER_NEW_PROPERTY")}</Link>
+          <Link to="/digit-ui/citizen/pt/property/new-application/info">{t("PTR_COMMON_CLICK_HERE_TO_REGISTER_NEW_PET")}</Link>
         </span>
       </p>
     </React.Fragment>

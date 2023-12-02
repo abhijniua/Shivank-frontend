@@ -12,21 +12,21 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   // let index = "0";
   // isMutation ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
 
-  const [uploadedFile, setUploadedFile] = useState(() => formData?.docc?.documents?.proofIdentity?.fileStoreId || null);
-  const [file, setFile] = useState(formData?.docc?.documents?.proofIdentity);
+  const [uploadedFile, setUploadedFile] = useState(() => formData?.document?.proofIdentity?.fileStoreId || null);
+  const [file, setFile] = useState(formData?.document
+?.proofIdentity);
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
   const onSkip = () => onSelect();
   const isUpdateProperty = formData?.isUpdateProperty || false;
   let isEditProperty = formData?.isEditProperty || false;
 
-  //console.log("formdata in docccc--------------------------*********",formData)
+  console.log("formdata in docccc--------------------------*********",formData)
 
-  const [dropdownValue, setDropdownValue] = useState(formData?.docc?.documents?.proofIdentity?.documentType);
+  const [dropdownValue, setDropdownValue] = useState(formData?.document
+?.documents?.proofIdentity?.documentType);
   let dropdownData = [];
-  // let dropdownData1 = [];
-  // let dropdownData2 = [];
-  // let dropdownData3 = [];
+  
   const components_ar = []
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -74,7 +74,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
           onDelete={() => {
             setUploadedFile(null);
           }}
-          message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
+          message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
           error={error}
         />
         <br/>
@@ -117,9 +117,11 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
 
   const handleSubmit = () => {
     setmultipleownererror(null);
-    if (formData?.docchipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" && formData?.docc?.length <= 1 &&  !isMutation) {
+    if (formData?.docchipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" && formData?.document
+?.length <= 1 &&  !isMutation) {
       setmultipleownererror("PT_MULTI_OWNER_ADD_ERR_MSG");
-    } else if (isMutation && formData?.docc?.length <= 1 && formData?.docchipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") {
+    } else if (isMutation && formData?.document
+?.length <= 1 && formData?.docchipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") {
       setmultipleownererror("PT_MULTI_OWNER_ADD_ERR_MSG");
     } else {
       let fileStoreId = uploadedFile;
@@ -128,7 +130,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         fileDetails.documentType = dropdownValue;
         fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
       }
-      let ownerDetails = formData.docc && formData.docc;
+      let ownerDetails = formData.document
+ && formData.document
+;
       if (ownerDetails && ownerDetails.documents) {
         if (!isMutation) ownerDetails.documents["proofIdentity"] = fileDetails;
         else ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId };
@@ -155,7 +159,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         setError(t("ERR_DEFAULT_INPUT_FIELD_MSG"));
         return;
       }
-      let ownerDetails = formData.docc && formData.docc;
+      let ownerDetails = formData.document
+ && formData.document
+;
       if (ownerDetails && ownerDetails.documents) {
         ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId: uploadedFile };
       } else {
@@ -173,7 +179,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       fileDetails.documentType = dropdownValue;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
-    let ownerDetails = formData.docc && formData.docc;
+    let ownerDetails = formData.document
+ && formData.document
+;
     if (ownerDetails && ownerDetails.documents) {
       ownerDetails.documents["proofIdentity"] = fileDetails;
     } else {

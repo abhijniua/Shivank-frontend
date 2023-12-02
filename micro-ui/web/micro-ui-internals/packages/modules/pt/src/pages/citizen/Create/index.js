@@ -157,7 +157,7 @@ const PTRCreate = ({ parentRoute }) => {
   commonFields.forEach((obj) => {
     config = config.concat(obj.body.filter((a) => !a.hideInCitizen));
   });
-  // config.indexRoute = "info";
+  
   config.indexRoute = "info";
 
   const CheckPage = Digit?.ComponentRegistryService?.getComponent("PTCheckPage");
