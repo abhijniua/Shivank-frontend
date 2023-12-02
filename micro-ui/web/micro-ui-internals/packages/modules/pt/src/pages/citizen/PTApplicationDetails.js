@@ -36,13 +36,8 @@ const PTApplicationDetails = () => {
     module: ["pet-services"],
     referenceId : [data?.PetRegistrationApplications?.[0]?.applicationNumber]
     
-    //removing thid as of now sending ack no in referenceId
-    // attributes: {
-    //         "attributeCode": "referenceId",
-    //         "value": data?.PetRegistrationApplications?.[0]?.applicationNumber,
-    //     }
+ 
   }
-  console.log("refrenseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",data)
 
   const { isLoading:serviceloading, error : serviceerror, data : servicedata} = Digit.Hooks.pt.useServiceSearchCF({ filters: { serviceSearchArgs } },{ filters: { serviceSearchArgs }, enabled : data?.PetRegistrationApplications?.[0]?.applicationNumber ?true : false, cacheTime : 0 });
 
