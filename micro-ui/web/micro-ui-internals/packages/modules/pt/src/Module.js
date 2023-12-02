@@ -256,6 +256,10 @@ export const PTLinks = ({ matchPath, userType }) => {
       link: `${matchPath}/property/new-application`,
       i18nKey: t("PTR_CREATE_PET_REGISTRATION"),
     },
+    // {
+    //   link: `${matchPath}/ptr/new-application`,
+    //   i18nKey: t("PTR_CREATE_PET_APPLICATION"),
+    // },
     {
       link: `${matchPath}/property/my-properties`,
       i18nKey: t("PT_MY_PROPERTIES"),
@@ -264,6 +268,10 @@ export const PTLinks = ({ matchPath, userType }) => {
       link: `${matchPath}/property/my-applications`,
       i18nKey: t("PT_MY_APPLICATION"),
     },
+    // {
+    //   link: `${matchPath}/ptr/my-applications`,
+    //   i18nKey: t("PTR_MY_APPLICATIONS_HEADER"),
+    // },
     {
       link: `${matchPath}/property/property-mutation`,
       i18nKey: t("PT_PROPERTY_MUTATION"),

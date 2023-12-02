@@ -120,9 +120,9 @@ const Response = (props) => {
   // };
 
   const handleDownloadPdf = async () => {
-    const PetRegistrationApplications = props?.data?.PetRegistrationApplications?.[0] ;
-    const tenantInfo  = "pg.citya"
-    // tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
+    const PetRegistrationApplications = props?.data?.PetRegistrationApplications?.[0]?.applicationNumber ;
+    // const tenantInfo  = "pg.citya"
+    tenants.find((tenant) => tenant.code === PetRegistrationApplications.tenantId);
 
     const data = await getPTAcknowledgementData(PetRegistrationApplications, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
