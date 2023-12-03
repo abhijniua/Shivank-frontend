@@ -42,7 +42,6 @@ const PTRCitizenPet
   );
 
 
-  console.log("formdata in petsssssss", formData)
 
 
 
@@ -184,18 +183,7 @@ const PTRCitizenPet
         <CardLabel>{`${t("PTR_SEARCH_PET_TYPE")}`}</CardLabel>
         
         
-        {/* <Dropdown
-            t={t}
-            options={menu}
-            optionsKey="i18nKey"
-            name="petType"
-            value={petType}
-            selectedOption={petType}
-            onSelect={setPetType}
-          // isDependent={true}
-            labelKey="PTR_SERACH_PET_TYPE"
-          // disabled={isUpdateProperty || isEditProperty}
-    /> */}
+       
 
         <Controller
                 control={control}
@@ -219,17 +207,7 @@ const PTRCitizenPet
         
 
         <CardLabel>{`${t("PTR_SEARCH_BREED_TYPE")}`}</CardLabel>
-        {/* <RadioButtons
-          t={t}
-          options={breed_type}
-          optionsKey="i18nKey"
-          name="breedType"
-          value={breedType}
-          selectedOption={breedType}
-          onSelect={setBreedType}
-          labelKey="PTR_SERACH_BREED_TYPE"
-       
-        /> */}
+      
 
          <Controller
             control={control}
@@ -261,6 +239,7 @@ const PTRCitizenPet
           name="petName"
           value={petName}
           onChange={setpetname}
+          style={{ width: "86%" }}
           //disable={isUpdateProperty || isEditProperty}
           ValidationRequired = {false}
           {...(validation = {
@@ -273,19 +252,7 @@ const PTRCitizenPet
 
         <CardLabel>{`${t("PTR_PET_SEX")}`}</CardLabel>
         
-        {/* <RadioButtons
-          t={t}
-          options={pet_sex}
-          optionsKey="i18nKey"
-          name="petGender"
-          value={petGender}
-          selectedOption={petGender}
-          onSelect={setPetGender}
-        // isDependent={true}
-          labelKey="PTR_SERACH_BREED_TYPE"
-        // disabled={isUpdateProperty || isEditProperty}
-        /> */}
-
+        
          <Controller
             control={control}
             name={"petGender"}
@@ -315,6 +282,7 @@ const PTRCitizenPet
           name="petAge"
           value={petAge}
           onChange={setpetage}
+          style={{ width: "86%" }}
           placeholder="in months"
           rules={{
             required: t("CORE_COMMON_REQUIRED_ERRMSG"),
@@ -333,6 +301,7 @@ const PTRCitizenPet
           name="doctorName"
           value={doctorName}
           onChange={setdoctorname}
+          style={{ width: "86%" }}
           //disable={isUpdateProperty || isEditProperty}
           ValidationRequired = {false}
           {...(validation = {
@@ -352,6 +321,7 @@ const PTRCitizenPet
           name="clinicName"
           value={clinicName}
           onChange={setclinicname}
+          style={{ width: "86%" }}
           //disable={isUpdateProperty || isEditProperty}
           ValidationRequired = {false}
           {...(validation = {
@@ -371,6 +341,7 @@ const PTRCitizenPet
           name="lastVaccineDate"
           value={lastVaccineDate}
           onChange={setvaccinationdate}
+          style={{ width: "86%" }}
           max={new Date().toISOString().split('T')[0]}
           rules={{
             required: t("CORE_COMMON_REQUIRED_ERRMSG"),
@@ -388,6 +359,7 @@ const PTRCitizenPet
           name="vaccinationNumber"
           value={vaccinationNumber}
           onChange={setvaccinationnumber}
+          style={{ width: "86%" }}
           
         />
       

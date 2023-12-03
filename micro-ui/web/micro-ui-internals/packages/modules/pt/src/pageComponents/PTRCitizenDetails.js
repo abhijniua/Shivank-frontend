@@ -98,7 +98,7 @@ const PTRCitizenDetails
       onSelect={goNext}
       onSkip={onSkip}
       t={t}
-      isDisabled={!applicantName || !mobileNumber || !alternateNumber|| !fatherName || !emailId}
+      isDisabled={!applicantName || !mobileNumber || alternateNumber|| !fatherName || !emailId}
     >
       <div>
         <CardLabel>{`${t("PTR_APPLICANT_NAME")}`}</CardLabel>
