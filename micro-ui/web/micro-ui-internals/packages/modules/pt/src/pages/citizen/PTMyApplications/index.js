@@ -8,7 +8,7 @@ import { propertyCardBodyStyle } from "../../../utils";
 export const PTMyApplications = () => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCitizenCurrentTenant(true) || Digit.ULBService.getCurrentTenantId();
-  const user = Digit.UserService.getUser().info;
+  const user = Digit.UserService.getUser().info;   // copy it for prefilled mobile number and names in forms  
 
   let filter = window.location.href.split("/").pop();
   let t1;
