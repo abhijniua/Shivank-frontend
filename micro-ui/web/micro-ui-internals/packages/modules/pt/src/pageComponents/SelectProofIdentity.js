@@ -26,15 +26,17 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   const [dropdownValue, setDropdownValue] = useState(formData?.document
 ?.documents?.proofIdentity?.documentType);
   let dropdownData = [];
+  let dropdownData1 = [];
+  let dropdownData2 = [];
+  let dropdownData3 = [];
+
   
-  const components_ar = []
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
-  // const { data: Documentsob = {} } = Digit.Hooks.ptr.usePetMDMS(stateId, "PetService", "Documents");
+
   const { isLoading, data } = Digit.Hooks.ptr.usePetMDMS(stateId, "PetService", "Documents");
 
-  // const docs = Documentsob?.PropertyTax?.Documents;
   const PTRDocument = data?.PetService?.Documents.map(document => ({
     ...document,
     hasDropdown: true
@@ -43,9 +45,12 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
  
 
   const proofIdentity = Array.isArray(PTRDocument) && PTRDocument;
-  for (let i = 0; i < 4; i++) {
   if (proofIdentity.length > 0) {
-    dropdownData = proofIdentity[i]?.dropdownData;
+    dropdownData = proofIdentity[0]?.dropdownData;
+    dropdownData1 = proofIdentity[1]?.dropdownData;
+    dropdownData2 = proofIdentity[2]?.dropdownData;
+    dropdownData3 = proofIdentity[3]?.dropdownData;
+
 
 
 
@@ -53,36 +58,31 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       data.i18nKey = stringReplaceAll(data.code, ".", "_");
     });
 
+    
+    dropdownData1.forEach((data) => {
+      data.i18nKey = stringReplaceAll(data.code, ".", "_");
+    });
+
+    
+    dropdownData2.forEach((data) => {
+      data.i18nKey = stringReplaceAll(data.code, ".", "_");
+    });
+
+    
+    dropdownData3.forEach((data) => {
+      data.i18nKey = stringReplaceAll(data.code, ".", "_");
+    });
+    
+    
   }
 
 
-    components_ar.push(
-      <div>
-        <Dropdown
-          t={t}
-          isMandatory={false}
-          option={dropdownData}
-          selected={dropdownValue}
-          optionKey="i18nKey"
-          select={setTypeOfDropdownValue}
-        />
-        <UploadFile
-          id={"pt-doc"}
-          extraStyleName={"propertyCreate"}
-          accept=".jpg,.png,.pdf"
-          onUpload={selectfile}
-          onDelete={() => {
-            setUploadedFile(null);
-          }}
-          message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
-          error={error}
-        />
-        <br/>
 
 
-      </div>
-    )
-  }
+
+
+
+
 
   function setTypeOfDropdownValue(dropdownValue) {
     setDropdownValue(dropdownValue);
@@ -91,6 +91,19 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   function selectfile(e) {
     setFile(e.target.files[0]);
   }
+
+  function selectfile1(e) {
+    setFile(e.target.files[1]);
+  }
+
+  function selectfile2(e) {
+    setFile(e.target.files[2]);
+  }
+
+  function selectfile3(e) {
+    setFile(e.target.files[3]);
+  }
+
 
   useEffect(() => {
     (async () => {
@@ -196,6 +209,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
   ) : (
     <Timeline currentStep={4} />
   );
+
+  
+
   return (
     <React.Fragment>
       {window.location.href.includes("/citizen") ? checkMutatePT : null}
@@ -210,9 +226,9 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         isMultipleAllow={formData?.docchipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS"}
       >
 
-        {components_ar}
+        {/* {components_ar} */}
 
-        {/* <CardLabel>{`${t("PTR_IDENTITY_PROOF")}`}</CardLabel>   
+        <CardLabel>{`${t("PET_OWNER_IDENTITYPROOF_HEADING")}`}</CardLabel>   
           <Dropdown
             t={t}
             isMandatory={false}
@@ -229,7 +245,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
             onDelete={() => {
               setUploadedFile(null);
             }}
-            message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
+            message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
             error={error}
           />
         <br></br>
@@ -247,16 +263,16 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
             id={"pt-doc"}
             extraStyleName={"propertyCreate"}
             accept=".jpg,.png,.pdf"
-            onUpload={selectfile}
+            onUpload={selectfile1}
             onDelete={() => {
               setUploadedFile(null);
             }}
-            message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
+            message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
             error={error}
           />
           <br></br>
 
-          <CardLabel>{`${t("PTR_VACCIBNATION_CERTIFICATE")}`}</CardLabel>   
+          <CardLabel>{`${t("PTR_VACCINATION_CERTIFICATE")}`}</CardLabel>   
           <Dropdown
             t={t}
             isMandatory={false}
@@ -269,11 +285,11 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
             id={"pt-doc"}
             extraStyleName={"propertyCreate"}
             accept=".jpg,.png,.pdf"
-            onUpload={selectfile}
+            onUpload={selectfile2}
             onDelete={() => {
               setUploadedFile(null);
             }}
-            message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
+            message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
             error={error}
           />
           <br></br>
@@ -290,13 +306,13 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
             id={"pt-doc"}
             extraStyleName={"propertyCreate"}
             accept=".jpg,.png,.pdf"
-            onUpload={selectfile}
+            onUpload={selectfile3}
             onDelete={() => {
               setUploadedFile(null);
             }}
-            message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
+            message={uploadedFile ? `1 ${t(`PTR_ACTION_FILEUPLOADED`)}` : t(`PTR_ACTION_NO_FILEUPLOADED`)}
             error={error}
-          /> */}
+          />
 
 
 
@@ -314,6 +330,8 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       </FormStep>
     </React.Fragment>
   );
+
+  
 };
 
 export default SelectProofIdentity;
