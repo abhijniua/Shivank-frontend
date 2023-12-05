@@ -27,6 +27,7 @@ export const PTMyApplications = () => {
   console.log("data in indexxxxxxxxxxxxxxxxxxxxxx",data)
   
   const {PetRegistrationApplications: applicationsList } = data || {};
+  console.log("teeeeeeeeeeeeeeehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",applicationsList)
   
   let combinedApplicationNumber = applicationsList?.length > 0 ? applicationsList?.map((ob) => ob?.applicationNumber) : [];
   let serviceSearchArgs = {
