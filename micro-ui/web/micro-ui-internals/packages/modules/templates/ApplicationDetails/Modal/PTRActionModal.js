@@ -24,6 +24,7 @@ const CloseBtn = (props) => {
 };
 
 const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, applicationData, businessService, moduleCode }) => {
+  console.log("action modal =========",applicationData)
   const { data: approverData, isLoading: PTALoading } = Digit.Hooks.useEmployeeSearch(
     tenantId,
     {
@@ -32,18 +33,18 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     },
     { enabled: !action?.isTerminateState }
   );
-  const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
-    tenantId,
-    businessService,
-    "FINANCIAL_YEARLS",
-    {},
-    {
-      details: {
-        tenantId: Digit.ULBService.getStateId(),
-        moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'pet-services')]" }] }],
-      },
-    }
-  );
+  // const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
+  //   tenantId,
+  //   businessService,
+  //   "FINANCIAL_YEARLS",
+  //   {},
+  //   {
+  //     details: {
+  //       tenantId: Digit.ULBService.getStateId(),
+  //       moduleDetails: [{ moduleName: "egf-master", masterDetails: [{ name: "FinancialYear", filter: "[?(@.module == 'pet-services')]" }] }],
+  //     },
+  //   }
+  // );
 
   const [config, setConfig] = useState({});
   const [defaultValues, setDefaultValues] = useState({});
@@ -52,15 +53,15 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   const [file, setFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [error, setError] = useState(null);
-  const [financialYears, setFinancialYears] = useState([]);
-  const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
+  // const [financialYears, setFinancialYears] = useState([]);
+  // const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
   const [disableActionSubmit, setDisableActionSubmit] = useState(false);
 
-  useEffect(() => {
-    if (financialYearsData && financialYearsData["egf-master"]) {
-      setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
-    }
-  }, [financialYearsData]);
+  // useEffect(() => {
+  //   if (financialYearsData && financialYearsData["egf-master"]) {
+  //     setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
+  //   }
+  // }, [financialYearsData]);
 
   useEffect(() => {
     setApprovers(approverData?.Employees?.map((employee) => ({ uuid: employee?.uuid, name: employee?.user?.name })));
@@ -94,15 +95,16 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   console.log("application data525245 ", applicationData);
 
   function submit(data) {
+    console.log("dataaaaa123", data);
     if (action?.action == "COMMON_APPROVED") {
-      console.log("dataaaaa123", data);
+      
       let workflow = { action: "OPEN", comment: data?.comments, businessService: "ptr", moduleName: "pet-services" };
       applicationData.creationReason = "CREATE";
       submitAction({
-        customFunctionToExecute: action?.customFunctionToExecute,
+        // customFunctionToExecute: action?.customFunctionToExecute,
         PetRegistrationApplications: [
           {
-            applicationData,
+            ...applicationData?.applicationData,
             workflow,
           },
         ],
@@ -118,44 +120,34 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             fileStoreId: uploadedFile,
           },
         ];
-
+      // console.log("actian modal near submission ==========",applicationData)
       submitAction({
         PetRegistrationApplications: [
           {
-            applicationData,
+            ...applicationData?.applicationData,
             workflow,
           },
         ],
       });
-    } else {
-      submitAction({
-        customFunctionToExecute: action?.customFunctionToExecute,
-        Assessment: {
-          financialYear: selectedFinancialYear?.name,
-          applicationNumber: applicationData?.applicationNumber,
-          tenantId,
-          source: applicationData?.source,
-          channel: applicationData?.channel,
-          assessmentDate: Date.now(),
-        },
-      });
-    }
+     } 
+    //else {
+    //   submitAction({
+    //     customFunctionToExecute: action?.customFunctionToExecute,
+    //     Assessment: {
+    //       // financialYear: selectedFinancialYear?.name,
+    //       applicationNumber: applicationData?.applicationNumber,
+    //       tenantId,
+    //       source: applicationData?.source,
+    //       channel: applicationData?.channel,
+    //       assessmentDate: Date.now(),
+    //     },
+    //   });
+    // }
   }
 
   useEffect(() => {
     if (action) {
-      if (action?.showFinancialYearsModal) {
-        setConfig(
-          configPTAssessProperty({
-            t,
-            action,
-            financialYears,
-            selectedFinancialYear,
-            setSelectedFinancialYear,
-          })
-        );
-      } else {
-        setConfig(
+      setConfig(
           configPTApproverApplication({
             t,
             action,
@@ -168,9 +160,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             businessService,
           })
         );
-      }
+      
     }
-  }, [action, approvers, financialYears, selectedFinancialYear, uploadedFile]);
+  }, [action, approvers,/* financialYears, selectedFinancialYear,*/ uploadedFile]);
 
   return action && config.form ? (
     <Modal
@@ -183,9 +175,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       isDisabled={!action.showFinancialYearsModal ? PTALoading || (action?.docUploadRequired && !uploadedFile) : !selectedFinancialYear}
       formId="modal-action"
     >
-      {financialYearsLoading ? (
-        <Loader />
-      ) : (
+       (
         <FormComposer
           config={config.form}
           noBoxShadow
@@ -196,7 +186,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           formId="modal-action"
           // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
         />
-      )}
+      )
     </Modal>
   ) : (
     <Loader />

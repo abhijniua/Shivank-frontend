@@ -45,7 +45,7 @@
 
 //   const PetRegistrationApplications = get(data, "PetRegistrationApplications", []);
 //   console.log("fgsdddddddddddddddddddddddddddddddjf",PetRegistrationApplications)
-//    const propertyId = get(data, "PetRegistrationApplications[0].applicationNumber", []);
+//    const petId = get(data, "PetRegistrationApplications[0].applicationNumber", []);
   
 //   let pet_details = (PetRegistrationApplications && PetRegistrationApplications.length > 0 && PetRegistrationApplications[0]) || {};
 //   const application = pet_details;
@@ -74,7 +74,7 @@
 //   const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.ptr.usePTRSearch(
 //     {
 //       tenantId,
-//       filters: { applicationNumber: propertyId, audit: true },
+//       filters: { applicationNumber: petId, audit: true },
 //     },
 //     {
 //       enabled: true,
@@ -383,8 +383,8 @@ const PTApplicationDetails = () => {
   const PetRegistrationApplications = get(data, "PetRegistrationApplications", []);
   console.log("pettttttttttttttttt",PetRegistrationApplications)
   
-  const propertyId = get(data, "PetRegistrationApplications[0].applicationNumber", []);
-  console.log("hdjashdfjhseihfjshjfhdsjjnfkndkfvjrsnfghb",propertyId)
+  const petId = get(data, "PetRegistrationApplications[0].applicationNumber", []);
+  console.log("hdjashdfjhseihfjshjfhdsjjnfkndkfvjrsnfghb",petId)
   let  pet_details = (PetRegistrationApplications && PetRegistrationApplications.length > 0 && PetRegistrationApplications[0]) || {};
   const application =  pet_details;
   sessionStorage.setItem("pt-property", JSON.stringify(application));
@@ -411,7 +411,7 @@ const PTApplicationDetails = () => {
   const { isLoading: auditDataLoading, isError: isAuditError, data: auditResponse } = Digit.Hooks.ptr.usePTRSearch(
     {
       tenantId,
-      filters: { applicationNumber: propertyId, audit: true },
+      filters: { applicationNumber: petId, audit: true },
     },
     {
       enabled: true,
@@ -423,7 +423,7 @@ const PTApplicationDetails = () => {
   const { data: reciept_data, isLoading: recieptDataLoading } = Digit.Hooks.useRecieptSearch(
     {
       tenantId: tenantId,
-      businessService: "PT.MUTATION",
+      businessService: "ptr",
       consumerCodes: acknowledgementIds,
       isEmployee: false,
     },
@@ -434,10 +434,10 @@ const PTApplicationDetails = () => {
     let workflow = {
       id: null,
       tenantId: tenantId,
-      businessService: "PT.MUTATION",
+      businessService: "ptr",
       businessId: application?.applicationNumber,
       action: "",
-      moduleName: "PT",
+      moduleName: "pet-services",
       state: null,
       comment: null,
       documents: null,
@@ -489,7 +489,6 @@ const PTApplicationDetails = () => {
 
   let transfereeOwners = get( pet_details, "ownersTemp", []);
   let transferorOwners = get( pet_details, "ownersInit", []);
-console.log("transferorOwnerstransferorOwnerstransferorOwners",transferorOwners,transfereeOwners)
   let transfereeInstitution = get( pet_details, "institutionTemp", []);
   let isInstitution =  pet_details?.ownershipCategoryInit?.startsWith("INSTITUTION");
   let transferorInstitution = get( pet_details, "institutionInit", []);

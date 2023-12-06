@@ -116,8 +116,7 @@ const ApplicationDetails = () => {
       setBusinessService(workflowDetails?.data?.applicationBusinessService);
       
 
-      //setBusinessService("ptr");
-
+      
     }
   }, [workflowDetails.data]);
 

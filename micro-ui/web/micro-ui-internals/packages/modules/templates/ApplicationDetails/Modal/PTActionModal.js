@@ -52,15 +52,15 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   const [file, setFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [error, setError] = useState(null);
-  const [financialYears, setFinancialYears] = useState([]);
-  const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
+  // const [financialYears, setFinancialYears] = useState([]);
+  // const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
   const [disableActionSubmit, setDisableActionSubmit] = useState(false);
 
-  useEffect(() => {
-    if (financialYearsData && financialYearsData["egf-master"]) {
-      setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
-    }
-  }, [financialYearsData]);
+  // useEffect(() => {
+  //   if (financialYearsData && financialYearsData["egf-master"]) {
+  //     setFinancialYears(financialYearsData["egf-master"]?.["FinancialYear"]);
+  //   }
+  // }, [financialYearsData]);
 
   useEffect(() => {
     console.log("Component rendered pt modal");
@@ -134,7 +134,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       submitAction({
         customFunctionToExecute: action?.customFunctionToExecute,
         Assessment: {
-          financialYear: selectedFinancialYear?.name,
+          // financialYear: selectedFinancialYear?.name,
           applicationNumber: applicationData?.applicationNumber,
           tenantId,
           source: applicationData?.source,
@@ -147,17 +147,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
 
   useEffect(() => {
     if (action) {
-      if (action?.showFinancialYearsModal) {
-        setConfig(
-          configPTAssessProperty({
-            t,
-            action,
-            financialYears,
-            selectedFinancialYear,
-            setSelectedFinancialYear,
-          })
-        );
-      } else {
+      
         setConfig(
           configPTApproverApplication({
             t,
@@ -171,9 +161,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             businessService,
           })
         );
-      }
+      
     }
-  }, [action, approvers, financialYears, selectedFinancialYear, uploadedFile]);
+  }, [action, approvers, /*financialYears, selectedFinancialYear,*/ uploadedFile]);
 
   return action && config.form ? (
     <Modal
@@ -186,9 +176,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       isDisabled={!action.showFinancialYearsModal ? PTALoading || (action?.docUploadRequired && !uploadedFile) : !selectedFinancialYear}
       formId="modal-action"
     >
-      {financialYearsLoading ? (
-        <Loader />
-      ) : (
+       (
         <FormComposer
           config={config.form}
           noBoxShadow
@@ -199,7 +187,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           formId="modal-action"
           // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
         />
-      )}
+      )
     </Modal>
   ) : (
     <Loader />
